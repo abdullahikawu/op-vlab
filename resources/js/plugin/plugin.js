@@ -1,6 +1,5 @@
 import axios from 'axios';
-axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? process.env.APP_URL: 'http://localhost:8000';
-
+axios.defaults.baseURL = process.env.APP_URL;
 import loader from '../components/skeletalLoaderA.vue'; 
 export default {
   install(Vue, options) {
