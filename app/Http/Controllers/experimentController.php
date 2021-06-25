@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class experimentController extends Controller
+class ExperimentController extends Controller
 {
     public function vernierCaliper()
     {

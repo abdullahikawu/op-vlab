@@ -3,7 +3,7 @@
        <h1 class="my-5 text-center explore__header">Explore Available V-lab Courses</h1>
         <div class="w-100 bg-white px-6" style="box-shadow: 1px 6px 5px rgba(100,100,100,.1);position: relative;z-index: 2;">
           <div class="font2 fw4  systab systab--active ">Course Category</div>
-        <div class="font2 fw4 systab ml-3">Most Visited Courses</div>
+        <div class="font2 fw4 systab ml-3" @click="notAvailable">Most Visited Courses</div>
         </div>
         <div class="row hm300 w-100 px-6 py-5 m-0" style="background: #f0f0f0;">          
           <div class="col-lg-4 col-md-6 col-lg-4 mt-5" v-for="cat in courseCate.faculties" >
@@ -26,7 +26,7 @@
                 </div>
               </div>            
             </a>
-             <a style="text-decoration: none;" href="#" @click="EmptyCourse" class="w-100 cadin" v-else>
+            <a style="text-decoration: none;" href="#" @click="EmptyCourse" class="w-100 cadin" v-if="cat.courses_count <1 && roletype=='student'">
               <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
                 <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%"></div>
                 <div class="p-3 rounded">                  
@@ -45,9 +45,9 @@
                 </div>
               </div>            
             </a>
-            <a style="text-decoration: none;" href="#" @click="onlyStudent" class="w-100 cadin" v-if="cat.courses_count >0 && roletype!='student'">
+            <a style="text-decoration: none;" href="#" @click="onlyStudent" class="w-100 cadin" v-if=" roletype!='student'">
               <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
-                <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%"></div>
+                <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%" class="rt2"></div>
                 <div class="p-3 rounded">                  
                   <h5 class="fw5 text-dark">{{cat.name}}</h5>
                   <br>
@@ -86,6 +86,13 @@ export default {
     }
   },
   methods:{
+    notAvailable(){
+        Swal.fire({
+          title: 'Not Available',                             
+          confirmButtonText:'Ok',
+            confirmButtonColor:'#00b96b', 
+          });
+    },
     EmptyCourse(){
        Swal.fire({                  
           title: 'No Course is Available',                   
@@ -97,7 +104,7 @@ export default {
     onlyStudent(){
       Swal.fire({                  
           title: 'You have not been registered',                   
-          text:'Only user registered as student can access this page',          
+          text:'Only user registered as student can access a course',          
           confirmButtonText:'Ok',
             confirmButtonColor:'#00b96b', 
         })

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('forgot_password', 'reset_password')->name('password.reset');
-
+Route::view('reset_password/{token_p}', 'reset_password_form')->name('password.reset');
+Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
+Route::post('password/send_link', [ForgotPasswordController::class, 'save_token']);
 
 Route::get('/', 'App\Http\Controllers\PagesController@index')->name('home');
 Route::get('/explore', 'App\Http\Controllers\ExploreController@index')->name('explore');
@@ -33,8 +36,7 @@ Route::get('/student-survey', function(){
 
 Route::get('/usability', function(){
 	return view('usability');
-})->name('usability
-');
+})->name('usability');
 
 
 Route::get('/feedbacks', function(){
@@ -73,7 +75,7 @@ Route::middleware(['studentauth'])->group(function(){
 	Route::middleware(['is_enrolled'])->group(function(){
 		Route::get('/my-course-review/{id}', 'App\Http\Controllers\StudentCourses@review')->name('my-course-review');
 	});
-	Route::get('/view-Students-dashboard', 'App\Http\Controllers\adminViewStudentsdashboard@index')->name('view-Students-dashboard');
+	Route::get('/view-Students-dashboard', 'App\Http\Controllers\AdminViewStudentsdashboard@index')->name('view-Students-dashboard');
 	Route::get('/viewCourse/{id?}', 'App\Http\Controllers\ViewCourseController@index')->name('viewCourse');
 
 	/*where to go*/
@@ -81,9 +83,9 @@ Route::middleware(['studentauth'])->group(function(){
 	Route::get('/my-Practical', 'App\Http\Controllers\ViewMyPracticalController@index');
 	/*end where to go*/
 
-	Route::get('/course-activities', 'App\Http\Controllers\adminViewCourses@index')->name('course-activities');
-	Route::get('/course-resources', 'App\Http\Controllers\adminCourseResources@index')->name('course-resources');
-	Route::get('/course-experiments', 'App\Http\Controllers\adminCourseExperiments@index')->name('course-experiments');
+	Route::get('/course-activities', 'App\Http\Controllers\AdminViewCourses@index')->name('course-activities');
+	Route::get('/course-resources', 'App\Http\Controllers\AdminCourseResources@index')->name('course-resources');
+	Route::get('/course-experiments', 'App\Http\Controllers\AdminCourseExperiments@index')->name('course-experiments');
 
 });
 
@@ -111,7 +113,7 @@ Route::middleware(['twouserauth'])->group(function(){
 	Route::get('/no-access', function(){return view('unAuthorized.noAccess');});
 	Route::get('/closed-409', function(){return view('unAuthorized.closed-409');});
 	 /*series and parallel*/
-	Route::get('/circuitconnection-sap','App\Http\Controllers\experimentController@circuitconnection1')->name('circuitconnection1');
+	Route::get('/circuitconnection-sap','App\Http\Controllers\ExperimentController@circuitconnection1')->name('circuitconnection1');
 	Route::get('/simpleCircuit', function (){return view('experiment.simpleCircuit');})->name('simpleCircuit');
 	Route::get('/simplependulumEquipment', function (){return view('experiment.simplependulumEquipment');})->name('simplependulumEquipment');
 	Route::get('/vernierEquipment', function (){return view('experiment.vernierEquipment');})->name('vernierEquipment');
@@ -121,13 +123,13 @@ Route::middleware(['twouserauth'])->group(function(){
 
     Route::middleware(['whoareyou'])->group(function(){
 
-		Route::get('/simple-circuit/{id?}','App\Http\Controllers\experimentController@simpleCircuit')->name('simple-circuit');
-		Route::get('/simple-pendulum/{id?}','App\Http\Controllers\experimentController@simplePendulum')->name('simple-pendulum');
-		Route::get('/circuitconnection/{id?}','App\Http\Controllers\experimentController@circuitconnection2')->name('circuitconnection2');
-		Route::get('/vernier-caliper/{id?}','App\Http\Controllers\experimentController@vernierCaliper')->name('vernier-caliper');
-		Route::get('/micrometer/{id?}','App\Http\Controllers\experimentController@micrometerScrewGuage')->name('micrometer');
+		Route::get('/simple-circuit/{id?}','App\Http\Controllers\ExperimentController@simpleCircuit')->name('simple-circuit');
+		Route::get('/simple-pendulum/{id?}','App\Http\Controllers\ExperimentController@simplePendulum')->name('simple-pendulum');
+		Route::get('/circuitconnection/{id?}','App\Http\Controllers\ExperimentController@circuitconnection2')->name('circuitconnection2');
+		Route::get('/vernier-caliper/{id?}','App\Http\Controllers\ExperimentController@vernierCaliper')->name('vernier-caliper');
+		Route::get('/micrometer/{id?}','App\Http\Controllers\ExperimentController@micrometerScrewGuage')->name('micrometer');
 		/*Resistors color code this might change late to Electricity circuit construction */
-		Route::get('/resistor-color-code/{id?}','App\Http\Controllers\experimentController@resistor')->name('resistors');
+		Route::get('/resistor-color-code/{id?}','App\Http\Controllers\ExperimentController@resistor')->name('resistors');
 		/*end resistors color code*/
     });
 

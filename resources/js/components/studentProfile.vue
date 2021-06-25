@@ -354,7 +354,7 @@ export default {
                              confirmButtonText: `Ok`,                                          
                              cancelButtonColor: `red`,        
                              cancelButtonColor:'#dd000f',					      
-					      	 confirmButtonColor:'#00b96b',	                                  
+					      	           confirmButtonColor:'#00b96b',	                                  
                            })
                            .then((result) => {                                        
                                $this.frontendLogout();
@@ -364,7 +364,7 @@ export default {
                              title: 'something went wrong',                                       
                              icon:'error',                                                                 
                              confirmButtonText: `Ok`,                                                                         
-					      	confirmButtonColor:'#00b96b',	
+					      	           confirmButtonColor:'#00b96b',	
                            }).then((result) => {                                         
                              if (result.isConfirmed) {
                                $this.frontendLogout();
@@ -381,9 +381,14 @@ export default {
                       }                             
                    }, function(e) {                                       
                            $this.hide_loader();
-                           let errMsg = 'errro';                                 
+                           let errMsg = 'errro';                                  
                           if (e.response.status == 409) {                                   
-                           errMsg = e.response.data.error;
+                              Swal.fire({
+                               title: 'Email Already Exist',  
+                               confirmButtonColor:'#00b96b',                                       
+                               icon:'warning',                                     
+                               confirmButtonText: `Ok`,                                         
+                             })
                           }                             
                    });		
     	
@@ -460,8 +465,7 @@ export default {
 		this.gender = this.currentUser.gender;
 		this.department = dep.name;
         this.faculty = fac.name;
-		this.matric_number = this.currentUser.matric_number;
-
+		this.matric_number = this.currentUser.matric_number;      
 			
 	},
     props:{

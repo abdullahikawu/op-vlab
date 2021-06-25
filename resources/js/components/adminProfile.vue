@@ -322,26 +322,7 @@ export default {
                            /*.then((result) => {                                        
                                location.reload();                                          
                            })*/
-                      }else if(response.status == 401){
-                           Swal.fire({
-                             title: 'something went wrong',                                       
-                             icon:'error',                                                                 
-                             confirmButtonText: `Ok`,                                                                         
-					      	confirmButtonColor:'#00b96b',	
-                           }).then((result) => {                                         
-                             if (result.isConfirmed) {
-                               $this.frontendLogout();
-                             } else if (result.isDenied) {                                           
-                             }
-                           })
-                      }else if (e.response.status == 404) {                                   
-                            Swal.fire({
-                             title: 'Incorrect Old Password',  
-                             confirmButtonColor:'#00b96b',	                                     
-                             icon:'warning',                                     
-                             confirmButtonText: `Ok`,                                         
-                           })
-                      }                             
+                      }
                    }, function(e) {                                       
                            $this.hide_loader();
                            let errMsg = 'errro';                                 
@@ -356,6 +337,20 @@ export default {
                              confirmButtonText: `Ok`,                                         
                            })
                           }                             
+                          if (e.response.status == 401) {                                   
+                                  Swal.fire({
+                             title: 'something went wrong',                                       
+                             icon:'error',                                                                 
+                             confirmButtonText: `Ok`,                                                                         
+                            confirmButtonColor:'#00b96b',   
+                           }).then((result) => {                                         
+                             if (result.isConfirmed) {
+                               $this.frontendLogout();
+                             } else if (result.isDenied) {                                           
+                             }
+                           })
+
+                          }
                    });		
     	                             
 
@@ -385,31 +380,31 @@ export default {
                            .then((result) => {                                        
                                $this.frontendLogout();
                            })
-                      }else if(response.status == 401){
-                           Swal.fire({
-                             title: 'something went wrong',                                       
-                             icon:'error',                                                                 
-                             confirmButtonText: `Ok`,                                                                         
-					      	confirmButtonColor:'#00b96b',	
-                           }).then((result) => {                                         
-                             if (result.isConfirmed) {
-                               $this.frontendLogout();
-                             } else if (result.isDenied) {                                           
-                             }
-                           })
-                      }else if (e.response.status == 409) {                                   
-                            Swal.fire({
-                             title: 'Email Already Exist',  
-                             confirmButtonColor:'#00b96b',	                                     
-                             icon:'warning',                                     
-                             confirmButtonText: `Ok`,                                         
-                           })
-                      }                             
+                      }                       
                    }, function(e) {                                       
                            $this.hide_loader();
                            let errMsg = 'errro';                                 
+                          if (e.response.status == 401) {                                   
+                             Swal.fire({
+                             title: 'something went wrong',                                       
+                             icon:'error',                                                                 
+                             confirmButtonText: `Ok`,                                                                         
+                                confirmButtonColor:'#00b96b',   
+                               }).then((result) => {                                         
+                                 if (result.isConfirmed) {
+                                   $this.frontendLogout();
+                                 } else if (result.isDenied) {                                           
+                                 }
+                               })
+
+                          }
                           if (e.response.status == 409) {                                   
-                           errMsg = e.response.data.error;
+                             Swal.fire({
+                             title: 'Email Already Exist',  
+                             confirmButtonColor:'#00b96b',                                       
+                             icon:'warning',                                     
+                             confirmButtonText: `Ok`,                                         
+                           });
                           }                             
                    });		
     	
@@ -440,18 +435,6 @@ export default {
                            /*.then((result) => {                                        
                                location.reload();                                          
                            })*/
-                      }else if(response.status == 401){
-                           Swal.fire({
-                             title: 'something went wrong',                                       
-                             icon:'error',                                                                 
-                             confirmButtonText: `Ok`,                                                                         
-					      	confirmButtonColor:'#00b96b',	
-                           }).then((result) => {                                         
-                             if (result.isConfirmed) {
-                               $this.frontendLogout();
-                             } else if (result.isDenied) {                                           
-                             }
-                           })
                       }else if (e.response.status == 400) {                                   
                             Swal.fire({
                              title: 'all field is required',  
@@ -463,8 +446,18 @@ export default {
                    }, function(e) {                                       
                            $this.hide_loader();
                            let errMsg = 'errro';                                 
-                          if (e.response.status == 409) {                                   
-                           errMsg = e.response.data.error;
+                          if (e.response.status == 401) {                                   
+                            Swal.fire({
+                             title: 'something went wrong',                                       
+                             icon:'error',                                                                 
+                             confirmButtonText: `Ok`,                                                                         
+                            confirmButtonColor:'#00b96b',   
+                           }).then((result) => {                                         
+                             if (result.isConfirmed) {
+                               $this.frontendLogout();
+                             } else if (result.isDenied) {                                           
+                             }
+                           })
                           }                             
                    });		
     

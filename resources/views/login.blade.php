@@ -50,15 +50,15 @@
                 <span id="togglePwDisplay" style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark">show</span>
                 </div>
     			<button class="p-dark sys-submit-btn text-white font fs8 fw2 w-100 h2" type="button" id="login-btn">Login</button>
-    			<p class="p-text-dark text-center fs2 fw3"><a href="">Forgot Password?</a></p>
+    			<div class="text-primary text-center fs2 fw3"><a id="forgot_password" href="/forgot_password">Forgot Password?</a></div>
     		</form>
     		<form id="auto-redirect" action="/proccess-login" method="post">
     			{{csrf_field()}}
     			<input type="text" class="p-display-none" name="data" id="response-data">
     		</form>
     		<v-loginscript></v-loginscript>
-
     		</div>
+            <br><br><br><br>
     	</div>
     </div>
 @endsection

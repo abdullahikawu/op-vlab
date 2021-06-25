@@ -29,7 +29,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('password/forgot', [ForgotPasswordController::class, 'forgot']);
-Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
+//Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
 
 Route::group([
     'middleware' => 'api',

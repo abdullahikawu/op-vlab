@@ -464,10 +464,10 @@ class UserController extends Controller
         $email = $request->get('email');                        
         $userId = $request->get('user_id');               
 
-        $user = User::whereNotIn('id', [$userId])->first();
+        $user = User::where('email', $email)->whereNotIn('id', [$userId])->first();
         $user_n = User::where('id',$userId)->first();
 
-        if (!empty($user)) {
+        if (is_null($user)) {            
             if ($user_n->matric_number == '') {   
                 $user = User::find($userId);
                 $user->email = $email;
@@ -479,6 +479,7 @@ class UserController extends Controller
             $user->save();
             return response()->json(['success' => true], 200);                 
         } else {
+            //exists
             return response()->json(['success' => true], 409);
         }   
     }

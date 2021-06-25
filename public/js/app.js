@@ -3012,6 +3012,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    notAvailable: function notAvailable() {
+      Swal.fire({
+        title: 'Not Available',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#00b96b'
+      });
+    },
     EmptyCourse: function EmptyCourse() {
       Swal.fire({
         title: 'No Course is Available',
@@ -3023,7 +3030,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     onlyStudent: function onlyStudent() {
       Swal.fire({
         title: 'You have not been registered',
-        text: 'Only user registered as student can access this page',
+        text: 'Only user registered as student can access a course',
         confirmButtonText: 'Ok',
         confirmButtonColor: '#00b96b'
       });
@@ -5264,24 +5271,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           /*.then((result) => {                                        
               location.reload();                                          
           })*/
-        } else if (response.status == 401) {
-          Swal.fire({
-            title: 'something went wrong',
-            icon: 'error',
-            confirmButtonText: "Ok",
-            confirmButtonColor: '#00b96b'
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              $this.frontendLogout();
-            } else if (result.isDenied) {}
-          });
-        } else if (e.response.status == 404) {
-          Swal.fire({
-            title: 'Incorrect Old Password',
-            confirmButtonColor: '#00b96b',
-            icon: 'warning',
-            confirmButtonText: "Ok"
-          });
         }
       }, function (e) {
         $this.hide_loader();
@@ -5297,6 +5286,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             confirmButtonColor: '#00b96b',
             icon: 'warning',
             confirmButtonText: "Ok"
+          });
+        }
+
+        if (e.response.status == 401) {
+          Swal.fire({
+            title: 'something went wrong',
+            icon: 'error',
+            confirmButtonText: "Ok",
+            confirmButtonColor: '#00b96b'
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              $this.frontendLogout();
+            } else if (result.isDenied) {}
           });
         }
       });
@@ -5331,7 +5333,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }, _defineProperty(_Swal$fire3, "cancelButtonColor", '#dd000f'), _defineProperty(_Swal$fire3, "confirmButtonColor", '#00b96b'), _Swal$fire3)).then(function (result) {
             $this.frontendLogout();
           });
-        } else if (response.status == 401) {
+        }
+      }, function (e) {
+        $this.hide_loader();
+        var errMsg = 'errro';
+
+        if (e.response.status == 401) {
           Swal.fire({
             title: 'something went wrong',
             icon: 'error',
@@ -5342,20 +5349,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               $this.frontendLogout();
             } else if (result.isDenied) {}
           });
-        } else if (e.response.status == 409) {
+        }
+
+        if (e.response.status == 409) {
           Swal.fire({
             title: 'Email Already Exist',
             confirmButtonColor: '#00b96b',
             icon: 'warning',
             confirmButtonText: "Ok"
           });
-        }
-      }, function (e) {
-        $this.hide_loader();
-        var errMsg = 'errro';
-
-        if (e.response.status == 409) {
-          errMsg = e.response.data.error;
         }
       }); //
     },
@@ -5394,17 +5396,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           /*.then((result) => {                                        
               location.reload();                                          
           })*/
-        } else if (response.status == 401) {
-          Swal.fire({
-            title: 'something went wrong',
-            icon: 'error',
-            confirmButtonText: "Ok",
-            confirmButtonColor: '#00b96b'
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              $this.frontendLogout();
-            } else if (result.isDenied) {}
-          });
         } else if (e.response.status == 400) {
           Swal.fire({
             title: 'all field is required',
@@ -5417,8 +5408,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         $this.hide_loader();
         var errMsg = 'errro';
 
-        if (e.response.status == 409) {
-          errMsg = e.response.data.error;
+        if (e.response.status == 401) {
+          Swal.fire({
+            title: 'something went wrong',
+            icon: 'error',
+            confirmButtonText: "Ok",
+            confirmButtonColor: '#00b96b'
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              $this.frontendLogout();
+            } else if (result.isDenied) {}
+          });
         }
       }); //
     }
@@ -14212,7 +14212,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var errMsg = 'errro';
 
         if (e.response.status == 409) {
-          errMsg = e.response.data.error;
+          Swal.fire({
+            title: 'Email Already Exist',
+            confirmButtonColor: '#00b96b',
+            icon: 'warning',
+            confirmButtonText: "Ok"
+          });
         }
       }); //
     },
@@ -17950,9 +17955,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
- //axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? 'http://localhost:8000' : '';
 
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.baseURL) = process.env.API_PATH !== 'production' ? 'https://demo.vlabnigeria.org/' : 'https://demo.vlabnigeria.org/'; //axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? 'https://vlab.ibbu.edu.ng/' : 'https://vlab.ibbu.edu.ng/'; 
+(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.baseURL) = process.env.API_PATH !== 'production' ? 'http://localhost:8000' : ''; //axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? 'https://demo.vlabnigeria.org/' : 'https://demo.vlabnigeria.org/'; 
+//axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? 'https://vlab.ibbu.edu.ng/' : 'https://vlab.ibbu.edu.ng/'; 
 //axios.defaults.baseURL = (process.env.API_PATH !== 'production') ? 'https://vlab.sediminna.org.ng/' : 'https://vlab.sediminna.org.ng/'; 
 
 
@@ -47651,7 +47656,31 @@ var render = function() {
       _vm._v("Explore Available V-lab Courses")
     ]),
     _vm._v(" "),
-    _vm._m(0),
+    _c(
+      "div",
+      {
+        staticClass: "w-100 bg-white px-6",
+        staticStyle: {
+          "box-shadow": "1px 6px 5px rgba(100,100,100,.1)",
+          position: "relative",
+          "z-index": "2"
+        }
+      },
+      [
+        _c("div", { staticClass: "font2 fw4  systab systab--active " }, [
+          _vm._v("Course Category")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "font2 fw4 systab ml-3",
+            on: { click: _vm.notAvailable }
+          },
+          [_vm._v("Most Visited Courses")]
+        )
+      ]
+    ),
     _vm._v(" "),
     _c(
       "div",
@@ -47740,7 +47769,10 @@ var render = function() {
                   )
                 ]
               )
-            : _c(
+            : _vm._e(),
+          _vm._v(" "),
+          cat.courses_count < 1 && _vm.roletype == "student"
+            ? _c(
                 "a",
                 {
                   staticClass: "w-100 cadin",
@@ -47818,9 +47850,10 @@ var render = function() {
                     ]
                   )
                 ]
-              ),
+              )
+            : _vm._e(),
           _vm._v(" "),
-          cat.courses_count > 0 && _vm.roletype != "student"
+          _vm.roletype != "student"
             ? _c(
                 "a",
                 {
@@ -47839,6 +47872,7 @@ var render = function() {
                     [
                       _c("div", { staticStyle: { height: "60%" } }, [
                         _c("img", {
+                          staticClass: "rt2",
                           attrs: {
                             src: cat.picture,
                             width: "100%;",
@@ -47907,33 +47941,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "w-100 bg-white px-6",
-        staticStyle: {
-          "box-shadow": "1px 6px 5px rgba(100,100,100,.1)",
-          position: "relative",
-          "z-index": "2"
-        }
-      },
-      [
-        _c("div", { staticClass: "font2 fw4  systab systab--active " }, [
-          _vm._v("Course Category")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "font2 fw4 systab ml-3" }, [
-          _vm._v("Most Visited Courses")
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
