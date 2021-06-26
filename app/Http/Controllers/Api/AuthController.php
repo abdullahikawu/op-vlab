@@ -74,7 +74,7 @@ class AuthController extends Controller
         if($user == $this->allFieldRequiredError){
             return response()->json(['error' => $this->allFieldRequiredError], 400);
         }
-
+        return dd($user);
         if(!empty($user)){
             $usingDefaultPassword = $user->using_default_password;
 
