@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.baseURL = process.env.APP_URL;
+axios.defaults.baseURL = $('meta[name="base-api-url"]').attr('content');
 import loader from '../components/skeletalLoaderA.vue'; 
 export default {
   install(Vue, options) {
