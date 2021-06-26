@@ -14,6 +14,6 @@
  <link href="{{ asset('js/sweetalert2.css')}}" rel="stylesheet" media="all">
  <link href="{{ asset('css/animate.min.css')}}" rel="stylesheet" media="all">
  <link href="{{ asset('css/skeletal_loader/index.min.css')}}" rel="stylesheet" media="all">
-   <link href="{{ asset('venobox/venobox.css')}}" rel="stylesheet">
+ <link href="{{ asset('venobox/venobox.css')}}" rel="stylesheet">
  <link href="{{ asset('css/style.css')}}" rel="stylesheet" media="all">
-   <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">
+ <link type="text/css" rel="stylesheet" href="{{ mix('css/app.css') }}">

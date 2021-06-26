@@ -763,8 +763,9 @@ export default {
   		}
       
       },
-      mounted: function(){
-      	 
+      mounted: function(){      	
+      	
+
       	let $vm = this;
       	this.$nextTick(function(){
 	      	
