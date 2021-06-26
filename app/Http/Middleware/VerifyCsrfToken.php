@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         '/get_user_department',
         '/api/password/reset',
         'password/reset',
+        '/proccess-login'
     ];
 }
