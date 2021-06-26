@@ -7903,9 +7903,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpeg|.png|.jpg|.gif)$/;
 
             if (regex.test(pic.value.toLowerCase())) {} else {
-              Swal.showValidationMessage('Error: please select a valid file (.csv file)');
+              Swal.showValidationMessage('Error: please select a valid file (.jpg file)');
             }
           } else {
+            Swal.showValidationMessage('Error: please select a valid file (.jpg file)');
             picture = '/no-pic';
           }
 
@@ -18070,7 +18071,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return html;
         },
         VueSweetAlert2: function VueSweetAlert2(component, propsData) {
-          swal.fire({
+          Swal.fire({
             html: '<div id="VueSweetAlert2" class="text-left"></div>',
             showConfirmButton: false,
             width: '97%',
@@ -18082,7 +18083,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               instance.$mount();
               document.getElementById('VueSweetAlert2').appendChild(instance.$el);
             }
-          });
+          }).then(function (result) {});
         },
         createFormData: function createFormData(data) {
           var formData = new FormData();

@@ -96,9 +96,11 @@
 				      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpeg|.png|.jpg|.gif)$/;
 					      if (regex.test(pic.value.toLowerCase())) {					     
 						  } else {
-						           Swal.showValidationMessage('Error: please select a valid file (.csv file)');
+						        Swal.showValidationMessage('Error: please select a valid file (.jpg file)');
 						  }
 				      }else{
+						Swal.showValidationMessage('Error: please select a valid file (.jpg file)');
+
 				      	picture = '/no-pic';
 				      }
 

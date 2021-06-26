@@ -105,7 +105,7 @@ export default {
 		},
 		VueSweetAlert2:function(component,propsData)
 		{
-		    swal.fire({
+		    Swal.fire({
 		        html: '<div id="VueSweetAlert2" class="text-left"></div>',
 		        showConfirmButton: false,
 		        width: '97%',		        
@@ -117,6 +117,8 @@ export default {
 		            instance.$mount();
 		            document.getElementById('VueSweetAlert2').appendChild(instance.$el);
 		        }
+		    }).then((result) => {
+
 		    });
 		},
       	createFormData: function(data){      		
