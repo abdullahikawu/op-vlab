@@ -747,27 +747,24 @@
 					   	    	errMsg = e.response.data.error;
 					   	    }
 			              vt.error(errMsg,{
-							  title: undefined,
+							  title: 'session expired',
 							  position: "bottom-right",
 							  duration: 10000,
 							  closable: true,
-							  focusable: true,
-							  callback: undefined
+							  focusable: true,							  
 							});			            		   
 
 			            	//console.log($vm.axiosHeader)
 			            });
 
-			        }catch(err){
-			        	console.log(err)
+			        }catch(err){			        	
 				   		$('#system-loader').css('display','none');				   	    
 			            vt.error($vm.errorNetworkMessage,{
-							  title: undefined,
+							  title: 'session expired',
 							  position: "bottom-right",
 							  duration: 10000,
 							  closable: true,
-							  focusable: true,
-							  callback: undefined
+							  focusable: true,							  
 							});
 			          //console.log(err)//show network error notification
 			        }

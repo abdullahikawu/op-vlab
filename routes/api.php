@@ -27,10 +27,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::view('/startup',function(){
+    return view('startup');
+})->name('startup');
 Route::post('password/forgot', [ForgotPasswordController::class, 'forgot']);
 //Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
 
+Route::get('analytic', 'App\Http\Controllers\Api\StatsController@dataAnalytics');
 Route::group([
     'middleware' => 'api',
 ], function ($router) {

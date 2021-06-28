@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
             //\App\Http\Middleware\Installation::class,            
 
         ],
@@ -55,6 +56,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'startup' => \App\Http\Middleware\Startup::class,
         'is_enrolled' => \App\Http\Middleware\EnrollmentAccess::class,   
         'is_loggedin' => \App\Http\Middleware\NextIfLoggedIn::class,   
         'whoareyou' => \App\Http\Middleware\WhoAreYou::class,        

@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ForgotPasswordController;
 |
 */
 
+
 Route::view('forgot_password', 'reset_password')->name('password.reset');
 Route::view('reset_password/{token_p}', 'reset_password_form')->name('password.reset');
 Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
@@ -37,6 +38,14 @@ Route::get('/student-survey', function(){
 Route::get('/usability', function(){
 	return view('usability');
 })->name('usability');
+
+Route::get('/startup/{push?}',function($push = 'x'){
+	return view('startup')->with('push',$push);
+})->name('startup');
+Route::post('/startup-completed',function(){
+	unlink(public_path('installer/nut.txt'));
+    return redirect('/');
+});
 
 
 Route::get('/feedbacks', function(){
