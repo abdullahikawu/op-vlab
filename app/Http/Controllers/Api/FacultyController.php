@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Faculty;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -164,7 +165,31 @@ class FacultyController extends Controller
 
     public function getAllFaculties()
     {
-        $faculties =  Faculty::with('department')->get();
+        
+        $faculties1 =  Faculty::where('status','Active')->get();
+        $departments =  Department::all();
+        $faculties = array();
+        $arr_dep = array();
+        foreach ($faculties1 as $key1 => $value1) {        
+            $arr_dep[$value1['id']] = array();                             
+        }
+
+        foreach ($departments as $key => $value) {
+           array_push($arr_dep[$value['faculty_id']], $value); 
+        }
+        
+        foreach ($arr_dep as $key => $value) {
+           array_push($faculties, [
+                'department' => $value,
+                'code'=> $faculties1->firstWhere('id',$key)->code,
+                'description'=> $faculties1->firstWhere('id',$key)->description,
+                'id'=> $faculties1->firstWhere('id',$key)->id,
+                'name'=> $faculties1->firstWhere('id',$key)->name,
+                'picture'=> $faculties1->firstWhere('id',$key)->picture,
+                'school_id'=> $faculties1->firstWhere('id',$key)->school_id,
+                'status'=> $faculties1->firstWhere('id',$key)->status                
+           ]); 
+        }           
         return response()->json($faculties, 200);
     }
 

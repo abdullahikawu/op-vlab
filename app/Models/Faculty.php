@@ -22,10 +22,10 @@ class Faculty extends Model
         'faculty_admin'=>'9260655c-6933-45a0-8d01-6de3d6a52657',
     ];
 
-    public function newQuery($excludeDeleted = true) {
+    /*public function newQuery($excludeDeleted = true) {
         return parent::newQuery($excludeDeleted)
-            ->where('status', '=', 'Active');
-    }
+        ->where('status', '=', 'Active');
+    }*/
 
     public function courses()
     {
@@ -34,7 +34,7 @@ class Faculty extends Model
 
     public function department()
     {
-        return $this->hasMany(Department::class);
+        return $this->hasMany(Department::class, 'faculty_id');
     }
 
     public function students()

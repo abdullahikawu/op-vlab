@@ -129,7 +129,7 @@ class DepartmentController extends Controller
 
     public function getAllDepartments()
     {
-        $departments =  Department::all();
+        $departments =  Department::where(['status'=>'Active'])->get();
         return response()->json($departments, 200);
     }
 
@@ -144,7 +144,7 @@ class DepartmentController extends Controller
         }
 
         $departmentId = $request->get('department_id');
-        $department = department::where(['id' => $departmentId])->first();
+        $department = department::where(['id' => $departmentId,'status'=>'Active'])->first();
 
         if (!empty($department)) {
             return response()->json($department, 200);

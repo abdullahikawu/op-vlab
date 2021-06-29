@@ -268,8 +268,8 @@ class UserController extends Controller
 
         foreach ($users as $user) {
 
-            $checkDuplicateMatricNumber = User::where(['matric_number' => $user['matric_number']])->first();
-            $checkDuplicateEmail = User::where(['email' => $user['email']])->first();
+            $checkDuplicateMatricNumber = User::where(['matric_number' => $user['matric_number'], 'status'=>'Active'])->first();
+            $checkDuplicateEmail = User::where(['email' => $user['email'],'status'=>'Active'])->first();
 
             if ($user['matric_number'] != '') {
                 if ($checkDuplicateMatricNumber == null) {                        
