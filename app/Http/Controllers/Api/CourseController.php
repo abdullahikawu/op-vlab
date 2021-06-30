@@ -95,8 +95,8 @@ class CourseController extends Controller
 
                 //$file_size = round($file->getSize() / 1024);
                 $file_ex = explode('.', $file->getClientOriginalName());                    
-                $ext = $file_ex[sizeof($file_ex)-1];                            
-                if (!in_array(strtolower($ext) , array('mp4','3gp','jpg','jpg', 'gif', 'png','pdf', 'doc', 'docx','xlsx')))
+                $ext = $file_ex[sizeof($file_ex)-1];                                  
+                if (!in_array(strtolower($ext) , array('mp4','3gp','jpg','jpeg', 'gif', 'png','pdf', 'doc', 'docx','xlsx')))
                 {
                     return response()->json(['error' => 'invalid resources'], 401);
                 }else{
