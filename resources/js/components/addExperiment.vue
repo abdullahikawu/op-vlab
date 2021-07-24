@@ -232,6 +232,9 @@
 	    	 	{name:'Micrometer Screw Guage',value:'micrometer'},
 	    	 	{name:'Simple Pendulum',value:'simple-pendulum'},
 	    	 	{name:'Resistor Color Code',value:'resistor-color-code'},
+	    	 	{name:'Simple Circuit Basic',value:'simple-circuit'},
+	    	 	{name:'Balance Equilibrium of Forces',value:'balance-equilibrium'},
+	    	 	
 	    	 ],
 	    	 dragrelease:false,
 	    	 quill:null,

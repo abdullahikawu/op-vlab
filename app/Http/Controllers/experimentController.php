@@ -32,4 +32,8 @@ class ExperimentController extends Controller
     public function resistor(){
         return view('experiment/resistor_color_code');
     }
+    public function balanceEquilibrium(){
+        return view('experiment/balance_equilibrium');
+    }
+    
 }
