@@ -71,7 +71,7 @@ function swinger(){
   }
 }
 function evaluate(){
-    print('pivot:'+MCR(wp2));
+   // print('pivot:'+MCR(wp2));
   f1 = wps1 ;//* 9.8;
   f2 = wps2 ;//* 9.8;
   f3 = wps3 ;//* 9.8;
@@ -85,8 +85,8 @@ function evaluate(){
    swinger();
   }
   
-  print(solve1);
-    print(solve2);
+ /* print(solve1);
+    print(solve2);*/
   if(wpm1 > 50){  
    
     if(solve1 > solve2){

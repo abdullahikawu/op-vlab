@@ -35,7 +35,7 @@
           	 </div>
           	 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  mt-4" id="closeForm">
           	 	<label>Close</label>
-              <input type="text" name="title" id="closeD" v-model="close" @mouseout="alert(2)" date-format='dd-mm-yyyy' autocomplete="off" class="form-control w-100 vI datepicker2">
+              <input type="text" name="title" id="closeD" v-model="close" date-format='dd-mm-yyyy' autocomplete="off" class="form-control w-100 vI datepicker2">
           	 	<!-- <input type="text" name="title" id="closeD" :value="close" date-format='dd-mm-yyyy' autocomplete="off" class="form-control w-100 vI datepicker2"> -->
           	 </div>   
             
@@ -308,7 +308,7 @@
                            });
                   }
                },
-               loadExperiment:function(e){    
+        loadExperiment:function(e){    
                     let course_id;
                     if (this.update){                        
                     }else{
@@ -444,7 +444,10 @@
                     this.ucourse  = this.faculty_courses.filter(function(item){
                          return item.code === $this.alldata.course.code;
                     })
-                    this.experiments = this.ucourse[0].experiments;
+                    if(this.ucourse.length >0){
+                      this.experiments = this.ucourse[0].experiments;
+
+                    }
 
                     
                     let experimentids = [];                    
@@ -458,10 +461,12 @@
                     $this.selectedExerpiment = experimentids;// from alldata.experiments
                     let selectedexp = [];
                     setTimeout(function() {
+                      if($this.ucourse.length >0){
                          $('#courseD').val($this.ucourse[0].id)
                          $this.loadExperiment();                 
                          $('#experimentD').selectpicker('val',$this.selectedExerpiment);
                          $('#experimentD').selectpicker('refresh');
+                       }
                     }, 100);
                }
                   
@@ -511,6 +516,24 @@
           mounted(){
             var $this = this;
                this.$nextTick(function() {
+
+                var store_open, store_close = "";
+                setInterval(function(){
+                  
+                  if($('#closeD').val()== ''){
+                    $('#closeD').val(store_close);                    
+                  }else{
+                    store_close = $('#closeD').val();
+                  }
+
+                  if($('#openD').val()== ''){
+                    $('#openD').val(store_open);                   
+                  }else{
+                    store_open =$('#openD').val();
+                  }
+                },1000)
+
+
                 $('.venobox').venobox();
                   $(document).ready(function(){
                     if ($this.update){

@@ -15067,7 +15067,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.ucourse = this.faculty_courses.filter(function (item) {
         return item.code === $this.alldata.course.code;
       });
-      this.experiments = this.ucourse[0].experiments;
+
+      if (this.ucourse.length > 0) {
+        this.experiments = this.ucourse[0].experiments;
+      }
+
       var experimentids = [];
       var exp;
 
@@ -15082,10 +15086,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       var selectedexp = [];
       setTimeout(function () {
-        $('#courseD').val($this.ucourse[0].id);
-        $this.loadExperiment();
-        $('#experimentD').selectpicker('val', $this.selectedExerpiment);
-        $('#experimentD').selectpicker('refresh');
+        if ($this.ucourse.length > 0) {
+          $('#courseD').val($this.ucourse[0].id);
+          $this.loadExperiment();
+          $('#experimentD').selectpicker('val', $this.selectedExerpiment);
+          $('#experimentD').selectpicker('refresh');
+        }
       }, 100);
     }
   },
@@ -15136,6 +15142,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   mounted: function mounted() {
     var $this = this;
     this.$nextTick(function () {
+      var store_open,
+          store_close = "";
+      setInterval(function () {
+        if ($('#closeD').val() == '') {
+          $('#closeD').val(store_close);
+        } else {
+          store_close = $('#closeD').val();
+        }
+
+        if ($('#openD').val() == '') {
+          $('#openD').val(store_open);
+        } else {
+          store_open = $('#openD').val();
+        }
+      }, 1000);
       $('.venobox').venobox();
       $(document).ready(function () {
         if ($this.update) {
@@ -57809,9 +57830,6 @@ var render = function() {
             },
             domProps: { value: _vm.close },
             on: {
-              mouseout: function($event) {
-                return _vm.alert(2)
-              },
               input: function($event) {
                 if ($event.target.composing) {
                   return

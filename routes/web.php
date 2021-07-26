@@ -117,8 +117,7 @@ Route::middleware(['instructorauth'])->group(function(){
 	
 });
 
-Route::get('/balance-equilibrium/{id?}','App\Http\Controllers\ExperimentController@balanceEquilibrium')->name('balance-equilibrium');				
-		Route::get('/balanceEquilibrium', function (){return view('experiment.balanceEquilibrium');})->name('balanceEquilibrium');
+
 
 Route::middleware(['twouserauth'])->group(function(){
 	Route::get('/unauthorized-e', function(){return view('unAuthorized.NotEnrolled');});
@@ -130,6 +129,7 @@ Route::middleware(['twouserauth'])->group(function(){
 	Route::get('/simplependulumEquipment', function (){return view('experiment.simplependulumEquipment');})->name('simplependulumEquipment');
 	Route::get('/vernierEquipment', function (){return view('experiment.vernierEquipment');})->name('vernierEquipment');
 	Route::get('/micrometerEquipment', function (){return view('experiment.micrometerEquipment');})->name('micrometerEquipment');
+	Route::get('/balanceEquilibrium', function (){return view('experiment.balanceEquilibrium');})->name('balanceEquilibrium');
 	Route::get('/resistorExperiment', function (){return view('experiment.resistorExperiment');})->name('resistorExperiment');
 
 
@@ -137,6 +137,7 @@ Route::middleware(['twouserauth'])->group(function(){
 
 		Route::get('/simple-circuit/{id?}','App\Http\Controllers\ExperimentController@simpleCircuit')->name('simple-circuit');
 		Route::get('/simple-pendulum/{id?}','App\Http\Controllers\ExperimentController@simplePendulum')->name('simple-pendulum');
+		Route::get('/balance-equilibrium/{id?}','App\Http\Controllers\ExperimentController@balanceEquilibrium')->name('balance-equilibrium');				
 
 		Route::get('/circuitconnection/{id?}','App\Http\Controllers\ExperimentController@circuitconnection2')->name('circuitconnection2');
 		Route::get('/vernier-caliper/{id?}','App\Http\Controllers\ExperimentController@vernierCaliper')->name('vernier-caliper');
