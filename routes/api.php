@@ -128,7 +128,7 @@ Route::group([
             Route::post('update', [SessionController::class, 'update']);
             Route::post('set_session', [SessionController::class, 'setSession']);
             Route::post('delete', [SessionController::class, 'delete']);
-            Route::post('set_session', [SessionController::class, 'setCurrentSession']);
+            //Route::post('set_session', [SessionController::class, 'setCurrentSession']);
             Route::get('all_session', [SessionController::class, 'getAllSession']);
         });
 
