@@ -22,7 +22,7 @@ class CreateCoursesTable extends Migration
             $table->string('title');
             $table->string('code');
             $table->string('video_url')->nullable();
-            $table->string('description');
+            $table->string('description',3000);
             $table->enum('status', ['Active', 'Inactive']);
             $table->rememberToken();
             $table->timestamps();

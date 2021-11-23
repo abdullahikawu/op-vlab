@@ -18,12 +18,12 @@ class CreateExperimentsTable extends Migration
             $table->string('id')->primary();
             $table->string('name');
 //            $table->integer('experiment_number');
-            $table->string('experiment_intro');
-            $table->string('experiment_goal');
+            $table->text('experiment_intro');
+            $table->string('experiment_goal',1000);
             $table->string('experiment_diagram');
-            $table->string('apparatus');
+            $table->string('apparatus',1000);
             $table->string('experiment_resource',3000);
-            $table->string('procedures');
+            $table->string('procedures', 2000);
             $table->string('exercise', 3000);
             $table->string('required',3000);
             $table->string('video_url');

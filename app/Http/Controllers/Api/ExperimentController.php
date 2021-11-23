@@ -74,7 +74,7 @@ class ExperimentController extends Controller
             $file_ex = $file->getClientOriginalExtension();
             $file_mime = $file->getMimeType();
 
-            if (!in_array($file_ex, array('jpg', 'gif', 'png'))) return response()->json(['error' => 'invalid experiments diagram'], 401);
+            if (!in_array(strtolower($file_ex), array('jpg', 'gif', 'png'))) return response()->json(['error' => 'invalid experiments diagram'.strtolower($file_ex)], 401);
                  $newname = $page.'.'.$file_ex;
                  $path = 'images/resources/';
                  $experiment_diagram_url=  $path.$newname;

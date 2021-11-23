@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "font-awesome": "^4.7.0",
+        "intro.js": "^4.3.0",
         "vue-axios": "^3.2.4",
         "vue-router": "^3.4.9",
         "vuex": "^3.6.2"

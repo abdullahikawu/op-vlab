@@ -33,6 +33,8 @@ class CreateUsersTable extends Migration
             $table->string('department_id',36);
             $table->string('session_id',36);
             $table->text('token')->nullable();
+            $table->text('pages_visited')->nullable();  //pages ever visited          
+            $table->enum('user_status', ['0', '1'])->default('0');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken()->nullable();

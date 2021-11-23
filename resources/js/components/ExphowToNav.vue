@@ -9,12 +9,12 @@
 			<div v-bind:class="{btnVActive:resour}"  class="btnV"  @click="toggller('resources')">Resources</div>
 		</div>
 		<div style="background: #40356E; padding-right: 9px;" v-if="!guide_loading">
-				<div class="holder">
+				<div class="holder" style="height:78.5vh">
 					<div id="procedure" class="m-0 p-0">	
-						<div style="padding: 10px 20px; font-family: 'Roboto';">
-							<p class="p-0 m-0" style="font-weight: 300;font-size: 0.95;">Title</p>
-					    	<p class="mt-2" style=" font-weight: 500;color:#fff;font-size: 1.3em;">{{experiment.experiment_intro}}</p>
-							
+						<div style="font-family: 'Roboto';">
+							<p class="pl-3 pt-2 m-0" style="font-weight: 300;font-size: 0.95;">Title</p>
+							<h3 class="accordion accordBtnV" >Introduction <span class="fa fa-chevron-right fontType-ico" style=""></span></h3>
+					    	<div class="panel accordBodyV mt-2 bg-white text-dark fw5 px-2" style="overflow:auto;text-align:justify;height: 77.8vh;" v-html="experiment.experiment_intro"></div>							
 						</div>
 						<!-- Aim -->
 						<h3 class="accordion accordBtnV" >Aim<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>

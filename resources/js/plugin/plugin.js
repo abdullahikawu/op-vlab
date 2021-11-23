@@ -9,7 +9,7 @@ export default {
 		},
       data(){
       	return {
-      		userLoggedInOld: "",
+      		userLoggedInOld: "", 
       		axiosHeader:"",
       		axiosHeaderWithFiles:"",
       		errorNetworkMessage:"network error",
@@ -753,6 +753,9 @@ export default {
 		if(localStorage.hasOwnProperty('LoggedUser')){     	      			      
   			this.userLoggedInOld = JSON.parse(localStorage.getItem('LoggedUser')).access_token
   			this.currentUser = JSON.parse(localStorage.getItem('LoggedUser')).user;	 
+			  if(this.currentUser.salute == 'null'){
+				  this.currentUser.salute = ""
+			  }			  
   			let AuthAxios = 'Bearer '+this.userLoggedInOld;
 			this.axiosHeader ={
 					'Content-Type':'application/json',
@@ -770,7 +773,7 @@ export default {
 
       	let $vm = this;
       	this.$nextTick(function(){
-	      	
+			
 	      	$(document).ready(function(){
 	      		
       			/*minimize vido player*/

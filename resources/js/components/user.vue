@@ -1,5 +1,5 @@
 <template>	
-		<div class="w-100 mt-2 py-3 position-relative">
+		<div class="w-100 mt-2 py-3 position-relative" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">			
           <a v-if="!loaderState"  href="#" @click="createuser" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Create user <span class="text-white fa fa-chevron-down"></span></a>
           <a v-if="!loaderState" href="#" @click="uploadstudent" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Upload Student <span class="text-white fa fa-cloud-upload"></span></a>
           <a href="templateFiles/userupload_template.csv" target="_self" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs01 font1 bg-dark btn-lg pull-right" style="border-radius: 3px;">Download Template<span class="text-white fa fa-cloud-download"></span></a>
@@ -392,7 +392,7 @@
 			this.sessions        = await this.axiosGet('api/session/all_session');			
 			this.facultiesHTML   = this.selectHtmlGen(this.faculties,'code','faculty_id' )							
 			this.departmentsHTML = this.selectHtmlGen(this.departments,'code','department_id' )							
-
+			
 			this.loaderState = false;
 			this.tableLoaded = false;
 			    /*initialize datatable */
@@ -401,6 +401,7 @@
 	         	$this.dTable = $('#usertable').DataTable({
 			    	pageLength : 5,
 			    });
+				
 	         }, 50);
 			
 		},
@@ -414,7 +415,11 @@
           },
 		mounted(){			
 			
-			this.$nextTick(function(){ 
+			this.$nextTick(function(){ 		
+				setTimeout(() => {
+					
+				//	introJs().start();
+				}, 4000);		
 				function PrintArea(elem, title,length=400)
 				{
 				    var mywindow = window.open('', 'PRINT', 'height='+length+',width=600');

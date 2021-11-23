@@ -81,14 +81,14 @@
           </div>
           <br>
           <div class="row">            
-              <div class="col-lg-2 col-md-7 col-sm-6 col-xs-12 mt-4" style="visibility: hidden;">hidden
+              <div class="col-lg-9 col-md-7 col-sm-6 col-xs-12 mt-4" style="visibility: hidden;">hidden
               </div>
-                <div class="col-lg-2 col-md-5 col-sm-6 col-xs-12  mt-4" style="position: relative;">
-                    <button @click="createTask" class="button bg-success text-white w-75 px-3 py-3" style="position: absolute;bottom: 0;">
+                <div class="col-lg-3 col-md-5 col-sm-6 col-xs-12  mt-4" style="position: relative;display:grid;grid-template-columns:auto auto auto;">
+                    <button @click="createTask" class="button bg-success text-white  px-3 py-3 mx-1" style="">
                          <span v-if="!update">Create</span>
                          <span v-if="update">Update</span>
                     </button>                    
-                    <button onclick="Swal.close()"  class="button bg-danger text-white w-75 px-3 py-3" style="position: absolute;bottom: 0;left: 160px">Cancel</button>
+                    <button onclick="Swal.close()"  class="button bg-danger text-white px-3 py-3 mx-1" style="">Cancel</button>
                 </div>
           </div>
 	</div>

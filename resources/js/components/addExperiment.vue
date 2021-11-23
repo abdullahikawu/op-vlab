@@ -72,8 +72,11 @@
 	            			</div>	      
 	            			<div class="col-lg-12 col-md-12 m-0 mt-3">
 	            				<div class="px-1">	            					
-		            				<p class="fs001 my-1">Introduction</p>		            				
-		            				<input type="text" @keyup="normalize" placeholder="" class="form-control w-100 " id="experiment_intro">
+		            				<p class="fs001 my-1">Introduction</p>		 
+									<div @keyup="normalize" class="form-control w-100 required-container p-0"  id="experiment_intro-conver" style="height: 250px;">
+										<textarea id="experiment_intro" style="height: 250px;"></textarea>	            		
+									</div>           				
+		            				<!-- <input type="text" @keyup="normalize" placeholder="" class="form-control w-100 " id=""> -->
 	            				</div>
 	            			</div>
 	            			<div class="col-lg-12 col-md-12 m-0 mt-3">
@@ -89,16 +92,7 @@
 	            			<div class="col-lg-12 col-md-12 mt-3">
 	            				<p class="fs001 my-1">Required*</p>            				
 	            				<div @keyup="normalize" class="form-control w-100 required-container p-0"  id="required-cover" style="height: 250px;">
-	            				<textarea id="editor-1" style="height: 250px;"></textarea>
-	            				<!-- <div class="adjoined-bottom m-0 p-0">
-									<div class="grid-container m-0 p-0">
-										<div class="grid-width-100 m-0 p-0">
-											<div >
-												
-											</div>
-										</div>
-									</div>
-								</div> -->
+	            				<textarea id="editor-1" style="height: 250px;"></textarea>	            		
 	            				</div>
 	            			</div>
 	            			<div class="col-lg-12 col-md-12 mt-3">
@@ -224,6 +218,7 @@
 	    	 selectedInstructor:[],
 	    	 selectedInstructorName:[],
 	    	 required:'',
+			 experimentIntro:'',
 	    	 exercise:'',
 	    	 percentage:0,
 	    	 ediagram:"",
@@ -509,20 +504,23 @@
 				if (this.sectionState === 1){	
 					this.validateI('edetail');			
 					this.required = CKEDITOR.instances['editor-1'].getData();		
-					this.exercise = CKEDITOR.instances['editor'].getData();		
+					this.exercise = CKEDITOR.instances['editor'].getData();	
+					this.experimentIntro = CKEDITOR.instances['experiment_intro'].getData();					
 					this.validateR(this.required,'required-cover')
+
 					if(this.validateState === true){
 													
 						this.alldata[0] = {
 							title: $('#etitle').val(),
-							experiment_intro:$('#experiment_intro').val(),
+							experiment_intro:this.experimentIntro,
 							video_url:$('#elink').val(),
 							experiment_diagram:$('#fileI').prop('files')[0],
 							aim:$('#aim').val(),						
 							apparatus:$('#apparatus').val(),							
 							resources:$('#resources').val(),
-							required:$('#required').val(),
+							required:this.required,
 							procedure:$('#procedure').val(),
+							exercise: this.exercise
 						};	
 
 						this.sectionState = 2;						
@@ -555,11 +553,11 @@
 				   	formData.append('name',this.alldata[0].title.replace(/<script>/g,''));
 				   	formData.append('experiment_intro',this.alldata[0].experiment_intro.replace(/<script>/g,''));
 				   	formData.append('video_url',this.alldata[0].video_url.replace(/<script>/g,''));
-				   	formData.append('required',this.required.replace(/<script>/g,''));
+				   	formData.append('required',this.alldata[0].required.replace(/<script>/g,''));
 				   	formData.append('experiment_goal',this.alldata[0].aim.replace(/<script>/g,''));
 				   	formData.append('experiment_diagram',this.ediagram);
 				   	formData.append('experiment_resource', this.alldata[0].resources.replace(/<script>/g,''));
-				   	formData.append('exercise',this.exercise.replace(/<script>/g,''));					   	
+				   	formData.append('exercise',this.alldata[0].exercise.replace(/<script>/g,''));					   	
 				   	formData.append('apparatus',this.alldata[0].apparatus.replace(/<script>/g,''));
 				   	formData.append('procedures',this.alldata[0].procedure.replace(/<script>/g,''));				   	
 				   	formData.append('page',this.alldata[1].experiment_url);				   	
@@ -629,6 +627,7 @@
 		            });
 
 		        }catch(err){
+					console.log(err)
 			   		$('#system-loader').css('display','none');
 
 		           vt.error($vm.errorNetworkMessage,{
@@ -672,23 +671,31 @@
 					$this.required = $this.alldata1.required;
 					$this.exercise =$this.alldata1.exercise
 					$this.experiment_id_to_update = $this.alldata1.id;
+					$this.experimentIntro = $this.alldata1.experiment_intro;
+						CKEDITOR.on("instanceReady", function(event)
+					   {						
+
+						   setTimeout(function(){
+								CKEDITOR.instances['experiment_intro'].setData($this.experimentIntro);															
+								CKEDITOR.instances['editor-1'].setData($this.required);	
+								CKEDITOR.instances['editor'].setData($this.exercise);
+							}, 1000)
+					   });
+					
 					setTimeout(function() {
-						$('#etitle').val($this.alldata1.name);
-						$('#experiment_intro').val($this.alldata1.experiment_intro);
+						$('#etitle').val($this.alldata1.name);						
 						$('#elink').val($this.alldata1.video_url);
 						$('#aim').val($this.alldata1.experiment_goal);
-		 				CKEDITOR.instances['editor-1'].setData($this.required);		
-						CKEDITOR.instances['editor'].setData($this.exercise);
 						$this.selectedExperiment = $this.alldata1.page;					
 						$this.selectedExperimentName = $this.alldata1.name;						
 						$this.reiterateSelectedExp();
 
 						$this.web_player();
 
-					},3000);			
-					$('#apparatus').val($this.alldata1.apparatus);					
-					$('#resources').val($this.alldata1.resources);
-					$('#procedure').val($this.alldata1.procedures);
+						$('#apparatus').val($this.alldata1.apparatus);					
+						$('#resources').val($this.alldata1.resources);
+						$('#procedure').val($this.alldata1.procedures);
+					},4000);			
 				});		
 			}
 		},
@@ -698,7 +705,8 @@
 			 this.$nextTick(function () {					 		
 	 			this.initCKEDITOR('editor');
 	 			this.initCKEDITOR('editor-1');			 		 			 
-
+	 			this.initCKEDITOR('experiment_intro');			 		 			 
+				
 		        $(document).on('click', '.rmexp', function() {					
 					$vm.selectedExperiment = '';
 					$vm.selectedExperimentName = '';

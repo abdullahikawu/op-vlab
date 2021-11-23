@@ -6,7 +6,7 @@
         <div class="font2 fw4 systab ml-3" @click="notAvailable">Most Visited Courses</div>
         </div>
         <div class="row hm300 w-100 px-6 py-5 m-0" style="background: #f0f0f0;">          
-          <div class="col-lg-4 col-md-6 col-lg-4 mt-5" v-for="cat in courseCate.faculties" >
+          <div class="col-lg-4 col-md-6 col-lg-4 mt-5" v-for="(cat,ix) in courseCate.faculties" :key="ix" >
             <a style="text-decoration: none;" :href="link+cat.id" class="w-100 cadin" v-if="cat.courses_count >0 && roletype=='student'">
               <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
                 <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%"></div>
@@ -77,12 +77,13 @@ export default {
     return {
       link:'/viewCourse/',
       roletype:'guest',
-      courseCate: [
+      courseCate: {
+        faculties:[
         {'id':1,'name': 'Applied Science','totalCourse':'7','courses_students_count':500},
         {'id':2,'name': 'Science & Engineering ','totalCourse':'12','courses_students_count':1000},
         {'id':3,'name': 'Biological Science','totalCourse':'3','courses_students_count':10},
-        {'id':4,'name': 'Others','totalCourse':'4','courses_students_count':100},
-      ]
+        {'id':4,'name': 'Others','totalCourse':'4','courses_students_count':100},]
+        }      
     }
   },
   methods:{
@@ -115,13 +116,14 @@ export default {
     if (this.currentUser.role_id == this.roles.student) {
       this.roletype = 'student';
     }
+
 /*    
     if (this.currentUser.role_id == this.instructorRole) {      
         this.link = '/view-course/'
     }
       */
         this.courseCate  = await this.axiosGet('api/faculty_course_student');
-        //console.log(this.createdFaculty)
+        
         this.tableLoaded = true;
         
         /*initialize datatable */            
