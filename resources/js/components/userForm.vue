@@ -17,8 +17,8 @@
 					<div class="col-lg-6 col-md-6 m-0">
 						<div class="px-1" >	            					
 							<p class="fs001 my-1">Role*</p>		            				
-							<select type="text" @keyup="normalize"  @change="roleName($event.target)" v-model="role" class="form-control w-100 vI" name="role" id="role">
-								<option v-for="(role,index) in JSON.parse(roles)" :data-role="index" :selected="role==urole" :value="role">{{index}}</option>		            					
+							<select type="text" @keyup="normalize"  @change="roleName()" v-model="role" class="form-control w-100 vI" name="role" id="role">
+								<option v-for="(role,index) in JSON.parse(roles)" :key="index+'_bc'" :data-role="index" :selected="role==urole" :value="role">{{index}}</option>		            					
 								 							            				
 							</select>
 						</div>
@@ -27,7 +27,7 @@
 						<div class="px-1" >	            					
 							<p class="fs001 my-1">Title *</p>		            				
 							<select type="text" @keyup="normalize" class="form-control w-100" name="utitle" id="utitle">
-								<option v-for="mtitle in titleCont" :value="mtitle" v-bind:selected="{selected:mtitle==title}"  >{{mtitle}}</option>
+								<option v-for="(mtitle, index) in titleCont" :value="mtitle" :key="index+'_bb'" v-bind:selected="{selected:mtitle==title}"  >{{mtitle}}</option>
 							</select>
 						</div>
 					</div>
@@ -78,7 +78,7 @@
 						<div class="px-1" >	            					
 							<p class="fs001 my-1">Gender *</p>		            				
 							<select type="text" @keyup="normalize" class="form-control " name="gender" id="gender">
-								<option v-for="mgender in genderCont" :value="mgender" v-bind:selected="mgender==gender"  >{{mgender}}</option>									            				
+								<option v-for="(mgender,index) in genderCont" :key="index+'_x'" :value="mgender" v-bind:selected="mgender==gender"  >{{mgender}}</option>									            				
 							</select>
 						</div>
 					</div> 
@@ -107,7 +107,7 @@
 								<span v-if="update">Update</span>
 								<span v-else>Submit</span>
 							</button>	
-	            			<button onclick="Swal.close()"  class="btn mb-5 mt-3 fs1 font1 btn-sm button bg-danger text-white px-4 py-2 ml-3">Cancel</button>
+	            			<a @click="closeWindow()"  class="btn mb-5 mt-3 fs1 font1 btn-sm button bg-danger text-white px-4 py-2 ml-3">Cancel</a>
 						</center>
 					</div>
 				</div>
@@ -149,6 +149,9 @@ import axios_x from 'axios';
 			}
 		},
 		methods:{
+			closeWindow(){
+				Swal.close()
+			},
 			timeoutError(){
 				var $this = this;
 			  setTimeout(()=>{$this.ErrorMsg =''},7000);	    				
@@ -157,9 +160,9 @@ import axios_x from 'axios';
 				el.target.style.border = "1px solid #eee";
 				$('.requiredv').remove();
 			},
-			roleName(e){
+			roleName(){
 				var rol = JSON.parse(this.roles), $this = this, rolename;				
-				rolename = $(e).find('option:selected').attr('data-role');
+				rolename = $('#role').find('option:selected').attr('data-role');
 				if (rolename != 'student' ) {
 					this.whatrole =  true;
 					if (this.update){
@@ -289,7 +292,12 @@ import axios_x from 'axios';
 					this.title = 		this.alldata.title;
 					this.id = 			this.alldata.id;
 					this.phone = 		this.alldata.phone;
-					this.urole = 		this.alldata.role_id;					
+					this.urole = 		this.alldata.role_id;	
+					this.role = this.urole;				
+					let $vm = this;
+					setTimeout(function(){
+						$vm.roleName();
+					},500)
 					for(var k in JSON.parse(this.roles)){
 						if (JSON.parse(this.roles)[k]==this.urole) {
 							this.rolename = k;

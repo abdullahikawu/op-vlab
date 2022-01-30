@@ -15,9 +15,12 @@ use App\Http\Controllers\Api\ForgotPasswordController;
 */
 
 
-Route::view('forgot_password', 'reset_password')->name('password.reset');
+Route::view('forgot_password', 'reset_password')->name('passwordReset');
+
 Route::view('reset_password/{token_p}', 'reset_password_form')->name('password.reset');
-Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
+
+Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
+
 Route::post('password/send_link', [ForgotPasswordController::class, 'save_token']);
 
 Route::get('/', 'App\Http\Controllers\PagesController@index')->name('home');
@@ -53,7 +56,8 @@ Route::get('/feedbacks', function(){
 });
 
 Route::post('/ajax-logout', 'App\Http\Controllers\loginController@ajaxlogout');
-Route::post('/ajax-check-login', 'App\Http\Controllers\loginController@ajaxchecklogin');
+//Route::post('/ajax-check-login', 'App\Http\Controllers\loginController@ajaxchecklogin');
+Route::post('/ajax-checklogin', 'App\Http\Controllers\loginController@ajaxchecklogin');
 /*Route::middleware(['cors'])->group(function(){
 });*/
 Route::post('/get_user_department', 'App\Http\Controllers\PagesController@getFacultyName');
@@ -68,7 +72,7 @@ Route::middleware(['is_loggedin'])->group(function(){
 Route::middleware(['adminauth'])->group(function(){
 	Route::get('/admin-settings', function(){
 		return view('admin.admin_profile');
-	})->name('sprofile');
+	})->name('saprofile');
 	Route::get('/manage-faculty', 'App\Http\Controllers\ManageFacultyController@index')->name('manage-faculty');
 	Route::get('/manage-department', 'App\Http\Controllers\ManageDepartmentController@index')->name('manage-department');
 	Route::get('/manage-session', 'App\Http\Controllers\ManageSessionController@index')->name('manage-session');

@@ -15,38 +15,38 @@
 		<div class="m-0 mobileMenu p-display-none " id="MainMobile"></div>
 		<div  class="MenuLContainer scroll-y vh-70"  v-bind:class="{reduceSize:show}">	
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider" >
-				<a href="/"  v-bind:class="{btnActive:checkActive('home')}">
+				<a title="home" href="/"  v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconOV fa fa-home "></span>
 				</a>	
 				<!-- <a href="/dashboard"   v-bind:class="{btnActive:checkActive('dashboard')}">
 					<span class="iconOV fa fa-dashboard"></span>
 				</a>	 -->
-				<a href="/explore"   v-bind:class="{btnActive:checkActive('explore')}">
+				<a title="explore" href="/explore"   v-bind:class="{btnActive:checkActive('explore')}">
 					<span class="iconOV fa fa-spinner"></span>
 				</a>				
 							
 				<!-- manage course -->
 				<ul class="listCoverV" >
-					<li class="listMenuVBtn nChildV"  v-bind:class="{btnActive:checkActive('course')}">
+					<li title="course" class="listMenuVBtn nChildV"  v-bind:class="{btnActive:checkActive('course')}">
 						<span class="iconOV  fa fa-book"></span>
 					</li>
 					<ul class="listMenuV">
-						<li>
+						<li title="create-course">
 							<a href="/create-course" class="text-white" v-bind:class="{btnActiveSub:checkActiveSub('createcourse')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">Create Course</div>
 							</a>
 						</li>
-						<li>
+						<li title="view create course">
 							<a href="/view-created-course"  class="text-white" v-bind:class="{btnActiveSub:checkActiveSub('editcourse')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">Edit/Del Course</div>
 							</a>
 						</li>
-						<li>
+						<li title="course experiments">
 							<a href="/course-experiments" class="text-white" v-bind:class="{btnActiveSub:checkActiveSub('courseExperiment')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">Course Exper.</div>
 							</a>
 						</li>
-						<li>
+						<li title="course resources">
 							<a href="/course-resources" class="text-white" v-bind:class="{btnActiveSub:checkActiveSub('courseResources')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">Course Resourc.</div>
 							</a>
@@ -59,12 +59,12 @@
 						<span class="iconOV  fa fa-cube"></span>
 					</li>
 					<ul class="listMenuV">
-						<li>
+						<li title="add-experiment">
 							<a href="/add-experiment" class="text-white"  v-bind:class="{btnActiveSub:checkActiveSub('addexperiment')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">Add Experi.</div>
 							</a>
 						</li>
-						<li>
+						<li title="">
 							<a href="/view-created-experiment" class="text-white" v-bind:class="{btnActiveSub:checkActiveSub('viewexperiment')}">
 								<span class="iconOV text-white fa fa-circle"></span><div class="labelV">View Experi.</div>
 							</a>
@@ -72,13 +72,13 @@
 					
 					</ul>
 				</ul>
-				<a href="/view-student"   v-bind:class="{btnActive:checkActive('student')}">
+				<a title="view student" href="/view-student"   v-bind:class="{btnActive:checkActive('student')}">
 					<span class="iconOV fa fa-user"></span>
 				</a>			
-				<a href="/manage-task"   v-bind:class="{btnActive:checkActive('task')}">
+				<a title="manage task" href="/manage-task"   v-bind:class="{btnActive:checkActive('task')}">
 					<span class="iconOV fa fa-tasks"></span>
 				</a>					
-				<a href="/profile"   v-bind:class="{btnActive:checkActive('settings')}">
+				<a title="profile" href="/profile"   v-bind:class="{btnActive:checkActive('settings')}">
 					<span class="iconOV fa fa-gear"></span>
 				</a>		
 				<a href="/logout"  >				
@@ -271,6 +271,20 @@
 <style scoped>
 	@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+		@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+  img {
+    image-rendering: -webkit-optimize-contrast !important;
+  }
+}
+
+/* Unset for Safari 11+ */
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+  img {
+    image-rendering: unset !important;
+  }
+}}
 	ul li{
 		list-style: none;
 		margin: 0px;

@@ -10,15 +10,15 @@
 		    <div class="py-2 d-inline-block"  style="pointer-events: auto;">		        
 		        <select id="sessionid" class="form-control d-inline-block"  placeholder="select session">
 		        	<option value="">By Session</option>
-		        	<option v-for="(session,index) in sessions" :value="session.id">{{session.session}}</option>
+		        	<option v-for="(session,index) in sessions" :key="index+'_ac'" :value="session.id">{{session.session}}</option>
 		        </select>	        
 		        <select id="roleid" class="form-control  d-inline-block" >
 		        	<option value="">By Role</option>		        	
-		        	<option v-for="(role,index) in JSON.parse(roles)" :value="role">{{index}}</option>
+		        	<option v-for="(role,index) in JSON.parse(roles)" :key="index+'_ab'" :value="role">{{index}}</option>
 		        </select>
 		        <select id="departmentid" class="form-control  d-inline-block"  placeholder="department" >
 		        	<option value="">Department</option>		        	
-		        	<option v-for="(department,index) in departments" :value="department.id">{{department.code}}</option>
+		        	<option v-for="(department,index) in departments" :key="index+'_ad'" :value="department.id">{{department.code}}</option>
 		        </select>
 		        <button class="button" @click="fetchUser" >Go</button>
 		    </div>

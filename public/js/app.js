@@ -3157,6 +3157,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -3227,6 +3229,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8690,7 +8693,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: ['home', 'dashboard', 'explore', 'mycourse', 'courses', 'discussion', 'settings', 'active', 'incourse'],
   mounted: function mounted() {
+    this.$eventBus.$on('changeSetSession', function (data) {
+      console.log(data); //this.currentSession = data;
+    });
     /*btn slider*/
+
     $('.listMenuBtn').click(function () {
       $('.listMenu').not($(this).next()).slideUp(200);
       $(this).parent().find('ul.listMenu').slideToggle(200);
@@ -10923,6 +10930,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    changeSetSesion: function changeSetSesion(obj) {
+      $(".forSessionOnNav span").text(obj.session + " SESSION");
+    },
     swal_form: function swal_form() {
       var update = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var obj = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
@@ -11073,7 +11083,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     editsession: function editsession(obj) {
       this.swal_form(true, obj);
     },
-    setsession: function setsession(obj) {
+    setsession: function setsession(obj, index) {
       //		this.swal_form(true,obj);
       var $vm = this;
       Swal.fire({
@@ -11111,7 +11121,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             confirmButtonText: 'Ok',
             confirmButtonColor: '#00b96b'
           }).then(function (result) {
-            location.reload();
+            var newArray = JSON.parse(JSON.stringify($vm.createdsession));
+            newArray.map(function (item) {
+              if (item.id == obj.id) {
+                item.is_current = "1";
+              } else {
+                item.is_current = "0";
+              }
+            });
+            $vm.createdsession = newArray;
+            $vm.changeSetSesion(obj); //location.reload();
           });
         }
       });
@@ -16039,6 +16058,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    closeWindow: function closeWindow() {
+      Swal.close();
+    },
     timeoutError: function timeoutError() {
       var $this = this;
       setTimeout(function () {
@@ -16049,11 +16071,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       el.target.style.border = "1px solid #eee";
       $('.requiredv').remove();
     },
-    roleName: function roleName(e) {
+    roleName: function roleName() {
       var rol = JSON.parse(this.roles),
           $this = this,
           rolename;
-      rolename = $(e).find('option:selected').attr('data-role');
+      rolename = $('#role').find('option:selected').attr('data-role');
 
       if (rolename != 'student') {
         this.whatrole = true;
@@ -16181,13 +16203,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _this = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      var k;
+      var $vm, k;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               if (!_this.update) {
-                _context.next = 22;
+                _context.next = 25;
                 break;
               }
 
@@ -16204,29 +16226,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.id = _this.alldata.id;
               _this.phone = _this.alldata.phone;
               _this.urole = _this.alldata.role_id;
+              _this.role = _this.urole;
+              $vm = _this;
+              setTimeout(function () {
+                $vm.roleName();
+              }, 500);
               _context.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().keys(JSON.parse(_this.roles));
 
-            case 15:
+            case 18:
               if ((_context.t1 = _context.t0()).done) {
-                _context.next = 22;
+                _context.next = 25;
                 break;
               }
 
               k = _context.t1.value;
 
               if (!(JSON.parse(_this.roles)[k] == _this.urole)) {
-                _context.next = 20;
+                _context.next = 23;
                 break;
               }
 
               _this.rolename = k;
-              return _context.abrupt("break", 22);
+              return _context.abrupt("break", 25);
 
-            case 20:
-              _context.next = 15;
+            case 23:
+              _context.next = 18;
               break;
 
-            case 22:
+            case 25:
               if (_this.update) {
                 _this.facultiesHTML = _this.selectHtmlGen(_this.faculties, 'code', 'faculty_id', _this.faculty_id, true); //this.departmentHTML = this.selectHtmlGen(this.departments,'code', 'department_id',this.department_id, true )				
               } else {
@@ -16235,7 +16262,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               _this.watchfacultyHtml.value = true;
 
-            case 24:
+            case 27:
             case "end":
               return _context.stop();
           }
@@ -18931,6 +18958,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             while (1) {
               switch (_context6.prev = _context6.next) {
                 case 0:
+                  axios__WEBPACK_IMPORTED_MODULE_1___default().post('/ajax-checklogin').then(function (response) {
+                    response.data.status == 400 ? localStorage.removeItem('LoggedUser') : '';
+                  });
+
                   if (localStorage.hasOwnProperty('LoggedUser')) {
                     _this2.userLoggedInOld = JSON.parse(localStorage.getItem('LoggedUser')).access_token;
                     _this2.currentUser = JSON.parse(localStorage.getItem('LoggedUser')).user;
@@ -18950,7 +18981,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     };
                   }
 
-                case 1:
+                case 2:
                 case "end":
                   return _context6.stop();
               }
@@ -24650,7 +24681,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);"]);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nul li[data-v-5fd4de1f]{\n\tlist-style: none;\n\tmargin: 0px;\n\tpadding: 0px;\n}\nul[data-v-5fd4de1f]{\n\tpadding: 0px;\n\tmargin: 0px;\n}\n.listMenuBtn[data-v-5fd4de1f],.listMenuVBtn[data-v-5fd4de1f]{\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: center;\n}\n.listMenuVBtn[data-v-5fd4de1f]{\n\tpadding: 1px !important;\n\tmargin: 0px auto !important;\n}\n.listCoverV:hover  ul.listMenuV[data-v-5fd4de1f]{\n\tdisplay: block;\n}\nul.listMenu[data-v-5fd4de1f]{\n\tbackground: rgba(150,200,150,.1);\n\tdisplay: none;\n\tpadding:8px;\n}\n.listCoverV[data-v-5fd4de1f]{\n\tposition: relative;\n\tdisplay: inline-block;\n}\nul.listMenuV[data-v-5fd4de1f]{\t\n\twidth: 200px;\n\tposition: absolute;\n\ttop: 0px;\n\tleft: 50px;\n\tdisplay: none;\t\n\tbackground: #3c9;\t\n\tcolor: white;\n\tpadding:8px;\n}\nul.listMenuV li a.btnActiveSub[data-v-5fd4de1f]{\n\tcolor: white;\n}\nul.listMenuV li a[data-v-5fd4de1f] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: center;\n\tcursor: pointer;\n}\nul.listMenuV li[data-v-5fd4de1f]{\n\tmargin: 5px auto;\n}\nul.listMenuV li a span.iconOV[data-v-5fd4de1f]{\n\twidth: 1px;\n\tpadding: 5px 8px;\n\tfont-size: 0.45em;\n}\na[data-v-5fd4de1f]{\n\ttext-decoration: none;\n}\n.widthRed[data-v-5fd4de1f]{\n\twidth: 60px !important;\n}\n.MenuLContainer[data-v-5fd4de1f]{\n\tdisplay: flex;\n}\n.menuBtnToggler[data-v-5fd4de1f]{\n\tcursor: pointer;\n}\n.slider[data-v-5fd4de1f] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n    z-index: 5;\n}\n.slidein[data-v-5fd4de1f] {\n    animation: slide-in-data-v-5fd4de1f 0.5s forwards;\n    -webkit-animation: slide-in-data-v-5fd4de1f 0.5s forwards;\n}\n.slideout[data-v-5fd4de1f] {\n    animation: slide-out-data-v-5fd4de1f 0.5s forwards;\n    -webkit-animation: slide-out-data-v-5fd4de1f 0.5s forwards;\n}\n@keyframes slide-in-data-v-5fd4de1f {\n0% { transform: translateX(-300%);\n}\n100% { transform: translateX(0%);\n}\n}\n@-webkit-keyframes slide-in-data-v-5fd4de1f {\n0% { transform: translateX(-300%);\n}\n100% { -webkit-transform: translateX(0%);\n}\n}\n@keyframes slide-out-data-v-5fd4de1f {\n0% { transform: translateX(0%);\n}\n100% { transform: translateX(-300%);\n}\n}\n@-webkit-keyframes slide-out-data-v-5fd4de1f {\n0% { -webkit-transform: translateX(0%);\n}\n100% { -webkit-transform: translateX(-300%);\n}\n}\n.reduceSize[data-v-5fd4de1f]{\n\twidth: 0px !important;\n\ttransition: width 0.5s;\n}\n.niconsV-logout[data-v-5fd4de1f]{\n\t\tposition: absolute;\n\t\ttop: 62vh;\n\t\tleft: 10px;\n}\n.menuLI[data-v-5fd4de1f]{\n\t\tcolor:#2F274E;\n\t\tfont-size: 1.4em;\n}\n.menuBtnToggler[data-v-5fd4de1f]{\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items:center;\n\t\tcolor:#2F274E;\n\t\tmargin-top:20px;\n\t\tmargin-left: 10px;\n}\n.nChildV[data-v-5fd4de1f]{\n\t\tfont-weight: 400;\n\t\tfont-size: 0.95em;\n\t\tfont-family: 'Roboto';\t\t\n\t\tdisplay: flex;\n\t\tpadding: 10px 18px;\t\t\t\n\t\tcolor:#2F274E;\n\t\ttext-align: left;\t\t\n\t\talign-items: center;\n\t\tflex-wrap: wrap;\n\t\tmargin:5px 0px;\n\t\tborder-radius: 8px;\n\t\tcursor: pointer;\n}\n.listMenuVBtn.nChildV[data-v-5fd4de1f]{\n\t\tpadding: 10px 1px;\n}\n.listMenu li a.nChildV[data-v-5fd4de1f]{\n\t\tpadding: 5px 18px;\n}\n.nChildV-logout[data-v-5fd4de1f]{\n\t\tposition: absolute;\n\t\ttop: 72vh;\n\t\tleft: 10px;\n}\n.btnActive[data-v-5fd4de1f]{\n\t\tbackground: rgba(150,200,150,.1) !important;\n\t\tcolor: #3c9 !important;\n}\n.btnActiveSub[data-v-5fd4de1f]{\n\t\tcolor:#3c9;\n}\n.iconV[data-v-5fd4de1f]{\n\t\tmargin-right: 10px;\n}\n.listMenu li a span.iconV[data-v-5fd4de1f]{\n\t\tfont-size: 0.5em;\n}\n.iconOV[data-v-5fd4de1f]{\n\t\tfloat: left;\t\t\t\n\t\tpadding: 15px 18px;\n\t\tborder-radius: 8px;\n\t\tdisplay:block;\n\t\twidth: 100%;\n\t\tcursor: pointer;\n\t\tfont-size: 1.1em;\t\n\t\tcolor:#2F274E;\n}\n.iconOV[data-v-5fd4de1f]:not(:first-child){\n\t\tmargin:2px 0px;\n}\n.iconOV[data-v-5fd4de1f]:hover{\n\t\tbackground: #3c9;\n\t\tcolor:#fff;\n}\n.listCoverV:hover  .nChildV[data-v-5fd4de1f]{\n\t\tbackground: #3c9 !important;\n\t\tcolor:#fff !important;\n}\n.nChildV[data-v-5fd4de1f]:hover{\n\t\tbackground: #3c9;\n\t\tcolor:#fff;\n}\n.nChildv:hover  .labelV[data-v-5fd4de1f]{\n\t\tcolor: #fff;\n\t\tborder: 1px solid red;\n}\n.niconsV > a[data-v-5fd4de1f], .niconsV > ul[data-v-5fd4de1f] {\n    display: block;\n    margin: 0px auto;\n    width: 60px;\n    text-align: center;\n    height: 47px;\n}\n.niconsV > ul[data-v-5fd4de1f] {\n\t    width: 60px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media screen and (-webkit-min-device-pixel-ratio:0) and (-webkit-min-device-pixel-ratio:0), screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {\nimg[data-v-5fd4de1f] {\n    image-rendering: -webkit-optimize-contrast !important;\n}\n}\n\n/* Unset for Safari 11+ */\n@media not all and (-webkit-min-device-pixel-ratio:0), not all and (min-resolution:.001dpcm)\n{\n@supports (-webkit-appearance:none) and (stroke-color:transparent) {\nimg[data-v-5fd4de1f] {\n    image-rendering: unset !important;\n}\n}}\nul li[data-v-5fd4de1f]{\n\t\tlist-style: none;\n\t\tmargin: 0px;\n\t\tpadding: 0px;\n}\nul[data-v-5fd4de1f]{\n\t\tpadding: 0px;\n\t\tmargin: 0px;\n}\n.listMenuBtn[data-v-5fd4de1f],.listMenuVBtn[data-v-5fd4de1f]{\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items: center;\n}\n.listMenuVBtn[data-v-5fd4de1f]{\n\t\tpadding: 1px !important;\n\t\tmargin: 0px auto !important;\n}\n.listCoverV:hover  ul.listMenuV[data-v-5fd4de1f]{\n\t\tdisplay: block;\n}\nul.listMenu[data-v-5fd4de1f]{\n\t\tbackground: rgba(150,200,150,.1);\n\t\tdisplay: none;\n\t\tpadding:8px;\n}\n.listCoverV[data-v-5fd4de1f]{\n\t\tposition: relative;\n\t\tdisplay: inline-block;\n}\nul.listMenuV[data-v-5fd4de1f]{\t\n\t\twidth: 200px;\n\t\tposition: absolute;\n\t\ttop: 0px;\n\t\tleft: 50px;\n\t\tdisplay: none;\t\n\t\tbackground: #3c9;\t\n\t\tcolor: white;\n\t\tpadding:8px;\n}\nul.listMenuV li a.btnActiveSub[data-v-5fd4de1f]{\n\t\tcolor: white;\n}\nul.listMenuV li a[data-v-5fd4de1f] {\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items: center;\n\t\tcursor: pointer;\n}\nul.listMenuV li[data-v-5fd4de1f]{\n\t\tmargin: 5px auto;\n}\nul.listMenuV li a span.iconOV[data-v-5fd4de1f]{\n\t\twidth: 1px;\n\t\tpadding: 5px 8px;\n\t\tfont-size: 0.45em;\n}\na[data-v-5fd4de1f]{\n\t\ttext-decoration: none;\n}\n.widthRed[data-v-5fd4de1f]{\n\t\twidth: 60px !important;\n}\n.MenuLContainer[data-v-5fd4de1f]{\n\t\tdisplay: flex;\n}\n.menuBtnToggler[data-v-5fd4de1f]{\n\t\tcursor: pointer;\n}\n.slider[data-v-5fd4de1f] {\n\t    position: absolute;\n\t    width: 100px;\n\t    height: 100px;    \n\t    transform: translateX(-100%);\n\t    -webkit-transform: translateX(-100%);\n\t    z-index: 5;\n}\n.slidein[data-v-5fd4de1f] {\n\t    animation: slide-in-data-v-5fd4de1f 0.5s forwards;\n\t    -webkit-animation: slide-in-data-v-5fd4de1f 0.5s forwards;\n}\n.slideout[data-v-5fd4de1f] {\n\t    animation: slide-out-data-v-5fd4de1f 0.5s forwards;\n\t    -webkit-animation: slide-out-data-v-5fd4de1f 0.5s forwards;\n}\n@keyframes slide-in-data-v-5fd4de1f {\n0% { transform: translateX(-300%);\n}\n100% { transform: translateX(0%);\n}\n}\n@-webkit-keyframes slide-in-data-v-5fd4de1f {\n0% { transform: translateX(-300%);\n}\n100% { -webkit-transform: translateX(0%);\n}\n}\n@keyframes slide-out-data-v-5fd4de1f {\n0% { transform: translateX(0%);\n}\n100% { transform: translateX(-300%);\n}\n}\n@-webkit-keyframes slide-out-data-v-5fd4de1f {\n0% { -webkit-transform: translateX(0%);\n}\n100% { -webkit-transform: translateX(-300%);\n}\n}\n.reduceSize[data-v-5fd4de1f]{\n\t\twidth: 0px !important;\n\t\ttransition: width 0.5s;\n}\n.niconsV-logout[data-v-5fd4de1f]{\n\t\t\tposition: absolute;\n\t\t\ttop: 62vh;\n\t\t\tleft: 10px;\n}\n.menuLI[data-v-5fd4de1f]{\n\t\t\tcolor:#2F274E;\n\t\t\tfont-size: 1.4em;\n}\n.menuBtnToggler[data-v-5fd4de1f]{\n\t\t\tdisplay: flex;\n\t\t\tflex-wrap: wrap;\n\t\t\talign-items:center;\n\t\t\tcolor:#2F274E;\n\t\t\tmargin-top:20px;\n\t\t\tmargin-left: 10px;\n}\n.nChildV[data-v-5fd4de1f]{\n\t\t\tfont-weight: 400;\n\t\t\tfont-size: 0.95em;\n\t\t\tfont-family: 'Roboto';\t\t\n\t\t\tdisplay: flex;\n\t\t\tpadding: 10px 18px;\t\t\t\n\t\t\tcolor:#2F274E;\n\t\t\ttext-align: left;\t\t\n\t\t\talign-items: center;\n\t\t\tflex-wrap: wrap;\n\t\t\tmargin:5px 0px;\n\t\t\tborder-radius: 8px;\n\t\t\tcursor: pointer;\n}\n.listMenuVBtn.nChildV[data-v-5fd4de1f]{\n\t\t\tpadding: 10px 1px;\n}\n.listMenu li a.nChildV[data-v-5fd4de1f]{\n\t\t\tpadding: 5px 18px;\n}\n.nChildV-logout[data-v-5fd4de1f]{\n\t\t\tposition: absolute;\n\t\t\ttop: 72vh;\n\t\t\tleft: 10px;\n}\n.btnActive[data-v-5fd4de1f]{\n\t\t\tbackground: rgba(150,200,150,.1) !important;\n\t\t\tcolor: #3c9 !important;\n}\n.btnActiveSub[data-v-5fd4de1f]{\n\t\t\tcolor:#3c9;\n}\n.iconV[data-v-5fd4de1f]{\n\t\t\tmargin-right: 10px;\n}\n.listMenu li a span.iconV[data-v-5fd4de1f]{\n\t\t\tfont-size: 0.5em;\n}\n.iconOV[data-v-5fd4de1f]{\n\t\t\tfloat: left;\t\t\t\n\t\t\tpadding: 15px 18px;\n\t\t\tborder-radius: 8px;\n\t\t\tdisplay:block;\n\t\t\twidth: 100%;\n\t\t\tcursor: pointer;\n\t\t\tfont-size: 1.1em;\t\n\t\t\tcolor:#2F274E;\n}\n.iconOV[data-v-5fd4de1f]:not(:first-child){\n\t\t\tmargin:2px 0px;\n}\n.iconOV[data-v-5fd4de1f]:hover{\n\t\t\tbackground: #3c9;\n\t\t\tcolor:#fff;\n}\n.listCoverV:hover  .nChildV[data-v-5fd4de1f]{\n\t\t\tbackground: #3c9 !important;\n\t\t\tcolor:#fff !important;\n}\n.nChildV[data-v-5fd4de1f]:hover{\n\t\t\tbackground: #3c9;\n\t\t\tcolor:#fff;\n}\n.nChildv:hover  .labelV[data-v-5fd4de1f]{\n\t\t\tcolor: #fff;\n\t\t\tborder: 1px solid red;\n}\n.niconsV > a[data-v-5fd4de1f], .niconsV > ul[data-v-5fd4de1f] {\n\t    display: block;\n\t    margin: 0px auto;\n\t    width: 60px;\n\t    text-align: center;\n\t    height: 47px;\n}\n.niconsV > ul[data-v-5fd4de1f] {\n\t\t    width: 60px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -24676,7 +24707,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);"]);
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nul li[data-v-ff21283c]{\n\tlist-style: none;\n\tmargin: 0px;\n\tpadding: 0px;\n}\nul[data-v-ff21283c]{\n\tpadding: 0px;\n\tmargin: 0px;\n}\n.listMenuBtn[data-v-ff21283c],.listMenuVBtn[data-v-ff21283c]{\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: center;\n}\n.listMenuVBtn[data-v-ff21283c]{\n\tpadding: 1px !important;\n\tmargin: 0px auto !important;\n}\n.listCoverV:hover  ul.listMenuV[data-v-ff21283c]{\n\tdisplay: block;\n}\nul.listMenu[data-v-ff21283c]{\n\tbackground: rgba(150,200,150,.1);\n\tdisplay: none;\n\tpadding:8px;\n}\n.listCoverV[data-v-ff21283c]{\n\tposition: relative;\n\tdisplay: inline-block;\n}\nul.listMenuV[data-v-ff21283c]{\t\n\twidth: 150px;\n\tposition: absolute;\n\ttop: 0px;\n\tleft: 50px;\n\tdisplay: none;\t\n\tbackground: #3c9;\t\n\tcolor: white;\n\tpadding:8px;\n}\nul.listMenuV li a.btnActiveSub[data-v-ff21283c]{\n\tcolor: white;\n}\nul.listMenuV li a[data-v-ff21283c] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: center;\n\tcursor: pointer;\n}\nul.listMenuV li[data-v-ff21283c]{\n\tmargin: 5px auto;\n}\nul.listMenuV li a span.iconOV[data-v-ff21283c]{\n\twidth: 1px;\n\tpadding: 5px 8px;\n\tfont-size: 0.45em;\n}\na[data-v-ff21283c]{\n\ttext-decoration: none;\n}\n.widthRed[data-v-ff21283c]{\n\twidth: 60px !important;\n}\n.MenuLContainer[data-v-ff21283c]{\n\tdisplay: flex;\n}\n.menuBtnToggler[data-v-ff21283c]{\n\tcursor: pointer;\n}\n.slider[data-v-ff21283c] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n    z-index: 5;\n}\n.slidein[data-v-ff21283c] {\n    animation: slide-in-data-v-ff21283c 0.5s forwards;\n    -webkit-animation: slide-in-data-v-ff21283c 0.5s forwards;\n}\n.slideout[data-v-ff21283c] {\n    animation: slide-out-data-v-ff21283c 0.5s forwards;\n    -webkit-animation: slide-out-data-v-ff21283c 0.5s forwards;\n}\n@keyframes slide-in-data-v-ff21283c {\n0% { transform: translateX(-300%);\n}\n100% { transform: translateX(0%);\n}\n}\n@-webkit-keyframes slide-in-data-v-ff21283c {\n0% { transform: translateX(-300%);\n}\n100% { -webkit-transform: translateX(0%);\n}\n}\n@keyframes slide-out-data-v-ff21283c {\n0% { transform: translateX(0%);\n}\n100% { transform: translateX(-300%);\n}\n}\n@-webkit-keyframes slide-out-data-v-ff21283c {\n0% { -webkit-transform: translateX(0%);\n}\n100% { -webkit-transform: translateX(-300%);\n}\n}\n.reduceSize[data-v-ff21283c]{\n\twidth: 0px !important;\n\ttransition: width 0.5s;\n}\n.niconsV-logout[data-v-ff21283c]{\n\t\tposition: absolute;\n\t\ttop: 62vh;\n\t\tleft: 10px;\n}\n.menuLI[data-v-ff21283c]{\n\t\tcolor:#2F274E;\n\t\tfont-size: 1.4em;\n}\n.menuBtnToggler[data-v-ff21283c]{\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items:center;\n\t\tcolor:#2F274E;\n\t\tmargin-top:20px;\n\t\tmargin-left: 10px;\n}\n.nChildV[data-v-ff21283c]{\n\t\tfont-weight: 400;\n\t\tfont-size: 0.95em;\n\t\tfont-family: 'Roboto';\t\t\n\t\tdisplay: flex;\n\t\tpadding: 10px 18px;\t\t\t\n\t\tcolor:#2F274E;\n\t\ttext-align: left;\t\t\n\t\talign-items: center;\n\t\tflex-wrap: wrap;\n\t\tmargin:5px 0px;\n\t\tborder-radius: 8px;\n\t\tcursor: pointer;\n}\n.listMenuVBtn.nChildV[data-v-ff21283c]{\n\t\tpadding: 10px 1px;\n}\n.listMenu li a.nChildV[data-v-ff21283c]{\n\t\tpadding: 5px 18px;\n}\n.nChildV-logout[data-v-ff21283c]{\n\t\tposition: absolute;\n\t\ttop: 72vh;\n\t\tleft: 10px;\n}\n.btnActive[data-v-ff21283c]{\n\t\tbackground: rgba(150,200,150,.1) !important;\n\t\tcolor: #3c9 !important;\n}\n.btnActiveSub[data-v-ff21283c]{\n\t\tcolor:#3c9;\n}\n.iconV[data-v-ff21283c]{\n\t\tmargin-right: 10px;\n}\n.listMenu li a span.iconV[data-v-ff21283c]{\n\t\tfont-size: 0.5em;\n}\n.iconOV[data-v-ff21283c]{\n\t\tfloat: left;\t\t\t\n\t\tpadding: 15px 18px;\n\t\tborder-radius: 8px;\n\t\tdisplay:block;\n\t\twidth: 100%;\n\t\tcursor: pointer;\n\t\tfont-size: 1.1em;\t\n\t\tcolor:#2F274E;\n}\n.listCoverV:hover  .nChildV[data-v-ff21283c]{\n\t\tbackground: #3c9 !important;\n\t\tcolor:#fff !important;\n}\n.iconOV[data-v-ff21283c]:not(:first-child){\n\t\tmargin:2px 0px;\n}\n.iconOV[data-v-ff21283c]:hover{\n\t\tbackground: #3c9;\n\t\tcolor:#fff;\n}\n.nChildV[data-v-ff21283c]:hover{\n\t\tbackground: #3c9;\n\t\tcolor:#fff;\n}\n.nChildv:hover  .labelV[data-v-ff21283c]{\n\t\tcolor: #fff;\n\t\tborder: 1px solid red;\n}\n.niconsV > a[data-v-ff21283c], .niconsV > ul[data-v-ff21283c] {\n    display: block;\n    margin: 0px auto;\n    width: 60px;\n    text-align: center;\n    height: 47px;\n}\n.niconsV > ul[data-v-ff21283c] {\n\t    width: 60px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media screen and (-webkit-min-device-pixel-ratio:0) and (-webkit-min-device-pixel-ratio:0), screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {\nimg[data-v-ff21283c] {\n    image-rendering: -webkit-optimize-contrast !important;\n}\n}\n\n/* Unset for Safari 11+ */\n@media not all and (-webkit-min-device-pixel-ratio:0), not all and (min-resolution:.001dpcm)\n{\n@supports (-webkit-appearance:none) and (stroke-color:transparent) {\nimg[data-v-ff21283c] {\n    image-rendering: unset !important;\n}\n}}\nul li[data-v-ff21283c]{\n\t\tlist-style: none;\n\t\tmargin: 0px;\n\t\tpadding: 0px;\n}\nul[data-v-ff21283c]{\n\t\tpadding: 0px;\n\t\tmargin: 0px;\n}\n.listMenuBtn[data-v-ff21283c],.listMenuVBtn[data-v-ff21283c]{\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items: center;\n}\n.listMenuVBtn[data-v-ff21283c]{\n\t\tpadding: 1px !important;\n\t\tmargin: 0px auto !important;\n}\n.listCoverV:hover  ul.listMenuV[data-v-ff21283c]{\n\t\tdisplay: block;\n}\nul.listMenu[data-v-ff21283c]{\n\t\tbackground: rgba(150,200,150,.1);\n\t\tdisplay: none;\n\t\tpadding:8px;\n}\n.listCoverV[data-v-ff21283c]{\n\t\tposition: relative;\n\t\tdisplay: inline-block;\n}\nul.listMenuV[data-v-ff21283c]{\t\n\t\twidth: 150px;\n\t\tposition: absolute;\n\t\ttop: 0px;\n\t\tleft: 50px;\n\t\tdisplay: none;\t\n\t\tbackground: #3c9;\t\n\t\tcolor: white;\n\t\tpadding:8px;\n}\nul.listMenuV li a.btnActiveSub[data-v-ff21283c]{\n\t\tcolor: white;\n}\nul.listMenuV li a[data-v-ff21283c] {\n\t\tdisplay: flex;\n\t\tflex-wrap: wrap;\n\t\talign-items: center;\n\t\tcursor: pointer;\n}\nul.listMenuV li[data-v-ff21283c]{\n\t\tmargin: 5px auto;\n}\nul.listMenuV li a span.iconOV[data-v-ff21283c]{\n\t\twidth: 1px;\n\t\tpadding: 5px 8px;\n\t\tfont-size: 0.45em;\n}\na[data-v-ff21283c]{\n\t\ttext-decoration: none;\n}\n.widthRed[data-v-ff21283c]{\n\t\twidth: 60px !important;\n}\n.MenuLContainer[data-v-ff21283c]{\n\t\tdisplay: flex;\n}\n.menuBtnToggler[data-v-ff21283c]{\n\t\tcursor: pointer;\n}\n.slider[data-v-ff21283c] {\n\t    position: absolute;\n\t    width: 100px;\n\t    height: 100px;    \n\t    transform: translateX(-100%);\n\t    -webkit-transform: translateX(-100%);\n\t    z-index: 5;\n}\n.slidein[data-v-ff21283c] {\n\t    animation: slide-in-data-v-ff21283c 0.5s forwards;\n\t    -webkit-animation: slide-in-data-v-ff21283c 0.5s forwards;\n}\n.slideout[data-v-ff21283c] {\n\t    animation: slide-out-data-v-ff21283c 0.5s forwards;\n\t    -webkit-animation: slide-out-data-v-ff21283c 0.5s forwards;\n}\n@keyframes slide-in-data-v-ff21283c {\n0% { transform: translateX(-300%);\n}\n100% { transform: translateX(0%);\n}\n}\n@-webkit-keyframes slide-in-data-v-ff21283c {\n0% { transform: translateX(-300%);\n}\n100% { -webkit-transform: translateX(0%);\n}\n}\n@keyframes slide-out-data-v-ff21283c {\n0% { transform: translateX(0%);\n}\n100% { transform: translateX(-300%);\n}\n}\n@-webkit-keyframes slide-out-data-v-ff21283c {\n0% { -webkit-transform: translateX(0%);\n}\n100% { -webkit-transform: translateX(-300%);\n}\n}\n.reduceSize[data-v-ff21283c]{\n\t\twidth: 0px !important;\n\t\ttransition: width 0.5s;\n}\n.niconsV-logout[data-v-ff21283c]{\n\t\t\tposition: absolute;\n\t\t\ttop: 62vh;\n\t\t\tleft: 10px;\n}\n.menuLI[data-v-ff21283c]{\n\t\t\tcolor:#2F274E;\n\t\t\tfont-size: 1.4em;\n}\n.menuBtnToggler[data-v-ff21283c]{\n\t\t\tdisplay: flex;\n\t\t\tflex-wrap: wrap;\n\t\t\talign-items:center;\n\t\t\tcolor:#2F274E;\n\t\t\tmargin-top:20px;\n\t\t\tmargin-left: 10px;\n}\n.nChildV[data-v-ff21283c]{\n\t\t\tfont-weight: 400;\n\t\t\tfont-size: 0.95em;\n\t\t\tfont-family: 'Roboto';\t\t\n\t\t\tdisplay: flex;\n\t\t\tpadding: 10px 18px;\t\t\t\n\t\t\tcolor:#2F274E;\n\t\t\ttext-align: left;\t\t\n\t\t\talign-items: center;\n\t\t\tflex-wrap: wrap;\n\t\t\tmargin:5px 0px;\n\t\t\tborder-radius: 8px;\n\t\t\tcursor: pointer;\n}\n.listMenuVBtn.nChildV[data-v-ff21283c]{\n\t\t\tpadding: 10px 1px;\n}\n.listMenu li a.nChildV[data-v-ff21283c]{\n\t\t\tpadding: 5px 18px;\n}\n.nChildV-logout[data-v-ff21283c]{\n\t\t\tposition: absolute;\n\t\t\ttop: 72vh;\n\t\t\tleft: 10px;\n}\n.btnActive[data-v-ff21283c]{\n\t\t\tbackground: rgba(150,200,150,.1) !important;\n\t\t\tcolor: #3c9 !important;\n}\n.btnActiveSub[data-v-ff21283c]{\n\t\t\tcolor:#3c9;\n}\n.iconV[data-v-ff21283c]{\n\t\t\tmargin-right: 10px;\n}\n.listMenu li a span.iconV[data-v-ff21283c]{\n\t\t\tfont-size: 0.5em;\n}\n.iconOV[data-v-ff21283c]{\n\t\t\tfloat: left;\t\t\t\n\t\t\tpadding: 15px 18px;\n\t\t\tborder-radius: 8px;\n\t\t\tdisplay:block;\n\t\t\twidth: 100%;\n\t\t\tcursor: pointer;\n\t\t\tfont-size: 1.1em;\t\n\t\t\tcolor:#2F274E;\n}\n.listCoverV:hover  .nChildV[data-v-ff21283c]{\n\t\t\tbackground: #3c9 !important;\n\t\t\tcolor:#fff !important;\n}\n.iconOV[data-v-ff21283c]:not(:first-child){\n\t\t\tmargin:2px 0px;\n}\n.iconOV[data-v-ff21283c]:hover{\n\t\t\tbackground: #3c9;\n\t\t\tcolor:#fff;\n}\n.nChildV[data-v-ff21283c]:hover{\n\t\t\tbackground: #3c9;\n\t\t\tcolor:#fff;\n}\n.nChildv:hover  .labelV[data-v-ff21283c]{\n\t\t\tcolor: #fff;\n\t\t\tborder: 1px solid red;\n}\n.niconsV > a[data-v-ff21283c], .niconsV > ul[data-v-ff21283c] {\n\t    display: block;\n\t    margin: 0px auto;\n\t    width: 60px;\n\t    text-align: center;\n\t    height: 47px;\n}\n.niconsV > ul[data-v-ff21283c] {\n\t\t    width: 60px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -48167,27 +48198,21 @@ var render = function() {
               [_c("div", { staticClass: "navbar__toggle__block" })]
             ),
             _vm._v(" "),
-            _c("li", { staticClass: "navbar__list__item" }, [
-              _c("a", { attrs: { href: _vm.home } }, [_vm._v("Home")])
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "navbar__list__item" }, [
-              _c("a", { attrs: { href: _vm.explore } }, [_vm._v("Explore")])
-            ]),
-            _vm._v(" "),
             _vm._m(1),
             _vm._v(" "),
             _vm._m(2),
             _vm._v(" "),
             _vm._m(3),
             _vm._v(" "),
+            _vm._m(4),
+            _vm._v(" "),
+            _vm._m(5),
+            _vm._v(" "),
             _vm.username == ""
               ? _c("div", { staticClass: "d-inline-block d-lg-none" }, [
-                  _c("li", { staticClass: "navbar__list__item" }, [
-                    _c("a", { attrs: { href: _vm.login } }, [_vm._v("Login")])
-                  ]),
+                  _vm._m(6),
                   _vm._v(" "),
-                  _vm._m(4)
+                  _vm._m(7)
                 ])
               : _vm._e(),
             _vm._v(" "),
@@ -48341,6 +48366,22 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("li", { staticClass: "navbar__list__item" }, [
+      _c("a", { attrs: { href: "/" } }, [_vm._v("Home")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "navbar__list__item" }, [
+      _c("a", { attrs: { href: "/explore" } }, [_vm._v("Explore")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "navbar__list__item" }, [
       _c(
         "a",
         {
@@ -48388,6 +48429,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("li", { staticClass: "navbar__list__item" }, [
       _c("a", { attrs: { href: "#" } }, [_vm._v("Contributors")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "navbar__list__item" }, [
+      _c("a", { attrs: { href: "/login" } }, [_vm._v("Login")])
     ])
   },
   function() {
@@ -53463,7 +53512,7 @@ var render = function() {
               "a",
               {
                 class: { btnActive: _vm.checkActive("home") },
-                attrs: { href: "/" }
+                attrs: { title: "home", href: "/" }
               },
               [_c("span", { staticClass: "iconOV fa fa-home " })]
             ),
@@ -53472,7 +53521,7 @@ var render = function() {
               "a",
               {
                 class: { btnActive: _vm.checkActive("explore") },
-                attrs: { href: "/explore" }
+                attrs: { title: "explore", href: "/explore" }
               },
               [_c("span", { staticClass: "iconOV fa fa-spinner" })]
             ),
@@ -53482,13 +53531,14 @@ var render = function() {
                 "li",
                 {
                   staticClass: "listMenuVBtn nChildV",
-                  class: { btnActive: _vm.checkActive("course") }
+                  class: { btnActive: _vm.checkActive("course") },
+                  attrs: { title: "course" }
                 },
                 [_c("span", { staticClass: "iconOV  fa fa-book" })]
               ),
               _vm._v(" "),
               _c("ul", { staticClass: "listMenuV" }, [
-                _c("li", [
+                _c("li", { attrs: { title: "create-course" } }, [
                   _c(
                     "a",
                     {
@@ -53509,7 +53559,7 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", [
+                _c("li", { attrs: { title: "view create course" } }, [
                   _c(
                     "a",
                     {
@@ -53528,7 +53578,7 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", [
+                _c("li", { attrs: { title: "course experiments" } }, [
                   _c(
                     "a",
                     {
@@ -53549,7 +53599,7 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", [
+                _c("li", { attrs: { title: "course resources" } }, [
                   _c(
                     "a",
                     {
@@ -53583,7 +53633,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("ul", { staticClass: "listMenuV" }, [
-                _c("li", [
+                _c("li", { attrs: { title: "add-experiment" } }, [
                   _c(
                     "a",
                     {
@@ -53604,7 +53654,7 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", [
+                _c("li", { attrs: { title: "" } }, [
                   _c(
                     "a",
                     {
@@ -53631,7 +53681,7 @@ var render = function() {
               "a",
               {
                 class: { btnActive: _vm.checkActive("student") },
-                attrs: { href: "/view-student" }
+                attrs: { title: "view student", href: "/view-student" }
               },
               [_c("span", { staticClass: "iconOV fa fa-user" })]
             ),
@@ -53640,7 +53690,7 @@ var render = function() {
               "a",
               {
                 class: { btnActive: _vm.checkActive("task") },
-                attrs: { href: "/manage-task" }
+                attrs: { title: "manage task", href: "/manage-task" }
               },
               [_c("span", { staticClass: "iconOV fa fa-tasks" })]
             ),
@@ -53649,7 +53699,7 @@ var render = function() {
               "a",
               {
                 class: { btnActive: _vm.checkActive("settings") },
-                attrs: { href: "/profile" }
+                attrs: { title: "profile", href: "/profile" }
               },
               [_c("span", { staticClass: "iconOV fa fa-gear" })]
             ),
@@ -53979,7 +54029,7 @@ var render = function() {
             class: { slidein: _vm.show, slideout: _vm.hideMiniMenu }
           },
           [
-            _c("a", { attrs: { href: _vm.home } }, [
+            _c("a", { attrs: { href: _vm.home, title: "home" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-home",
                 class: { btnActive: _vm.checkActive("home") },
@@ -53987,7 +54037,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("a", { attrs: { href: "/explore" } }, [
+            _c("a", { attrs: { href: "/explore", title: "explore" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-spinner",
                 class: { btnActive: _vm.checkActive("explore") },
@@ -53995,7 +54045,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("a", { attrs: { href: "/my-courses" } }, [
+            _c("a", { attrs: { href: "/my-courses", title: "my-courses" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-toggle-on",
                 class: { btnActive: _vm.checkActive("courses") },
@@ -54003,7 +54053,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("a", { attrs: { href: "/settings" } }, [
+            _c("a", { attrs: { href: "/settings", title: "setting" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-gear",
                 class: { btnActive: _vm.checkActive("settings") },
@@ -54011,7 +54061,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("a", { on: { click: _vm.logout } }, [
+            _c("a", { attrs: { title: "logout" }, on: { click: _vm.logout } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-arrow-circle-left",
                 staticStyle: { "margin-top": "" },
@@ -54042,7 +54092,7 @@ var render = function() {
               {
                 staticClass: "nChildV",
                 class: { btnActive: _vm.checkActive("home") },
-                attrs: { href: "/" }
+                attrs: { title: "home", href: "/" }
               },
               [
                 _c("span", { staticClass: "iconV fa fa-home " }),
@@ -54055,7 +54105,7 @@ var render = function() {
               {
                 staticClass: "nChildV",
                 class: { btnActive: _vm.checkActive("explore") },
-                attrs: { href: "/explore" }
+                attrs: { title: "explore", href: "/explore" }
               },
               [
                 _c("span", { staticClass: "iconV fa fa-spinner" }),
@@ -54068,7 +54118,7 @@ var render = function() {
               {
                 staticClass: "nChildV",
                 class: { btnActive: _vm.checkActive("courses") },
-                attrs: { href: "/my-courses" }
+                attrs: { title: "my-courses", href: "/my-courses" }
               },
               [
                 _c("span", { staticClass: "iconV fa fa-toggle-on" }),
@@ -54081,7 +54131,7 @@ var render = function() {
               {
                 staticClass: "nChildV",
                 class: { btnActive: _vm.checkActive("settings") },
-                attrs: { href: "/settings" }
+                attrs: { title: "settings", href: "/settings" }
               },
               [
                 _c("span", { staticClass: "iconV fa fa-gear" }),
@@ -54093,7 +54143,7 @@ var render = function() {
               "a",
               {
                 staticClass: "nChildV",
-                attrs: { href: "#" },
+                attrs: { title: "logout", href: "#" },
                 on: { click: _vm.logout }
               },
               [
@@ -55575,7 +55625,7 @@ var render = function() {
                         },
                         on: {
                           click: function($event) {
-                            return _vm.setsession(session)
+                            return _vm.setsession(session, index)
                           }
                         }
                       }),
@@ -58338,9 +58388,11 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _vm._l(_vm.sessions, function(session, index) {
-                    return _c("option", { domProps: { value: session.id } }, [
-                      _vm._v(_vm._s(session.session))
-                    ])
+                    return _c(
+                      "option",
+                      { key: index + "_ac", domProps: { value: session.id } },
+                      [_vm._v(_vm._s(session.session))]
+                    )
                   })
                 ],
                 2
@@ -58356,9 +58408,11 @@ var render = function() {
                   _c("option", { attrs: { value: "" } }, [_vm._v("By Role")]),
                   _vm._v(" "),
                   _vm._l(JSON.parse(_vm.roles), function(role, index) {
-                    return _c("option", { domProps: { value: role } }, [
-                      _vm._v(_vm._s(index))
-                    ])
+                    return _c(
+                      "option",
+                      { key: index + "_ab", domProps: { value: role } },
+                      [_vm._v(_vm._s(index))]
+                    )
                   })
                 ],
                 2
@@ -58378,7 +58432,10 @@ var render = function() {
                   _vm._l(_vm.departments, function(department, index) {
                     return _c(
                       "option",
-                      { domProps: { value: department.id } },
+                      {
+                        key: index + "_ad",
+                        domProps: { value: department.id }
+                      },
                       [_vm._v(_vm._s(department.code))]
                     )
                   })
@@ -58647,7 +58704,7 @@ var render = function() {
                                   : $$selectedVal[0]
                               },
                               function($event) {
-                                return _vm.roleName($event.target)
+                                return _vm.roleName()
                               }
                             ]
                           }
@@ -58656,6 +58713,7 @@ var render = function() {
                           return _c(
                             "option",
                             {
+                              key: index + "_bc",
                               attrs: { "data-role": index },
                               domProps: {
                                 selected: role == _vm.urole,
@@ -58688,10 +58746,11 @@ var render = function() {
                               },
                               on: { keyup: _vm.normalize }
                             },
-                            _vm._l(_vm.titleCont, function(mtitle) {
+                            _vm._l(_vm.titleCont, function(mtitle, index) {
                               return _c(
                                 "option",
                                 {
+                                  key: index + "_bb",
                                   domProps: {
                                     value: mtitle,
                                     selected: { selected: mtitle == _vm.title }
@@ -58903,10 +58962,11 @@ var render = function() {
                           attrs: { type: "text", name: "gender", id: "gender" },
                           on: { keyup: _vm.normalize }
                         },
-                        _vm._l(_vm.genderCont, function(mgender) {
+                        _vm._l(_vm.genderCont, function(mgender, index) {
                           return _c(
                             "option",
                             {
+                              key: index + "_x",
                               domProps: {
                                 value: mgender,
                                 selected: mgender == _vm.gender
@@ -58943,11 +59003,15 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c(
-                          "button",
+                          "a",
                           {
                             staticClass:
                               "btn mb-5 mt-3 fs1 font1 btn-sm button bg-danger text-white px-4 py-2 ml-3",
-                            attrs: { onclick: "Swal.close()" }
+                            on: {
+                              click: function($event) {
+                                return _vm.closeWindow()
+                              }
+                            }
                           },
                           [_vm._v("Cancel")]
                         )

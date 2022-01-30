@@ -14,8 +14,8 @@
         >
           <div class="navbar__toggle__block"></div>
         </button>
-        <li class="navbar__list__item"><a :href="home">Home</a></li>
-        <li class="navbar__list__item"><a :href="explore">Explore</a></li>
+        <li class="navbar__list__item"><a href="/">Home</a></li>
+        <li class="navbar__list__item"><a href="/explore">Explore</a></li>
         <li class="navbar__list__item"><a href="https://www.youtube.com/watch?v=dw7IAZa0VYc&list=PL--mhtYCTMobbvT1bDbfCAUS5Sdksnltm">Videos</a></li>
         <li class="navbar__list__item survey-main"><a href="#">Survey <span class="fa fa-caret-down"></span></a>
           <ul class="survey-sub d-none">
@@ -27,7 +27,7 @@
         <li class="navbar__list__item"><a href="#">Contributors</a></li>
 
         <div v-if="username == ''" class="d-inline-block d-lg-none">
-          <li class="navbar__list__item"><a :href="login">Login</a></li>
+          <li class="navbar__list__item"><a href="/login">Login</a></li>
           <li class="navbar__list__item navbar__list__item--btn">
             <a href="#">Signup</a>
           </li>
@@ -69,6 +69,7 @@
   </nav>
 </template>
 <script>
+import axios from 'axios';
 
 export default {  
   data(){
@@ -81,7 +82,7 @@ export default {
     role_id:'',
     }
   },
-  created(){        
+  created(){            
 
       if(localStorage.hasOwnProperty('LoggedUser')){                                
         let role_id =  JSON.parse(localStorage.getItem('LoggedUser')).user.role_id;                     

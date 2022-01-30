@@ -17,7 +17,7 @@
 			            <td width="20%">{{session.is_current==1?'current session':''}}</td>	            
 			            <td width="30%">
 			            	<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" :title="'Edit '+session.session" @click="editsession(session)" style="border-left: 1px solid #ccc;"></span>
-			            	<span class="ml-2 fa fa-check pl-3 text-success fs01 cursor-1" :title="'set ' + session.session+ ' as current session'" @click="setsession(session)" style="border-left: 1px solid #ccc;"></span>			            	
+			            	<span class="ml-2 fa fa-check pl-3 text-success fs01 cursor-1" :title="'set ' + session.session+ ' as current session'" @click="setsession(session,index)" style="border-left: 1px solid #ccc;"></span>			            	
 			            	<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" :title="'Delete '+session.session" @click="deletesession(session.id)"></span>
 			            </td>
 			        </tr>
@@ -36,6 +36,9 @@
 			}
 		},
 		methods: {
+			changeSetSesion:function(obj){
+				$(".forSessionOnNav span").text(obj.session + " SESSION");
+			},
 			swal_form: function(update = false, obj={session_id:1, name:'Natural science', code: 'fns'}){	
 				$('#system-loader').css('display','flex');
 				let formcount = 0;
@@ -196,7 +199,7 @@
 			editsession:function(obj){
 					this.swal_form(true,obj);
 			},
-			setsession:function(obj){
+			setsession:function(obj,index){
 			//		this.swal_form(true,obj);
 			var $vm = this;
 				Swal.fire({
@@ -232,7 +235,19 @@
 							confirmButtonText:'Ok',
 							confirmButtonColor:'#00b96b',	
 						}).then((result)=>{
-							location.reload();
+							let newArray = JSON.parse(JSON.stringify($vm.createdsession));
+							newArray.map((item)=>{
+								if(item.id ==obj.id){
+									item.is_current = "1"
+								}else{
+									item.is_current = "0"
+								}
+							})
+
+							$vm.createdsession = newArray;
+							$vm.changeSetSesion(obj);
+							//location.reload();
+
 						})
 					}
 				})

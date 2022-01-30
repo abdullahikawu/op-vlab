@@ -1010,14 +1010,14 @@ input.login-input{
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-  background: #20152e;
+  background: #eee;
   border-radius: 10px;
   cursor: pointer;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #20154e;
+  background: #503ba5;
   cursor: pointer;
 }
 

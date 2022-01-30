@@ -749,6 +749,9 @@ export default {
 
       },
       async created(){
+		axios.post('/ajax-checklogin').then(function(response){
+			response.data.status == 400 ? localStorage.removeItem('LoggedUser'):'';			
+		  });
 
 		if(localStorage.hasOwnProperty('LoggedUser')){     	      			      
   			this.userLoggedInOld = JSON.parse(localStorage.getItem('LoggedUser')).access_token

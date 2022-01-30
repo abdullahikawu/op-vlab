@@ -60,8 +60,8 @@ class loginController extends Controller
     }
     public function ajaxchecklogin(Request $request){
     
-        $allsessions = $request->session()->all()?? '';
-        if($allsessions != ''){            
+        $allsessions = $request->session()->all()?? '';        
+        if(array_key_exists("info",$allsessions) != ''){            
             return response()->json(['success' => true, 'status'=>200], 200);//still loged in
         }else{
             return response()->json(['success' => true, 'status'=>400], 200);//logged out                    

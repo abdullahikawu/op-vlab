@@ -17,55 +17,55 @@
 		<div  class="MenuLContainer scroll-y vh-70" id="wideMenu"  v-bind:class="{reduceSize:show}">			
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider">
 
-				<a :href="home"  >
+				<a :href="home"   title="home">
 					<span v-bind:class="{btnActive: checkActive('home')}" class="iconOV fa fa-home" title="Home"></span>					
 				</a>
 				<!-- <a href="/UserDashboard"  >
 					<span v-bind:class="{btnActive: checkActive('dashboard')}" class="iconOV fa fa-dashboard" title="Dashboard"></span>					
 				</a> -->
-				<a href="/explore"  >
+				<a href="/explore"  title="explore">
 					<span v-bind:class="{btnActive: checkActive('explore')}" class="iconOV fa fa-spinner" title="Explore"></span>					
 				</a>
 				<!-- <a href="/my-courses"   >
 					<span class="iconOV fa fa-toggle-on" title="Courses" v-bind:class="{btnActive: checkActive('courses')}"></span>					
 				</a> -->
-				<a href="/my-courses">
+				<a href="/my-courses" title="my-courses">
 					<span v-bind:class="{btnActive: checkActive('courses')}" class="iconOV fa fa-toggle-on" title="My Courses"></span>					
 				</a>
 				<!-- <a href="#" >
 					<span v-bind:class="{btnActive: checkActive('discussion')}" class="iconOV fa fa-comment" title="Discussion"></span>					
 				</a> -->
-				<a href="/settings" >
+				<a href="/settings"  title="setting">
 					<span v-bind:class="{btnActive: checkActive('settings')}" class="iconOV fa fa-gear" title="Settings"></span>					
 				</a>
-				<a @click="logout" >
+				<a @click="logout"  title="logout">
 					<span class="iconOV fa fa-arrow-circle-left" style="margin-top: ;" title="Logout"></span>
 				</a>
 			</div>
 			<!-- end mini side bar -->
 			<div id="wideMenu" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px;" >
-				<a href="/" class="nChildV" v-bind:class="{btnActive: checkActive('home')}">
+				<a title="home"  href="/" class="nChildV" v-bind:class="{btnActive: checkActive('home')}">
 					<span class="iconV fa fa-home "></span><div class="labelV">Home</div>
 				</a>	
 				<!-- <a href="UserDashboard" class="nChildV"  v-bind:class="{btnActive: checkActive('dashboard')}">
 					<span class="iconV fa fa-dashboard"></span><div class="labelV">Dashboard</div>
 				</a>	 -->
-				<a href="/explore" class="nChildV"  v-bind:class="{btnActive: checkActive('explore')}">
+				<a title="explore" href="/explore" class="nChildV"  v-bind:class="{btnActive: checkActive('explore')}">
 					<span class="iconV fa fa-spinner"></span><div class="labelV">Explore</div>
 				</a>	
 			<!-- 	<a href="/my-courses"  class="nChildV" v-bind:class="{btnActive: checkActive('courses')}">
 					<span class="iconV fa fa-toggle-on"></span><div class="labelV">Course</div>
 				</a> -->
-				<a href="/my-courses" class="nChildV" v-bind:class="{btnActive: checkActive('courses')}">
+				<a title="my-courses" href="/my-courses" class="nChildV" v-bind:class="{btnActive: checkActive('courses')}">
 					<span class="iconV fa fa-toggle-on"></span><div class="labelV">My Courses</div>
 				</a>
 				<!-- <a href="#"  class="nChildV" v-bind:class="{btnActive: checkActive('discussion')}">
 					<span class="iconV fa fa-comment"></span><div class="labelV">Discussion</div>
 				</a> -->	
-				<a href="/settings"  class="nChildV" v-bind:class="{btnActive: checkActive('settings')}">
+				<a title="settings" href="/settings"  class="nChildV" v-bind:class="{btnActive: checkActive('settings')}">
 					<span class="iconV fa fa-gear"></span><div class="labelV">Settings</div>
 				</a>					
-				<a @click="logout" :href="'#'"  class="nChildV">				
+				<a title="logout" @click="logout" :href="'#'"  class="nChildV">				
 					<span class="iconV fa fa-arrow-circle-left"></span><div class="labelV">Logout</div>
 				</a>				
 			</div>
@@ -125,7 +125,10 @@
 		},
         props:['home','dashboard','explore','mycourse','courses','discussion','settings', 'active', 'incourse'],
         mounted(){
-
+			this.$eventBus.$on('changeSetSession',data=>{          	
+				console.log(data)
+				//this.currentSession = data;
+          	})	
         	/*btn slider*/
         	$('.listMenuBtn').click(function(){        		
         		$('.listMenu').not($(this).next()).slideUp(200);
@@ -171,6 +174,19 @@ $(document).ready(function(){
 <style scoped>
 	@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+	@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+  img {
+    image-rendering: -webkit-optimize-contrast !important;
+  }
+}
+
+/* Unset for Safari 11+ */
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+  img {
+    image-rendering: unset !important;
+  }
+}}
 	ul li{
 		list-style: none;
 		margin: 0px;

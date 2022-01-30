@@ -59,25 +59,32 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email',
             'token' => 'required|string',           
         ]);
+        
 
         if ($validator->fails()) {
             return redirect()->back()->with(['status'=>400, 'msg'=>'all field required']);
         }
         $email = $request->get('email');
         $token = $request->get('token');
+
+        //check if email exist in database
         $user = User::where('email',$email)->first();        
         if (is_null($user)) {
             return redirect()->back()->with(["status" => 409, 'msg'=>'invalid email']);                    
         }else{
-            $datedel = today()->format('Y-m-d'); 
-            $toDelete = PasswordReset::where('created_at','!=', $datedel)->delete();            
-            DB::table('password_resets')->where(['email'=>$email])->delete();
+
+            $datedel = today()->format('Y-m-d');  //get todays date
+
+            $toDelete = PasswordReset::where('created_at','!=', $datedel)->delete(); // delete all expired password reset tokens           
+
+            DB::table('password_resets')->where(['email'=>$email])->delete();// in case if he send for reset password earlier, delet old one
             DB::table('password_resets')->insert([
                 'email'=> $email,
                 'token' => $token,            
                 'created_at'=>$datedel,
-            ]);            
-            session(['forgot_password_token'=> $token]);
+            ]);             // create new reset token
+
+            session(['forgot_password_token'=> $token]); // add token to session
             Mail::to($email)->send(new forgotPasswordMail());                    
             return redirect()->back()->with(["status"=> 200,'msg'=>'Reset password link has been sent to your email address.']);        
         }
