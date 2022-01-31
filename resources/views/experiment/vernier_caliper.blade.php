@@ -161,7 +161,7 @@ $resultTable ='
 
    <div class="w-100 vh-100 position-relative" style="overflow-y: hidden;">
          <!-- top nav bar -->
-         <v-topnave class="vh-1" equipmentname="Micrometer Screw Guage" experimentnum='Experiment I'></v-topnave>
+         <v-topnave class="vh-1" equipmentname="Vernier Caliper" experimentnum='Experiment I'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->

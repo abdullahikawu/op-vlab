@@ -22,7 +22,7 @@ Vue.use(VueAxios, axios);
 Vue.use(plugin);
 
 import storedata from "./store/exp1";
-//import expvicelab3 from "./store/exp2";
+//import expvicelab3 from "./store/exp2"; 
 /*
 const store = new Vuex.Store(
    storeData

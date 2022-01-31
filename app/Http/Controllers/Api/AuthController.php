@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -39,17 +40,24 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $this->allFieldRequiredError;
         }
-        $credentials = [
+      $credentials = [
             'username' => $request->get('username'),
             'password' => md5($request->get('password')),
         ];        
-        
-        return User::where($credentials)->first();
+        $credentials = " '". $request->get('username')."' ";
+        $credentials.=" AND password = '" .md5($request->get('password'))."'";       
+      /*   
+        return $user =DB::table('users')->whereRaw(" replace(username, '/', '') = $credentials")->first();
+         */
+        return User::whereRaw("replace(username, '/', '') = $credentials")->first();
+        /* $user =  (object)$user;
+        return $user; */
     }
 
     public function verifyUser(Request $request)
     {
         $user = $this->checkUser($request);
+        
 
         if($user == $this->allFieldRequiredError){
             return response()->json(['error' => $this->allFieldRequiredError], 400);
@@ -70,7 +78,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {   
         $user = $this->checkUser($request);
-        
+       //return response()->json(['error' => $user], 400);
         if($user == $this->allFieldRequiredError){
             return response()->json(['error' => $this->allFieldRequiredError], 400);
         }

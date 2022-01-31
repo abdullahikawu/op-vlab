@@ -6,7 +6,7 @@
 				<div class="w-100">Select Course</div>
 				<select class="form-control w-100" v-model="selectedcourse" @change="FetchCourseResources">	
 					<option></option>				
-					<option v-for="course in courses" :value="course.id">{{course.code}}</option>
+					<option v-for="(course,index) in courses" :key="index+'x'" :value="course.id">{{course.code}}</option>
 				</select>								
 			</div>
 			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative">					
@@ -15,7 +15,7 @@
 				<p class="fs001 my-1">Select Experiment</p>
 				<select class="form-control  w-100" v-model="selectExperiment" id="experimentBox">
 					<option ></option>
-					<option v-for="experiment in experiments" :value="experiment.id">{{experiment.name}}</option>
+					<option v-for="(experiment,index) in experiments" :key="index+'xx'" :value="experiment.id">{{experiment.name}}</option>
 				</select>
 			</div>
 			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative">								
@@ -25,7 +25,7 @@
 			<br>
 			<p class="text-white badge badge-success">{{courseName}} Experiments</p>
 			<div class="row w-100 py-3" v-if="!toload">				
-				<div v-for="experiment in courseexperiments" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">
+				<div v-for="(experiment,index) in courseexperiments" :key="index+'xa'" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">
 					
 					<div class="w-100 rounded shadow-sm bg-white p-2 d-flex justify-between" style="border: 1px solid #eee;" >
 						<span>{{experiment.experiments.name}}</span>

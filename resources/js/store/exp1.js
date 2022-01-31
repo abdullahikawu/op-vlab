@@ -189,7 +189,12 @@ export default {
                 <td class="v-template" width="15%"><input type="number" class="valueReading form-control h-100 bg-white"></td>                    
               </tr>
               <tr>
-            </table>`,
+            </table>
+              <div class="fs1">
+                <p class="mt-2 mb-1">Guides</p>              
+                <b>External</b>[Min:50, Max: 100], <b>Internal</b>[Min:100, Max: 200], <b>Depth</b>[Min:100, Max: 200]
+              </div>
+            `,
             'micrometer':`<table class="table-stripped" style="width:80%; min-width:300px;">
                  <thead class="bg-dark text-white fs01">
                     <th >#</th>
@@ -208,6 +213,7 @@ export default {
                   <td class="v-template" width="15%"><input type="number" class="valueReading form-control h-100 bg-white"></td>                    
                 </tr>
               </table>
+              
             `,
             'resistor-color-code':`
               <div class="row mx-auto" style="width:96%;">

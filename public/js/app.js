@@ -14698,6 +14698,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -14713,6 +14714,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       experiment: "",
       flipNow: true,
       setdata: {},
+      setDataFromDB: {},
       resistorData: [],
       limitation: '01:30'
     };
@@ -14837,12 +14839,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             $('#' + thisID + '>table').find('tr').each(function (index) {
               values = [];
               $(this).find('.valueReading').each(function (index2) {
-                if (index == 0) {
+                if (index == 1) {
                   //to get equal data for all rows dependent on first row count
                   if ($(this).val() != '') {
                     rowCounter += 1;
                     values.push($(this).val());
-                  }
+                  } else {}
                 } else {
                   if (index2 < rowCounter) {
                     $(this).css({
@@ -14882,6 +14884,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       }
 
+      for (var key in $this.setdata) {
+        if ($this.setdata[key].length < 1 && $this.setDataFromDB != null) {
+          if (Object.hasOwnProperty.call($this.setDataFromDB, key)) {
+            $this.setdata[key] = $this.setDataFromDB[key]; //avoid overiding 
+          }
+        }
+      }
+
       if (state) {
         this.show_loader();
         var route = 'create';
@@ -14912,7 +14922,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             limitation: this.limitation
           };
           route = 'update';
-          success_msg = "updated successfully";
+          success_msg = "Updated Successfully";
         }
 
         this.axios.post(this.baseApiUrl + 'works/' + route, this.createFormData(formData), {
@@ -14925,8 +14935,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
               title: success_msg,
               icon: 'success',
               showCancelButton: true,
-              confirmButtonText: "Ok",
-              cancelButtonColor: "red"
+              cancelButtonText: 'Cancel',
+              cancelButtonColor: '#dd000f',
+              confirmButtonColor: '#00b96b'
             }).then(function (result) {
               location.reload();
             });
@@ -15103,6 +15114,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         exp = this.alldata.weekly_work_experiments[i];
         experimentids.push(exp.experiment_id);
         this.setdata[exp.experiment_id] = JSON.parse(exp.setdata);
+        this.setDataFromDB[exp.experiment_id] = JSON.parse(exp.setdata);
       } //console.log(experimentids);
 
 
@@ -15141,6 +15153,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       type: Object,
       "default": function _default() {
         return {};
+      }
+    },
+    guides: {
+      type: String,
+      "default": function _default() {
+        return '';
       }
     },
     alldata: {
@@ -17695,7 +17713,7 @@ vue__WEBPACK_IMPORTED_MODULE_4__.default.use((vue_axios__WEBPACK_IMPORTED_MODULE
 /*import storeData from "./store/index";*/
 
 vue__WEBPACK_IMPORTED_MODULE_4__.default.use(_plugin_plugin__WEBPACK_IMPORTED_MODULE_3__.default);
- //import expvicelab3 from "./store/exp2";
+ //import expvicelab3 from "./store/exp2"; 
 
 /*
 const store = new Vuex.Store(
@@ -19488,8 +19506,8 @@ __webpack_require__.r(__webpack_exports__);
       arr5c: 0
     },
     experiment_data_format: {
-      'vernier-caliper': "<table class=\"table-stripped\" style=\"width:80%; min-width:300px;\">\n                <thead class=\"bg-dark text-white fs01\">\n                    <th >#</th>\n                    <th>Object 1</th>                    \n                    <th>Object 2</th>                    \n                    <th>Object 3</th>                    \n                    <th>Object 4</th>                    \n                    <th>Object 5</th>                    \n                </thead>\n               <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">External size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">Internal size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"16%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">Depth size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n            </table>",
-      'micrometer': "<table class=\"table-stripped\" style=\"width:80%; min-width:300px;\">\n                 <thead class=\"bg-dark text-white fs01\">\n                    <th >#</th>\n                    <th>Object 1</th>                    \n                    <th>Object 2</th>                    \n                    <th>Object 3</th>                    \n                    <th>Object 4</th>                    \n                    <th>Object 5</th>                    \n                  </thead>\n                 <tr>\n                  <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">sizes</td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                </tr>\n              </table>\n            ",
+      'vernier-caliper': "<table class=\"table-stripped\" style=\"width:80%; min-width:300px;\">\n                <thead class=\"bg-dark text-white fs01\">\n                    <th >#</th>\n                    <th>Object 1</th>                    \n                    <th>Object 2</th>                    \n                    <th>Object 3</th>                    \n                    <th>Object 4</th>                    \n                    <th>Object 5</th>                    \n                </thead>\n               <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">External size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">Internal size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"16%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n                <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">Depth size</td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n              </tr>\n              <tr>\n            </table>\n              <div class=\"fs1\">\n                <p class=\"mt-2 mb-1\">Guides</p>              \n                <b>External</b>[Min:50, Max: 100], <b>Internal</b>[Min:100, Max: 200], <b>Depth</b>[Min:100, Max: 200]\n              </div>\n            ",
+      'micrometer': "<table class=\"table-stripped\" style=\"width:80%; min-width:300px;\">\n                 <thead class=\"bg-dark text-white fs01\">\n                    <th >#</th>\n                    <th>Object 1</th>                    \n                    <th>Object 2</th>                    \n                    <th>Object 3</th>                    \n                    <th>Object 4</th>                    \n                    <th>Object 5</th>                    \n                  </thead>\n                 <tr>\n                  <td class=\"v-template p-1 text-center fs01 fw5\" width=\"25%\">sizes</td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>\n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                  <td class=\"v-template\" width=\"15%\"><input type=\"number\" class=\"valueReading form-control h-100 bg-white\"></td>                    \n                </tr>\n              </table>\n              \n            ",
       'resistor-color-code': "\n              <div class=\"row mx-auto\" style=\"width:96%;\">\n                <div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12 pl-3 pr-1\">\n                  <div class=\"fs01\">Normal Bands</div>\n                  <select class=\"form-control w-100 py-2 chosen-select\" id=\"normalBand_r\" multiple>               \n                    <option value=\"black\"> black</option><option value=\"brown\"> brown</option><option value=\"red\"> red</option>\n                    <option value=\"orange\"> orange</option><option value=\"yellow\"> yellow</option><option value=\"green\"> green</option><option value=\"blue\"> blue</option>\n                    <option value=\"violet\"> violet</option><option value=\"grey\"> grey</option><option value=\"white\"> white</option><option value=\"gold\"> gold</option><option value=\"silver\"> silver</option>\n                  </select>\n                </div>\n                <div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12 px-1\">\n                  <div class=\"fs01\">Tolerance</div>\n                  <select class=\"form-control w-100 py-2\" id=\"tolerance_r\">\n                    <option value=\"1\">select tolerance</option>\n                    <option value=\"black\"> black</option><option value=\"brown\"> brown</option><option value=\"red\"> red</option>\n                    <option value=\"orange\"> orange</option><option value=\"yellow\"> yellow</option><option value=\"green\"> green</option><option value=\"blue\"> blue</option>\n                    <option value=\"violet\"> violet</option><option value=\"grey\"> grey</option><option value=\"white\"> white</option><option value=\"gold\"> gold</option><option value=\"silver\"> silver</option>\n                  </select>\n                </div>\n                <div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12 px-1\">\n                  <div class=\"fs01 w-100\">Multiplier</div>\n                  <select class=\"form-control w-100 py-2\" id=\"multiplier_r\">\n                    <option value=\"1\">select multiplier</option>\n                    <option value=\"black\"> black</option><option value=\"brown\"> brown</option><option value=\"red\"> red</option>\n                    <option value=\"orange\"> orange</option><option value=\"yellow\"> yellow</option><option value=\"green\"> green</option><option value=\"blue\"> blue</option>\n                    <option value=\"violet\"> violet</option><option value=\"grey\"> grey</option><option value=\"white\"> white</option><option value=\"gold\"> gold</option><option value=\"silver\"> silver</option>\n                  </select>\n                </div>\n                <div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12 px-1\">\n                  <div class=\"fs01\">Temperature</div>\n                  <div style=\"display:flex; width:100%\">\n                    <select class=\"form-control py-2\" id=\"temperature_r\" style=\"width:70%;\">\n                      <option value=\"1\">select temperature</option>\n                      <option value=\"brown\">brown</option><option value=\"red\">red</option><option value=\"orange\">orange</option><option value=\"yellow\">yellow</option>\n                    </select>\n                    <button id=\"addResistor\" style=\"width:30%;\" class=\"button py-1 px-1 fs01\">Add</button>\n                  </div>\n                </div>\n              </div>              \n              <table class=\"table-stripped resistor mt-2\" style=\"width:100%; min-width:300px;\">\n                  <thead class=\"bg-dark text-white fs01\">\n                    <th >Bands</th>\n                    <th>Tolerance</th>\n                    <th>Multiplier</th>\n                    <th>Temperature</th>\n                    <th>#</th>\n                  </thead>\n                  <tbody></tbody>\n              </table>\n            "
     },
     loggedIn: null
@@ -24557,7 +24575,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.cover-template[data-v-5e9bfbcf]{\n\t\tposition: relative;\n}\n.closeMsg[data-v-5e9bfbcf]{\t\t\t\n\t\tfont-size: 0.9em;\n\t\tcolor: #b56;\n}\n.resource[data-v-5e9bfbcf]{\n\t\tposition: relative;\n}\n.resource-caption[data-v-5e9bfbcf]{\n\t  position: absolute;\n\t  bottom: 100%;\n\t  left: 0;\n\t  right: 0;\n\t  background-color: rgba(0,0,50,.6);\n\t  overflow: hidden;\n\t  width: 100%;\n\t  height:0;\n\t  transition: .5s ease;\n\t  z-index: 100;\n}\n.overlaytext[data-v-5e9bfbcf] {\n  color: white;\n  font-size: 20px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  text-align: center;\n}\n.resource:hover .resource-caption[data-v-5e9bfbcf]{\n\t\tbottom: 0 !important;\n  \t\theight: 100% !important;\n}\n.button[data-v-5e9bfbcf]:focus{\n\t\tbox-shadow: none !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.cover-template[data-v-5e9bfbcf]{\n\t\tposition: relative;\n}\n.closeMsg[data-v-5e9bfbcf]{\t\t\t\n\t\tfont-size: 0.9em;\n\t\tcolor: #b56;\n}\n.resource[data-v-5e9bfbcf]{\n\t\tposition: relative;\n}\n.resource-caption[data-v-5e9bfbcf]{\n\t  position: absolute;\n\t  bottom: 100%;\n\t  left: 0;\n\t  right: 0;\n\t  top: 0;\n\t  background-color: rgba(0,0,50,.6);\n\t  overflow: hidden;\n\t  width: 100%;\n\t  height:0;\n\t  transition: .5s ease;\n\t  z-index: 100;\n}\n.overlaytext[data-v-5e9bfbcf] {\n  color: white;\n  font-size: 20px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  text-align: center;\n}\n.resource:hover .resource-caption[data-v-5e9bfbcf]{\n\t\tbottom: 0 !important;\n\t\topacity: 1;\n  \t\theight: 100% !important;\n}\n.button[data-v-5e9bfbcf]:focus{\n\t\tbox-shadow: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -51381,10 +51399,12 @@ var render = function() {
             [
               _c("option"),
               _vm._v(" "),
-              _vm._l(_vm.courses, function(course) {
-                return _c("option", { domProps: { value: course.id } }, [
-                  _vm._v(_vm._s(course.code))
-                ])
+              _vm._l(_vm.courses, function(course, index) {
+                return _c(
+                  "option",
+                  { key: index + "x", domProps: { value: course.id } },
+                  [_vm._v(_vm._s(course.code))]
+                )
               })
             ],
             2
@@ -51430,10 +51450,12 @@ var render = function() {
             [
               _c("option"),
               _vm._v(" "),
-              _vm._l(_vm.experiments, function(experiment) {
-                return _c("option", { domProps: { value: experiment.id } }, [
-                  _vm._v(_vm._s(experiment.name))
-                ])
+              _vm._l(_vm.experiments, function(experiment, index) {
+                return _c(
+                  "option",
+                  { key: index + "xx", domProps: { value: experiment.id } },
+                  [_vm._v(_vm._s(experiment.name))]
+                )
               })
             ],
             2
@@ -51470,10 +51492,13 @@ var render = function() {
       ? _c(
           "div",
           { staticClass: "row w-100 py-3" },
-          _vm._l(_vm.courseexperiments, function(experiment) {
+          _vm._l(_vm.courseexperiments, function(experiment, index) {
             return _c(
               "div",
-              { staticClass: "col-lg-4 col-md-3 col-sm-6 col-sm-12 resource" },
+              {
+                key: index + "xa",
+                staticClass: "col-lg-4 col-md-3 col-sm-6 col-sm-12 resource"
+              },
               [
                 _c(
                   "div",
@@ -58000,8 +58025,8 @@ var render = function() {
             ? _c(
                 "span",
                 { staticClass: "w-100" },
-                _vm._l(_vm.experiments, function(exp) {
-                  return _c("div", { staticClass: "w-100" }, [
+                _vm._l(_vm.experiments, function(exp, index) {
+                  return _c("div", { key: index + "x", staticClass: "w-100" }, [
                     _vm.selectedExerpiment.includes(exp.id)
                       ? _c("span", [
                           _c("input", {
@@ -58037,16 +58062,24 @@ var render = function() {
                                   [_vm._v("view")]
                                 ),
                                 _vm._v(" "),
+                                _c("span", {
+                                  domProps: { innerHTML: _vm._s(_vm.guides) }
+                                }),
+                                _vm._v(" "),
                                 _c(
                                   "div",
                                   {
                                     staticStyle: { display: "none" },
                                     attrs: { id: "x" + exp.id }
                                   },
-                                  _vm._l(_vm.setdata[exp.id], function(tr) {
+                                  _vm._l(_vm.setdata[exp.id], function(
+                                    tr,
+                                    index
+                                  ) {
                                     return _c(
                                       "table",
                                       {
+                                        key: index + "xx",
                                         staticClass:
                                           "table table-stripped table-bordered"
                                       },
@@ -58054,11 +58087,17 @@ var render = function() {
                                         _c(
                                           "tr",
                                           _vm._l(tr, function(td, i) {
-                                            return _c("td", [
-                                              _vm._v(
-                                                _vm._s(i) + " : " + _vm._s(td)
-                                              )
-                                            ])
+                                            return _c(
+                                              "td",
+                                              { key: i + "xxl" },
+                                              [
+                                                _vm._v(
+                                                  _vm._s(i + 1) +
+                                                    " : " +
+                                                    _vm._s(td)
+                                                )
+                                              ]
+                                            )
                                           }),
                                           0
                                         )

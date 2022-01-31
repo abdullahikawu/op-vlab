@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use \DB;
+use Illuminate\Support\Facades\DB;
 class SessionController extends Controller
 {
     public function create(Request $request)
@@ -117,7 +117,7 @@ class SessionController extends Controller
         $session = Session::find($sessionId);
         $check  = DB::table('users')->where('session_id', $sessionId)->first();
         $check1 = DB::table('courses')->where('session_id',$sessionId)->first();
-        $check2 =  Session::find($sessionId)->where('is_current','1')->first();
+        $check2 = DB::table('session')->where(['id'=>$sessionId,'is_current'=>'1'])->first();        
 
         if (is_null($check2)) {            
             if (is_null($check) && is_null($check1)) {
@@ -134,10 +134,10 @@ class SessionController extends Controller
                 }
             }else{
                 //cant delete
-                return response()->json(['error' => "can't delete this faculty"], 409);        
+                return response()->json(['error' => "can't delete this session"], 409);        
             }
         }else{
-            return response()->json(['error' => "can't delete this faculty"], 409);        
+            return response()->json(['error' => "can't delete this session"], 409);        
         }
     }
 

@@ -220,6 +220,7 @@
 	  bottom: 100%;
 	  left: 0;
 	  right: 0;
+	  top: 0;
 	  background-color: rgba(0,0,50,.6);
 	  overflow: hidden;
 	  width: 100%;
@@ -241,6 +242,7 @@
 }
 	.resource:hover .resource-caption{
 		bottom: 0 !important;
+		opacity: 1;
   		height: 100% !important;
 	}
 	.button:focus{

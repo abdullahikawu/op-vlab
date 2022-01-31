@@ -50,17 +50,18 @@
                   <label class="fs1 fw5 font form-header">Select Experiment to Set Data  
                    </label>
                   <span v-if="flipNow" class="w-100">                
-                    <div v-for="exp in experiments" class="w-100">
+                    <div v-for="(exp,index) in experiments" :key="index+'x'" class="w-100">
                         <span v-if="selectedExerpiment.includes(exp.id)">                      
                         <input @click="InputData(exp.id)" :value="exp.id" type="radio" name="exp_t11" class="mr-1 mt-2 d-inline-block">
                         <label class="mb-1 d-inline-block text-capitalize">{{exp.name}}</label>                  
                         <span v-if="update" class="">
                           <a class="venobox text-primary" data-vbtype="inline" :href="'#x'+exp.id">view</a>
+                          <span v-html="guides"></span>
 
                             <div :id="'x'+exp.id" style="display:none;">
-                              <table v-for="tr in setdata[exp.id]" class="table table-stripped table-bordered"> 
+                              <table v-for="(tr,index) in setdata[exp.id]" :key="index+'xx'" class="table table-stripped table-bordered"> 
                                  <tr>
-                                    <td v-for="(td, i) in tr">{{i}} : {{td}}</td>
+                                    <td v-for="(td, i) in tr" :key="i+'xxl'">{{i+1}} : {{td}}</td>
                                  </tr>
                               </table>
                             </div>
@@ -111,6 +112,7 @@
                     experiment:"",
                     flipNow:true,
                     setdata:{},
+                    setDataFromDB:{},
                     resistorData:[],
                     limitation:'01:30'
 
@@ -216,15 +218,19 @@
                       if ($('#'+thisID+'>table').hasClass('resistor')){ 
                         this.setdata[thisID] = this.resistorData;                       
                       }else{
+                        
                         if ($('#'+thisID+'>table').find('tr').length>1){
                           $('#'+thisID+'>table').find('tr').each(function(index){                            
-
+                            
                             values = [];
-                            $(this).find('.valueReading').each(function(index2){
-                              if (index == 0) { //to get equal data for all rows dependent on first row count
+                            
+                            $(this).find('.valueReading').each(function(index2){                              
+                              if (index == 1) { //to get equal data for all rows dependent on first row count
                                 if ($(this).val() != '') {
                                   rowCounter += 1;
                                   values.push($(this).val());
+                                }else{
+                                  
                                 }                                   
                               }else{                              
                                 if (index2 < rowCounter) {
@@ -257,7 +263,16 @@
                           }                       
                         }
                       }
-                    }
+                    }  
+
+                    for (const key in $this.setdata) {                      
+                      if ($this.setdata[key].length<1 && $this.setDataFromDB != null) {                        
+                        if (Object.hasOwnProperty.call($this.setDataFromDB,key)) {                          
+                          $this.setdata[key] = $this.setDataFromDB[key];  //avoid overiding 
+                        }                        
+                      }
+                    }               
+              
                   if (state) {                      
                     this.show_loader();                    
                     let route = 'create';
@@ -266,7 +281,7 @@
                      if (this.update === true){ 
                         formData = {setdata: JSON.stringify(this.setdata), mode:ActivateMode, course_id:this.selectedCourse,work_id: this.alldata.id, title:title.val(), date_open:open.val(), date_close:close.val(), experiment_ids:JSON.stringify(this.selectedExerpiment),access_code:access.val(),limitation:this.limitation}
                          route = 'update';                         
-                        success_msg = "updated successfully";
+                        success_msg = "Updated Successfully";
                      }
                     this.axios.post(this.baseApiUrl+'works/'+route,this.createFormData(formData),{headers:this.axiosHeader})
                     .then(function(response, status, request) {                                          
@@ -276,8 +291,9 @@
                                      title: success_msg,                              
                                      icon:'success',                                     
                                      showCancelButton: true,
-                                     confirmButtonText: `Ok`,                                          
-                                     cancelButtonColor: `red`,                                          
+                                     cancelButtonText:'Cancel',				      				      
+                                      cancelButtonColor:'#dd000f',					      
+                                      confirmButtonColor:'#00b96b',	                                   
                                    }).then((result) => {                                        
                                        location.reload();                                          
                                    })
@@ -456,6 +472,7 @@
                         exp = this.alldata.weekly_work_experiments[i];
                         experimentids.push(exp.experiment_id);
                         this.setdata[exp.experiment_id]= JSON.parse(exp.setdata);
+                        this.setDataFromDB[exp.experiment_id] = JSON.parse(exp.setdata);
                     }                  
                     //console.log(experimentids);
                     $this.selectedExerpiment = experimentids;// from alldata.experiments
@@ -496,6 +513,12 @@
                   default: function(){
                     return {}
                   }
+               },
+               guides:{
+                 type:String,
+                    default:function () {
+                         return '';
+                    }
                },
                alldata:{
                     type:Object              
