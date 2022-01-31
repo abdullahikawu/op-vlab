@@ -48735,8 +48735,8 @@ var render = function() {
         staticClass: "timer bg-dark",
         staticStyle: {
           position: "absolute",
-          top: "87px",
-          right: "40px",
+          top: "13vh",
+          right: "24px",
           "z-index": "15"
         }
       },

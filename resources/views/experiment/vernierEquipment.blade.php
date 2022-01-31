@@ -8,6 +8,9 @@
 
 <style type="text/css">
 .metadata { display: none; }
+#collate{
+  z-index: 100;
+}
 </style>
 <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-3326007-19"></script>
 <?php

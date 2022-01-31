@@ -7,7 +7,7 @@
         <input type="text" name="enrollment_code" @keyup="compare($event.target.value, $event)" class="formControl ">
       </div>
     </div>   
-		<div style="position: absolute;top: 87px; right: 40px; z-index: 15;" class="timer bg-dark">
+		<div style="position: absolute;top: 13vh; right: 24px; z-index: 15;" class="timer bg-dark">
 			  <div class="countdown">
 			    <!-- <div class="block">
 			      <p class="digit">{{ days}}:</p>
