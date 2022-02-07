@@ -17,9 +17,10 @@ class SessionSeeder extends Seeder
     	 
     	 DB::table('session')->insert([
     	 	'id'=> $uuids->session_id,
-    	 	'session'=>'2018/2019',
+    	 	'session'=>'2020/2021',
     	 	'is_current'=>'1'
     	 ]);
         //
     }
 }
+?>

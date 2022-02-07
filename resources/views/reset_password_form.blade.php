@@ -34,9 +34,13 @@
                 $('#resetcont').html('<span class="text-danger fs1 font">password field cannot be empty</span>');
             }else{
                 if ($('#password').val() == $(this).val()) {
-                    $('#resetcont').html(`
+                    if($('#password').val().length <8){
+                        $('#resetcont').html('<span class="text-danger fs1 font">password length must be not be less than 8</span>');
+                    }else{
+                        $('#resetcont').html(`
                         <span class="w-100 p-text-success">password matched</span>
                         <button class="p-dark sys-submit-btn text-white font fs8 fw2 w-100 h2 " type="submit">Reset</button>`);
+                    }
                 }else{
                     $('#resetcont').html('<span class="text-danger fs1 font">password mismatch</span>');
                 }            
@@ -46,6 +50,9 @@
         })
     </script>
 @endsection
+<?php
+$trackPoint = 0;
+?>
 @section('content-body')
     <div class="content row m-0 p-0">
     <!-- <v-userauth></v-userauth> -->
@@ -77,6 +84,7 @@
                           <i class="fa fa-check"></i>
                           {{session('msg')}}
                         </div>               
+                        <?php $trackPoint= 1; ?>
                     @elseif(session('status')== 400)   
                         <div class="warning-msg blur-pos">
                           <i class="fa fa-warning"></i>                            
@@ -86,12 +94,14 @@
                     <div class="error-msg blur-pos">
                           <i class="fa fa-fa-times-circle"></i>                            
                           {{session('msg')}}
-                        </div>               
+                        </div>            
+                        <?php $trackPoint= 2; ?>   
                     @endif
                 @endif
             <div class="d-flex">
-                
+            @if($trackPoint == 0)
                  <p class="font2 fs8 fw6 p-text-dark">Reset Password</p>
+            @endif
                 <div  id="login-msg" class="p-0 m-0 d-flex flex-wrap position-relative" >               
                     <span id="login-msg-loader" class="p-display-none">
                         <span>Hi, this will only take a minute</span>
@@ -108,18 +118,28 @@
                     <span class="alert alert-warning forLoginMsg" >No internet connection...</span>
                 </div>
             </div>
-             <form id="login-form" action="{{route('resetPassword')}}" method="POST">
-                <div class="position-relative">                    
-                <input class="form-control my-3 h2 login-input" required="" min="8" max="12" id="password" autocomplete="off" type="password" name="password" placeholder="Enter new password">
-                 <span  style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark togglePwDisplayc">show</span>
-                </div>
-                <div class="position-relative">                    
-                <input class="form-control my-3 h2 login-input" required="" min="8" max="12" id="cpassword" autocomplete="off" type="password" name="password_confirmation" placeholder="Confirm new password">                 
-                 <span  style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark togglePwDisplayc">show</span>
-                </div>                
-                <input hidden name="token" value="{{ request()->token_p }}">              
-                <div id="resetcont"></div>
-            </form>
+            @if($trackPoint == 0)
+                <form id="login-form" action="{{route('resetPassword')}}" method="POST">
+                    <div class="position-relative">                    
+                    <input class="form-control my-3 h2 login-input" required="" min="8" max="12" id="password" autocomplete="off" type="password" name="password" placeholder="Enter new password">
+                    <span  style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark togglePwDisplayc">show</span>
+                    </div>
+                    <div class="position-relative">                    
+                    <input class="form-control my-3 h2 login-input" required="" min="8" max="12" id="cpassword" autocomplete="off" type="password" name="password_confirmation" placeholder="Confirm new password">                 
+                    <span  style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark togglePwDisplayc">show</span>
+                    </div>                
+                    <input hidden name="token" value="{{ request()->token_p }}">              
+                    <div id="resetcont"></div>
+                </form>
+            @elseif($trackPoint == 1)
+                <center>
+                    <a href="/login" class="btn btn-success" >Login Now</a>
+                </center>
+            @elseif($trackPoint == 2)
+                <center>
+                    <a href="/forgot_password" class="btn btn-light" >Forgot Password</a>
+                </center>
+            @endif
 
             </div>
             <br><br><br><br>

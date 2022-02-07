@@ -44,6 +44,9 @@
 			</div>
 			<!-- end mini side bar -->
 			<div id="wideMenu" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px;" >
+				<a href="/" class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
+					<span class="iconV fa fa-caret-left "></span><div class="labelV">Back</div>
+				</a>	
 				<a title="home"  href="/" class="nChildV" v-bind:class="{btnActive: checkActive('home')}">
 					<span class="iconV fa fa-home "></span><div class="labelV">Home</div>
 				</a>	

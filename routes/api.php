@@ -62,11 +62,15 @@ Route::group([
 
             Route::post('students', [UserController::class, 'getStudents']);
             Route::get('users', [UserController::class, 'getAllUsers']);
+            Route::get('inactive_users', [UserController::class, 'getAllInActiveUsers']);
+            
             Route::post('by_search', [UserController::class, 'getAllUsersBySearch']);
 
             Route::post('faculty_admins', [UserController::class, 'getFacultyAdmins']);
             Route::post('delete', [UserController::class, 'delete']);
+            Route::post('activate_user', [UserController::class, 'activateUser']);
             Route::post('update', [UserController::class, 'update']);
+            
             Route::post('create', [UserController::class, 'create']);
             Route::post('import_students', [UserController::class, 'importStudents']);
             Route::post('update_password', [UserController::class, 'updatePassword']);

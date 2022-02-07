@@ -59,7 +59,7 @@
      </div>
 
    </div>
-	</div>
+	
 </template>
 <script>
 	import progress from './progressBar.vue';

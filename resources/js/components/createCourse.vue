@@ -1,8 +1,8 @@
 <template>
 	<div class="m-0 p-0">
 			<div v-if="update" class="close" style="color: red;position: fixed;top: 0px;right: 5px;font-size: 2em;pointer-events: none;cursor: pointer;">&times</div>
-	<div class="row bg-light m-0 px-2 pt-4">
-            <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 m-0 ">
+	<div :class="!update? 'bg-light row m-0 px-2 pt-4':'bg-white row m-0 px-2 pt-4'">
+            <div v-if="!update" class="col-lg-4 col-md-5 col-sm-12 col-xs-12 m-0 ">
             	<p class="fs2 fw8 font">
             		<span v-if="!update">Create Course</span>
             		<span v-if="update">Update Course</span>
@@ -31,7 +31,7 @@
             			   	
             </div>
             	
-            <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 pt-3" style="height: 76vh;">
+            <div :class="!update? 'col-lg-8 col-md-7 col-sm-12 col-xs-12 pt-3': 'pt-3 col-md-12'" style="height: 76vh;">
             	<!-- course detatil -->            	
             	<div  class="py-4 px-4 mt-3 r2 bg-white shadow-sm" style="">
             		<div id="cdetail" v-show="sectionState==1" class="m-0 p-0">            			
@@ -59,6 +59,10 @@
 	            			</div>
 	            		</div>
 	            	</div>
+	            	<div v-if="update"  v-show="sectionState==2" class="m-0 p-0 shineA" style="min-height: 250px;">     
+						<h2 class="text-success text-center">Proccess Completed</h2>
+	            		<h6 class="text-center">click on submit to complete this process</h6>
+					</div>
 	            	<div v-if="!update" id="addExperiment" v-show="sectionState==2" class="m-0 p-0 shineA" style="min-height: 250px;">     
 	            			<p class="fw8 fs1 font" style="color: #777;">Add Experiment</p>
 	            			<div class="row">            			
@@ -67,7 +71,7 @@
 		            				<div class="d-flex">
 		            					<select @keyup="normalize" class="form-control vI w-100" id="selectExperiment">
 		            						<option ></option>
-		            						<option v-for="experiment in experiments" :value="experiment.id">{{experiment.name}}</option>
+		            						<option v-for="(experiment, index) in experiments" :key="index+'hh'" :value="experiment.id">{{experiment.name}}</option>
 		            					</select>
 		            					<button class=" ml-2 sysbtn p-success text-white" @click="addEBox">Add</button>
 		            				</div>
@@ -238,17 +242,15 @@
             </div>
             <div class="col-lg-4 col-md-3 col-sm-12 mx-auto py-2 d-flex">            	
             	<button v-show="sectionState >1" class="btn p-success button text-white py-2 px-3 mr-3" @click="prevSection" ><span class="fa fa-arrow-left"></span> Previous </button>            	
-            	<button v-show="sectionState < 4" class="btn p-success button text-white py-2 px-3" @click="nextSection" > Continue <span class="fa fa-arrow-right"></span></button>
-            	
-            	<button v-if="!update" v-show="sectionState == 4" class="btn p-success button text-white py-2 px-3" @click="submitProcess" >
+            	<button v-if="!update" v-show="sectionState == 4" class="btn p-success button text-white py-2 px-3" @click="submitProcess" >				         
             		<span>Submit</span>
-            		<span class="fa fa-arrow-right"></span>
-            		
+            		<span class="fa fa-arrow-right"></span>            		
             	</button>
+            	<button v-if="!update" v-show="sectionState < 4" class="btn p-success button text-white py-2 px-3" @click="nextSection" > Continue <span class="fa fa-arrow-right"></span></button>   
             	<div v-if="update">
-	            	<button v-show="sectionState > 1" class="btn p-success button text-white py-2 px-3" @click="submitProcess" >
+	            	<button class="btn p-success button text-white py-2 px-3" @click="nextSection(), submitProcess()" >
 	            		<span >Update</span>             		
-	            		<span class="fa fa-arrow-right"></span>
+	            		<span class="fa fa-update"></span>
 	            	</button> 
 
 	            	<button onclick="Swal.close()"  class="button bg-danger text-white px-3 py-2 ml-3">Cancel</button>            		
@@ -757,7 +759,8 @@
 			            	//console.log($vm.axiosHeader)
 			            });
 
-			        }catch(err){			        	
+			        }catch(err){		
+						console.log(err)	        	
 				   		$('#system-loader').css('display','none');				   	    
 			            vt.error($vm.errorNetworkMessage,{
 							  title: 'session expired',

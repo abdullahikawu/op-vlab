@@ -45,7 +45,7 @@ class AuthController extends Controller
             'password' => md5($request->get('password')),
         ];        
         $credentials = " '". $request->get('username')."' ";
-        $credentials.=" AND password = '" .md5($request->get('password'))."'";       
+        $credentials.="OR username ='".$request->get('username')."' AND password = '" .md5($request->get('password'))."'";       
       /*   
         return $user =DB::table('users')->whereRaw(" replace(username, '/', '') = $credentials")->first();
          */

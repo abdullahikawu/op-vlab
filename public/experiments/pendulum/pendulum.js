@@ -16,11 +16,11 @@ class Pendulum {
     this.origin = origin_.copy();
     this.position = createVector();
     this.r = r_*50;
-    this.angle = PI / 4;
+    this.angle = angle;
 
     this.aVelocity = 0.0;
     this.aAcceleration = 0.0;
-    this.damping = 0.995; // Arbitrary damping
+    this.damping = 0.999; // Arbitrary damping
     this.ballr = ballr*2; //48.0; // Arbitrary ball radius
 
     this.dragging = false;
@@ -115,15 +115,15 @@ class Pendulum {
     if (!this.dragging) {
 
       /*speed determinant */
-      this.affect = abs((this.r - this.ballr + this.angle)/30);
+     // this.affect = this.angle;
       //print(this.affect);
 
       //this.affect = abs((this.r - this.ballr + this.angle)/30);
       //print(this.angleDet) ;
       /*end speed determinant*/
-      let gravity = this.affect; // Arbitrary constant
-      let k = (this.r/50)*20;
-      this.aAcceleration = (-1  * sin(this.angle)/ k); 
+      let gravity = 1; // Arbitrary constant    
+      //force = this.gravity * sin(this.angle)
+      this.aAcceleration = (-1  * sin(this.angle)/ this.r); 
       //print(this.aAcceleration);
       if(this.aprev == 0){
         this.aprev = this.angle;        

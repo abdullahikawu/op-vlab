@@ -72,7 +72,7 @@ class FacultyController extends Controller
 
     public function checkFacultyExist()
     {
-        $faculties =  Faculty::all();
+        $faculties =  Faculty::where('status','Active')->get();
         if (sizeof($faculties)>0) {
             return response()->json(['success' => true], 200);            
         }
@@ -167,7 +167,7 @@ class FacultyController extends Controller
     {
         
         $faculties1 =  Faculty::where('status','Active')->get();
-        $departments =  Department::all();
+        $departments =  Department::where('status','Active')->get();
         $faculties = array();
         $arr_dep = array();
         foreach ($faculties1 as $key1 => $value1) {        
@@ -196,7 +196,7 @@ class FacultyController extends Controller
     public function facultiesWithCourses()
     {
         $data = [];
-        $faculties =  Faculty::all();
+        $faculties =  Faculty::where('status','Active')->get();
         foreach ($faculties as $faculty) {
             $facultyId = $faculty->id;
             $courses = Course::where(['faculty_id' => $facultyId])->get();
@@ -234,7 +234,11 @@ class FacultyController extends Controller
     {
         $faculties = Faculty::withCount(['courses_students'=>function($query){
             $query->where('session_id',$this->currentSession);
-        }])->withCount('courses')->withCount('students')->get();
+        }])->withCount(['courses'=>function($query){
+            $query->where('status','Active');
+        }])->withCount(['students'=>function($query){
+            $query->where('status','Active');
+        }])->where('status','Active')->get();
         return response()->json(['faculties' => $faculties], 200);
     }
 }

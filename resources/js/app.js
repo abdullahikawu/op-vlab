@@ -145,7 +145,7 @@ Vue.component('v-adminprofile', require('./components/adminProfile.vue').default
               <i class="fa fa-thumbs-o-up likeThisPage"   rel="yes"  style="font-size:1.3em;"></i>          
               </span>
           </div>
-          <div style="position:absolute;top:103%;height:30px;width:100%;"></div>
+          <div style="position:absolute;top:95.5%;height:30px;width:100%;"></div>
           `); 
 
 

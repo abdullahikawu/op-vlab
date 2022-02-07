@@ -10,6 +10,8 @@ use App\Models\CourseInstructor;
 use App\Models\CourseResources;
 use App\Models\CourseStudents;
 use App\Models\User;
+use App\Models\User_course;
+use App\Models\WeeklyWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -156,11 +158,17 @@ class CourseController extends Controller
     {
         $courseId = $request->get('course_id');
         $course = Course::find($courseId);
+        $check1 = WeeklyWork::where(['course_id'=>$courseId, 'status'=>'Active'])->first();
+        $check2 = User_course::where(['course_id'=>$courseId, 'status'=>'Active'])->first();
         if ($course) {
-            $course->status = 'Inactive';
-            $save = $course->save();
-            if ($save) {
-                return response()->json(['success' => true], 200);
+            if(empty($check1) && empty($check2)){
+                $course->status = 'Inactive';
+                $save = $course->save();
+                if ($save) {
+                    return response()->json(['success' => true], 200);
+                }
+            }else{
+                return response()->json(['error' => 'cannot delete this course'], 409);            
             }
         } else {
             return response()->json(['error' => 'No course with this id'], 404);
@@ -211,7 +219,7 @@ class CourseController extends Controller
                      $query->with('experiments:id,name,page');
                   },'course_resources','course_student.students'=>function($query){
                     $query->where('matric_number','!=','');
-                  }])->where(['faculty_id'=>$this->facultyId])->get();
+                  }])->where(['faculty_id'=>$this->facultyId,'status'=>'Active'])->get();
         return response()->json($course, 200);
     }
 
@@ -219,7 +227,7 @@ class CourseController extends Controller
     {
         $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
                                $query->with('experiments:id,name,page');
-                  },'course_resources','course_student.students'])->get();
+                  },'course_resources','course_student.students'])->where('status','Active')->get();
         return response()->json($course, 200);
     }
     
@@ -256,7 +264,7 @@ class CourseController extends Controller
         $facultyId = $request->get('faculty_id');        
         $courses = Course::with(['experiments','weekly_work'=>function($query){
                     $query->where('session_id',$this->currentSession);
-                }])->withCount('experiments')->where('faculty_id', $facultyId)->get();
+                }])->withCount('experiments')->where(['faculty_id'=> $facultyId,'Status'=>'Active'])->get();
 
         if (!empty($courses)) {
             return response()->json($courses, 200);
@@ -480,7 +488,7 @@ class CourseController extends Controller
 
     public function courseStudentByFacultyId()
     {
-        $courseStudent = Course::where('faculty_id', $this->facultyId)->with('faculty')->withCount('students')->get();
+        $courseStudent = Course::where(['faculty_id'=>$this->facultyId,'status'=>'Active'])->with('faculty')->withCount('students')->get();
         if ($courseStudent) {
             return response()->json($courseStudent, 200);
         }

@@ -8,7 +8,7 @@
 			</span>
 		</div>
 		<div id="wideArea"></div>		
-		 <div class="row pd-lg-3 pd-sm-2  " style="width: 98%; margin: 50px auto;height: 75.5vh;overflow-y: scroll;">
+		 <div class="row pd-lg-3 pd-sm-2  " style="width: 98%;margin: 16px auto 0px auto;height: 85.5vh;overflow-y: scroll;">
      	<div class="col-lg-7 col-md-8 col-sm-12 col-xs-12">   
      		<p class="fw6 font2">Introduction</p>
      		<v-loader type='line' v-if="loaderState"></v-loader>
@@ -80,14 +80,15 @@
 	     		</div>
      		</div>
      	</div>
-     	<div class="w-100">
+     	<div class="w-100 position-relative">
      		<br><br>
-     		<div style="border-bottom: 1px solid #ccc;">
-     			<div class="font2 fw4 systab" v-bind:class="{systabActive:minitab=='experiments'}"  @click="minitab = 'experiments'">Experiment</div>
-     			<div class="font2 fw4 systab" v-bind:class="{systabActive:minitab=='resources'}" @click="minitab ='resources'" >Resources</div>
+     		<div style="border-bottom: 1px solid #ccc; display:flex">
+     			<div class="font2 fw4 systab pb-0" v-bind:class="{systabActive:minitab=='experiments'}"  @click="switchTab('experiments')">Experiment</div>
+     			<div class="font2 fw4 systab pb-0" v-bind:class="{systabActive:minitab=='resources'}" @click="switchTab('resources')" >Resources</div>
      		</div>
      		<br><br>
-     		<div class="d-flex" v-if="minitab=='experiments' && weeksExp.length >0">
+			 <div class="p-0 m-0 w-100 position-absolute " id="forTask">
+     		<div class="d-flex w-100" v-show="weeksExp.length >0" >
      			<!-- start thread  -->     			
 				<div class="p-0 thread" v-if="threadReady" >
 					<v-thread :weeks="threadTrends" key='noew'></v-thread>
@@ -140,36 +141,39 @@
 
 					</div>
 			</div>
-			<div v-if="weeksExp.length >0" v-show="minitab=='resources'" class="row" style="min-height: 500px;">
-				<div v-for="resource in weeksExp[0].course.course_resources" tabindex="1" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">
-					
-					<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='image'" >
-						<center>
-							<img :src="'/'+resource.resourceUrl" width="80%" height="150px">						
-						</center>
-					</div>
-					<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='doc'" >
-						<center>
-							<img src="/images/docx.png" width="80%" height="150px">						
-						</center>
-					</div>
-					<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='vid'" >
-						<center>
-							<img src="/images/vid.jpg" width="80%" height="150px">						
-						</center>
-					</div>
-					<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='other'" >
-						<center>
-							<img src="/images/file.png" width="80%" height="150px">						
-						</center>
-					</div>
+			</div>
+			<div class="p-0 m-0 w-100 position-absolute " id="forResource" style="display:none;">
+				<div v-if="weeksExp.length >0 " class="row w-100"  style="min-height: 500px;">
+					<div v-for="resource in weeksExp[0].course.course_resources" tabindex="1" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">
+						
+						<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='image'" >
+							<center>
+								<img :src="'/'+resource.resourceUrl" width="80%" height="150px">						
+							</center>
+						</div>
+						<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='doc'" >
+							<center>
+								<img src="/images/docx.png" width="80%" height="150px">						
+							</center>
+						</div>
+						<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='vid'" >
+							<center>
+								<img src="/images/vid.jpg" width="80%" height="150px">						
+							</center>
+						</div>
+						<div class="w-100 rounded shadow-sm bg-white p-2" v-if="resoursType(resource.resourceUrl)=='other'" >
+							<center>
+								<img src="/images/file.png" width="80%" height="150px">						
+							</center>
+						</div>
 
-					<div class="resource-caption text-center py-2 font fw5 w-100">
-						<div class="overlaytext">
-							{{resource.caption}}							
-							<br>
-							<a class="bg-warning text-white button btn-sm" :href="resource.resourceUrl">Download <i class="fa fa-cloud-download text-white"></i> </a>
-						</div>		
+						<div class="resource-caption text-center py-2 font fw5 w-100">
+							<div class="overlaytext">
+								{{resource.caption}}							
+								<br>
+								<a class="bg-warning text-white button btn-sm" :href="resource.resourceUrl">Download <i class="fa fa-cloud-download text-white"></i> </a>
+							</div>		
+						</div>
 					</div>
 				</div>
 			</div>
@@ -230,6 +234,17 @@
 			}
 		},
 		methods:{
+			switchTab:function(tab){
+				//alert(tab);
+				this.minitab = tab
+				if(tab == 'resources'){					
+					$('#forTask').hide('slide', {direction:'left'}, 500);
+					$('#forResource').show('slide', {direction:'right'}, 500);
+				}else if(tab =='experiments'){
+					$('#forTask').show('slide', {direction:'left'}, 500);
+					$('#forResource').hide('slide', {direction:'right'}, 500);
+				}
+			},
 			changeTab:function(tab){					
 				this.mintab = tab;
 			},
@@ -412,5 +427,28 @@
 	}
 	.button:focus{
 		box-shadow: none !important;
+	}
+	.systabActive{
+		border-bottom: none !important;				
+				
+	}
+	.systabActive:after {
+		transition: all 0.1s;
+		content: "";
+		display: block;
+		position: relative;
+		left: -18% !important;
+		width: 136%;
+		height: 2px;
+		background: #00b96b;	
+	}
+	.systab{		
+		color: #777;
+		display: block;
+		padding: 8px 15px;
+		border-bottom: 2px solid transparent;
+		margin: 0px !important;
+		cursor: pointer;
+		transition: all 1s;
 	}
 </style>

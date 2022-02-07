@@ -1,12 +1,12 @@
 <template>
 	<div class="w-100" style="min-width: 100px;" >
 		<div v-for="(week,index) in weeks" :key="'week'+index"><!-- loop weekly -->
-				<div class="d-flex flex-wrap-center timelineSM" style="margin-bottom: 20px;" v-if="weeks[index][1] != 0">
-					<span class="fs1 w10">{{week[0]}} </span>
+				<div :data-title-tooltip="week[0]" class="d-flex flex-wrap-center timelineSM" style="margin-bottom: 20px;" v-if="weeks[index][1] != 0">
+					<span class="fs1 w10">{{week[0].substring(0,7)}}... </span>
 					<span class="fa fa-check-circle fs3 text-success"></span>				
 				</div>
-				<div class="d-flex flex-wrap-center timelineSM-o" style="margin-bottom: 20px;"  v-else>				
-					<span class="fs1 w10">{{week[0]}} </span>
+				<div :data-title-tooltip="week[0]" class="d-flex flex-wrap-center timelineSM-o" style="margin-bottom: 20px;"  v-else>				
+					<span class="fs1 w10">{{week[0].substring(0,7)}}... </span>
 					<span class="syscircle-o-l"></span>				
 				</div>
 				

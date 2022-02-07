@@ -67,20 +67,19 @@ class UserController extends Controller
         $roleName = DB::table('role')->where('id',$role)->first()->title;
         $msg ='user exists with that email';
         if($roleName != 'Student'){
-            $user =  User::where('email',$email)->first();
+            $user =  DB::table('users')->where('email',$email)->first();
             if (!is_null($user)) {
                 return response()->json(['error' => 'Email Already Exist'], 409);                
             }
             $username = $email;
         }else{
             $msg ='user exists with that matric number';
-            $matric =  User::where('matric_number',$matric_number)->first();            
-            
+            $matric=  DB::table('users')->where('matric_number',$matric_number)->first();                        
             if (!is_null($matric)) {
                 return response()->json(['error' => 'Matric Already Exist'], 409);                
             }
 
-            $user =  User::where('email',$email)->first();
+            $user =  DB::table('users')->where('email',$email)->first();
             if (!is_null($user)) {
                 return response()->json(['error' => 'Email Already Exist'], 409);                
             }
@@ -113,7 +112,15 @@ class UserController extends Controller
         }
             //return response()->json(['success' => false], 400);       
     }
-
+    public function activateUser(Request $request)
+    {
+        $user = DB::table('users')->where('id',$request->get('user_id'))->update(['status'=>'Active']);           
+        return response()->json(['success'=>true], 200);
+        /* 
+        if(!empty($user)){
+        }
+        return response()->json(['success'=>false], 404); */
+    }
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -233,6 +240,20 @@ class UserController extends Controller
     {
         $users = User::with('department')->take(2000)->get();            
         return $users;
+    }
+    public function getAllInActiveUsers(){    
+        $users = DB::table('users')->where('status', 'Inactive')->get();
+        $departments = DB::table('departments')->get()->toArray();
+
+        foreach($users as &$user)
+        {
+            $user->department = array_filter($departments, function($department) use ($user) {
+                return $department->id === $user->department_id;
+            });
+        }
+
+        return $users;
+        //return collect($users);
     }
     
 

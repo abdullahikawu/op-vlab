@@ -5,9 +5,9 @@
           <div class="font2 fw4  systab systab--active ">Course Category</div>
         <div class="font2 fw4 systab ml-3" @click="notAvailable">Most Visited Courses</div>
         </div>
-        <div class="row hm300 w-100 px-6 py-5 m-0" style="background: #f0f0f0;">          
+        <div class="row hm300 w-100 px-6 py-5 m-0" style="background: #f0f0f0;overflow-y:scroll;min-height:493px; position:absolute;">          
           <div class="col-lg-4 col-md-6 col-lg-4 mt-5" v-for="(cat,ix) in courseCate.faculties" :key="ix" >
-            <a style="text-decoration: none;" :href="link+cat.id" class="w-100 cadin" v-if="cat.courses_count >0 && roletype=='student'">
+            <a :href="link+cat.id" class="w-100 cadin pcard" v-if="cat.courses_count >0 && roletype=='student'">
               <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
                 <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%"></div>
                 <div class="p-3 rounded">                  
@@ -26,7 +26,7 @@
                 </div>
               </div>            
             </a>
-            <a style="text-decoration: none;" href="#" @click="EmptyCourse" class="w-100 cadin" v-if="cat.courses_count <1 && roletype=='student'">
+            <a  href="#" @click="EmptyCourse" class="w-100 cadin pcard" v-if="cat.courses_count <1 && roletype=='student'">
               <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
                 <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%"></div>
                 <div class="p-3 rounded">                  
@@ -45,19 +45,19 @@
                 </div>
               </div>            
             </a>
-            <a style="text-decoration: none;" href="#" @click="onlyStudent" class="w-100 cadin" v-if=" roletype!='student'">
-              <div class="w-100 r2 shadow bg-white" style="height: 230px;position: relative;">
+            <a href="#" @click="onlyStudent" class="w-100 cadin pcard" @mouseleave="reduceImage" @mouseup="reduceImage" @mousedown="reduceImage" v-if=" roletype!='student'">
+              <div class="w-100 r2 shadow bg-white" style="height: 100%;position: relative;">
                 <div style="height: 60%;"><img :src="cat.picture" width="100%;" height="100%" class="rt2"></div>
                 <div class="p-3 rounded">                  
                   <h5 class="fw5 text-dark">{{cat.name}}</h5>
                   <br>
                   <div class="d-flex justify-content-between text-dark" style="position: absolute;bottom: 0;padding: 20px 0px; width: 85%;">
                     <div class="d-flex flex-wrap fs01 font fw4">
-                      <span class="fa fa-table"></span>
+                      <span class="fa fa-table mr-1"></span>
                       <span>{{cat.courses_count}} Course</span>
                     </div>
                     <div class="d-flex flex-wrap fs01 font fw4">
-                      <span class="fa fa-user"></span>
+                      <span class="fa fa-user mr-1"></span>
                       <span>{{cat.courses_students_count}} students</span>
                     </div>
                   </div>
@@ -79,14 +79,24 @@ export default {
       roletype:'guest',
       courseCate: {
         faculties:[
-        {'id':1,'name': 'Applied Science','totalCourse':'7','courses_students_count':500},
+        /* {'id':1,'name': 'Applied Science','totalCourse':'7','courses_students_count':500},
         {'id':2,'name': 'Science & Engineering ','totalCourse':'12','courses_students_count':1000},
         {'id':3,'name': 'Biological Science','totalCourse':'3','courses_students_count':10},
-        {'id':4,'name': 'Others','totalCourse':'4','courses_students_count':100},]
+        {'id':4,'name': 'Others','totalCourse':'4','courses_students_count':100}, */]
         }      
     }
   },
   methods:{
+    reduceImage(e){
+      let target = $(e.target).find("img");
+      console.log(e);
+      target.removeClass('imgAnim');
+      if(e.type == "mouseup"){
+        target.removeClass('imgAnim');
+      }else if(e.type=='mousedown'){
+        target.addClass('imgAnim');
+      }
+    },
     notAvailable(){
         Swal.fire({
           title: 'Not Available',                             
@@ -134,7 +144,11 @@ export default {
 
 <style lang="scss" scoped>
 
-
+.pcard{
+  text-decoration: none;
+  display:block;
+  height: 230px
+}
 #alignment {
 	display: flex;
 	flex-direction: column;
@@ -196,5 +210,9 @@ export default {
       }
     }
   }
+}
+.pcard img{
+  display:block;
+  margin: 0px auto;
 }
 </style>

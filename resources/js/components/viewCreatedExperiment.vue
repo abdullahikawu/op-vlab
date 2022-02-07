@@ -61,21 +61,7 @@
 				$('.swal2-content').addClass('vh-95');
 				},
 				deleteexperiment: function(id){
-					Swal.fire({
-					title: 'confirm delete',
-					icon:'warning',
-					confirmButtonText:'Continue',					      
-			      cancelButtonText:'Cancel',				      				      
-			      cancelButtonColor:'#dd000f',					      
-			      confirmButtonColor:'#00b96b',					      
-			      showCancelButton:true,					      
-			      showLoaderOnConfirm: true,
-				}).then((result)=>{
-					if (result.value) {
-						this.axiosDelete('api/experiments/delete',{'experiment_id': id})					
-
-					}
-				})					
+					this.axiosDelete('api/experiments/delete',{'experiment_id': id})														
 				}
 		},
 		async created(){

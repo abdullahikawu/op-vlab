@@ -44,7 +44,7 @@
 	    		</div>
     		</div>
     		<form id="login-form">
-    			<input type="text" placeholder="Username" id="username" class="form-control my-3 h2 login-input"  name="username">
+    			<input type="text" placeholder="Email or Matric Number" id="username" class="form-control my-3 h2 login-input"  name="username">
                 <div class="position-relative">                    
     			<input type="password" placeholder="Password"  id="password" class="form-control my-3 h2 login-input" name="password">
                 <span id="togglePwDisplay" style="user-select: none;cursor: pointer;position:absolute; top: 28%;right: 6%;" class="p-text-dark">show</span>

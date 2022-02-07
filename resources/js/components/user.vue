@@ -1,64 +1,111 @@
 <template>	
-		<div class="w-100 mt-2 py-3 position-relative" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">			
-          <a v-if="!loaderState"  href="#" @click="createuser" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Create user <span class="text-white fa fa-chevron-down"></span></a>
-          <a v-if="!loaderState" href="#" @click="uploadstudent" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Upload Student <span class="text-white fa fa-cloud-upload"></span></a>
-          <a href="templateFiles/userupload_template.csv" target="_self" class="btn-admin-user btn py-1 mb-5 mr-2 px-2 text-white fs01 font1 bg-dark btn-lg pull-right" style="border-radius: 3px;">Download Template<span class="text-white fa fa-cloud-download"></span></a>
+		<div class="w-100 mt-2 py-3 position-relative row" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">			
+			<div class="col-md-12 mb-3 ml-2">
+				<a v-if="!loaderState"  href="#" @click="createuser" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Create user <span class="text-white fa fa-chevron-down"></span></a>
+				<a v-if="!loaderState" href="#" @click="uploadstudent" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Upload Student <span class="text-white fa fa-cloud-upload"></span></a>
+				<a href="templateFiles/userupload_template.csv" target="_self" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs01 font1 bg-dark btn-lg pull-right" style="border-radius: 3px;">Download Template<span class="text-white fa fa-cloud-download"></span></a>
+			</div>
           
           <br>
 
-      	<div class="w-100 user-search-box" style="pointer-events: none;"> 
-		    <div class="py-2 d-inline-block"  style="pointer-events: auto;">		        
-		        <select id="sessionid" class="form-control d-inline-block"  placeholder="select session">
-		        	<option value="">By Session</option>
-		        	<option v-for="(session,index) in sessions" :key="index+'_ac'" :value="session.id">{{session.session}}</option>
-		        </select>	        
-		        <select id="roleid" class="form-control  d-inline-block" >
-		        	<option value="">By Role</option>		        	
-		        	<option v-for="(role,index) in JSON.parse(roles)" :key="index+'_ab'" :value="role">{{index}}</option>
-		        </select>
-		        <select id="departmentid" class="form-control  d-inline-block"  placeholder="department" >
-		        	<option value="">Department</option>		        	
-		        	<option v-for="(department,index) in departments" :key="index+'_ad'" :value="department.id">{{department.code}}</option>
-		        </select>
-		        <button class="button" @click="fetchUser" >Go</button>
+      	<div class="w-100 col-md-12 mb-2" id="#editArea" style="pointer-events: none;"> 			  
+		    <div class="py-2 mx-auto"  style="pointer-events: auto;">		        
+				<div class="row w-100 mx-auto px-0">
+					<div class="col-sm-6 col-md-3 px-1">
+						<select id="sessionid" class="form-control mb-1 mt-1"  placeholder="select session">
+							<option value="">By Session</option>
+							<option v-for="(session,index) in sessions" :key="index+'_ac'" :value="session.id">{{session.session}}</option>
+						</select>	        
+					</div>
+					<div class="col-sm-6 col-md-3 px-1">
+						<select id="roleid" class="form-control mb-1 mt-1" >
+							<option value="">By Role</option>		        	
+							<option v-for="(role,index) in JSON.parse(roles)" :key="index+'_ab'" :value="role">{{index}}</option>
+						</select>
+					</div>
+					<div class="col-sm-6 col-md-3 px-1">
+						<select id="departmentid" class="form-control mb-1 mt-1"  placeholder="department" >
+							<option value="">Department</option>		        	
+							<option v-for="(department,index) in departments" :key="index+'_ad'" :value="department.id">{{department.code}}</option>
+						</select>
+					</div>
+					<div class="col-sm-6 col-md-1 pt-1 px-1">
+		        		<button class="button mb-1 mt-2" @click="fetchUser" >Go</button>
+					</div>
+					<div class="col-sm-6 col-md-2 px-0 ">
+		        		<button v-if="usertype" class="btn btn-danger w-179 shadow text-white ml-md-auto mb-1 mt-1" @click="swichUser(true)" >See Inactive Users <span class="fa fa-user-times text-white"></span></button>
+		        		<button v-else class="btn bg-success shadow ml-md-auto text-white w-179 mb-1 mt-1" @click="swichUser(false)" >See Active Users <span class="fa fa-user  text-white"></span></button>
+					</div>
+				</div>
+				<hr style="border-top:0.5px solid #ccc;">
 		    </div>
 
 		</div>
 		<br>
-		<div v-if="loaderState">
-			<br><br><br><br><br><br>
+		<div v-if="loaderState" class="col-md-12">
+			<br><br>
           	<v-loader count="2"></v-loader>
          </div>
-          <div class="notification-table forUser v-scroll-x" >			     
-			     
-				<table id="usertable" class="table table-hover">
-					<thead>
-						<tr id="cheadV">							
-							<th width="30%">user name</th>
-				            <th width="40%">Email/Matric Number</th>	            
-				            <th width="10%">role</th>	            
-							<th width="10%">Department</th>				            			           
-				            <th width="10%">Action</th>
-						</tr>
-					</thead>
-					<tbody v-if="!loaderState">
-				        <tr v-for="(user, index) in createduser" :key="index">	         
-				            <td width="30%">{{user.first_name}} {{user.other_names}}</td>
-				            <td width="40%" style="white-space: nowrap;">
-				            	<code v-if="user.email !=''">{{user.email}}</code>
-				            	<span v-if="user.email != '' && user.matric_number !=''">-</span>
-				            	<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
-				            </td>	           
-				            <td width="20%">{{ getRoleName(user.role_id) }}</td>	           
-				            <td width="20%">{{user.department.code}}</td>	           			                  
-				            <td width="15%" >
-				            	<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" @click="edituser(user)" style="border-left: 1px solid #ccc;"></span>
-				            	<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" @click="deleteuser(user.id)"></span>
-				            </td>
-				        </tr>
-			    	</tbody>
-		    	</table>            
-          </div>
+		 <div class=" position-relative row mx-auto w-100">		 
+			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y" style="display:none" id="forInActive" >			     			     
+				<table id="usertable0" class="table table-hover">
+						<thead>
+							<tr id="cheadV">							
+								<th width="30%">user name</th>
+								<th width="40%">Email/Matric Number</th>	            
+								<th width="10%">role</th>	            
+								<th width="10%">Department</th>				            			           
+								<th width="10%">Action</th>
+							</tr>
+						</thead>
+						<tbody v-if="!loaderState">
+							<tr v-for="(user, index) in inactiveUser" :key="index">	         
+								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
+								<td width="40%" style="white-space: nowrap;">
+									<code v-if="user.email !=''">{{user.email}}</code>
+									<span v-if="user.email != '' && user.matric_number !=''">-</span>
+									<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
+								</td>	           
+								<td width="20%">{{ getRoleName(user.role_id) }}</td>	           
+								<td width="20%">{{user.department.code}}</td>	           			                  
+								<td width="15%" >									
+									<span title="Activate this user" class="ml-2 fa fa-eye pl-3  fs01 cursor-1" @click="activateUser(user.id)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>            
+			</div>
+			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y " id="forActive" >			     			     
+					<table id="usertable" class="table table-hover">
+						<thead>
+							<tr id="cheadV">							
+								<th width="30%">user name</th>
+								<th width="40%">Email/Matric Number</th>	            
+								<th width="10%">role</th>	            
+								<th width="10%">Department</th>				            			           
+								<th width="10%">Action</th>
+							</tr>
+						</thead>
+						<tbody v-if="!loaderState">
+							<tr v-for="(user, index) in createduser" :key="index">	         
+								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
+								<td width="40%" style="white-space: nowrap;">
+									<code v-if="user.email !=''">{{user.email}}</code>
+									<span v-if="user.email != '' && user.matric_number !=''">-</span>
+									<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
+								</td>	           
+								<td width="20%">{{ getRoleName(user.role_id) }}</td>	           
+								<td width="20%">{{user.department.code}}</td>	           			                  
+								<td width="15%" >
+									<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" @click="edituser(user)" style="border-left: 1px solid #ccc;"></span>
+									<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" @click="deleteuser(user.id)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>            
+			</div>
+			<br><br>
+		  </div>
         </div>
 </template>
 
@@ -68,6 +115,7 @@
 		data(){
 			return{
 				createduser:null,
+				inactiveUser:null,
 				tableLoaded:false,
 				facultiesHTML: null,
 				faculties: null,
@@ -79,6 +127,7 @@
 				loaderState:true,
 				response:'',
 				dTable:'',
+				usertype:true,
 
 			}
 		},
@@ -86,7 +135,20 @@
 			'v-loader':loader,
 		},
 		methods: {
-		 
+			activateUser:function(id){
+				this.axiosDelete('api/users/activate_user',{'user_id': id},"Activate this user")
+			},
+		    swichUser(usertype){			
+				if(usertype){
+					this.usertype = false;
+					$('#forActive').hide("slide", {direction: "right"}, 500);					
+					$('#forInActive').show("slide", {direction: "left"}, 500);
+				}else{
+					this.usertype = true;
+					$('#forActive').show("slide", {direction: "left"}, 500);
+					$('#forInActive').hide("slide", {direction: "right"}, 500);
+				}
+			},
 			createuser:function(){
 				this.VueSweetAlert2('v-userform', {
 					type:'user',
@@ -388,7 +450,8 @@
 		async created(){			
 			this.faculties       =  await this.axiosGet('api/faculties/faculties');						
 			this.departments	 = await  this.axiosGet('api/departments/departments');					
-			this.createduser     = await this.axiosGet('api/users/users');			
+			this.createduser     = await this.axiosGet('api/users/users');	
+			this.inactiveUser     = await this.axiosGet('api/users/inactive_users');						
 			this.sessions        = await this.axiosGet('api/session/all_session');			
 			this.facultiesHTML   = this.selectHtmlGen(this.faculties,'code','faculty_id' )							
 			this.departmentsHTML = this.selectHtmlGen(this.departments,'code','department_id' )							
@@ -400,8 +463,10 @@
 	        setTimeout(function() {
 	         	$this.dTable = $('#usertable').DataTable({
 			    	pageLength : 5,
-			    });
-				
+			    });					
+				$this.dTable = $('#usertable0').DataTable({
+			    	pageLength : 5,
+			    });								
 	         }, 50);
 			
 		},
@@ -417,7 +482,7 @@
 			
 			this.$nextTick(function(){ 		
 				setTimeout(() => {
-					
+					$( "#forInActive" ).hide();
 				//	introJs().start();
 				}, 4000);		
 				function PrintArea(elem, title,length=400)
@@ -446,8 +511,22 @@
 	tr td{
 		text-transform: capitalize;
 	}
-	.form-control{
-		width: 120px;
+	code{
+		text-transform: lowercase ;		
+	}	
+	table.dataTable.no-footer{
+		border-bottom: none;
 	}
-
+	table thead tr th{
+		/* box-shadow: 0px 1.5px 5px #bbb; */
+	}
+#forInActive, #forActive{
+	position:absolute;
+}
+.display-none{
+	display: none;
+}
+.w-179{
+	width:179px;
+}
 </style>

@@ -14,7 +14,7 @@
    		<!-- end to nav bar -->
 
    		<!-- content -->
-      <div class="px-4">        
+      <div class="content-area">        
           <v-user roles="{{json_encode(config('calculations.default_roles'))}}"></v-user>
       </div>
       

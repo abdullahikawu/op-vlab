@@ -87,12 +87,15 @@
 			      showLoaderOnConfirm: true,
 				  focusConfirm: false,
 				  preConfirm: () => {					  	
-				  	 let  FacultyName = document.getElementById('swal-input1').value.toUpperCase(),
+				  	 let  FacultyName = document.getElementById('swal-input1').value, //.toUpperCase(),
 				      FacultyAbbr = document.getElementById('swal-input2').value,					      					 
 				      description = document.getElementById('swal-input3').value,		
 				      pic = document.getElementById('swal-file4');				            					
 				      if (pic.files.length !=0 ) {				      	
 				      var picture = pic.files[0];
+					  if(picture.size > 550000){
+						Swal.showValidationMessage('Error: Picture Size is too large. Max is 550kb');
+					  }
 				      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpeg|.png|.jpg|.gif)$/;
 					      if (regex.test(pic.value.toLowerCase())) {					     
 						  } else {

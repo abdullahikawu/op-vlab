@@ -475,6 +475,15 @@ button:focus{
   z-index: 5;
   border-radius: 8px;
 }
+img{
+  transition: all 0.5s;
+}
+.imgAnim{
+  display: block;
+  width:80%;
+  height:80%;
+  margin: 0px auto;
+}
 .h130 {
   height: 130px;
 }
@@ -1327,6 +1336,12 @@ span.no-border-right,.no-border-right{
   overflow-y: scroll;  
   overflow-x: hidden;
 }
+.notification-table-main{
+  border-radius: 1rem;
+  width: 100%;    
+  overflow-y: scroll;  
+  overflow-x: hidden;
+}
 
 /* Create a custom checkbox */
 
@@ -2110,6 +2125,12 @@ span.ripple {
       }
     }    
     @media (max-width: 498px) {
+      div.px-6{
+        padding:5px;
+      }
+      .content-area{
+        padding: 0px 2px 0px 15px !important;
+      }
       .systab span{
         display: none;
       }
@@ -2147,7 +2168,7 @@ span.ripple {
         padding-bottom: 5px;
       }
        .notification-table.forUser{
-          margin-top: 235px;
+          margin-top: 189px;
         }        
         .btn-admin-user, a.btn-admin-user{
             padding: 7px 13px !important;
@@ -2318,6 +2339,7 @@ span.ripple {
 }
 .bg-content{
   background: #f7f7f7;
+  height: 100vh;
 }
 
 .without_ampm::-webkit-datetime-edit-ampm-field {
@@ -2361,4 +2383,49 @@ span.ripple {
 .error-msg {
   color: #D8000C;
   background-color: #FFBABA;
+}
+
+.scroll-hidden-y{
+  overflow-y: hidden;
+}
+.scroll-hidden-x{
+  overflow-x: hidden;
+}
+
+.content-area{
+  overflow-y: scroll;
+  height: 100%;
+  padding: 0px 1.5rem;
+}
+  
+[data-title-tooltip]:hover:after {
+  opacity: 1;
+  bottom: 90%;
+  visibility: visible;
+ 
+}
+[data-title-tooltip]:after {
+  transition: all 0.1s;
+  content: attr(data-title-tooltip);
+  padding: 6px;
+  font-family: 'Avenir';
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #ffffff;
+  
+  color: #666666;
+  font-size: 1em;
+  position: absolute;
+  padding: 1px 5px 2px 5px;
+  bottom: -1.6em;
+  left: 0;
+  bottom: 50%;
+  white-space: nowrap;
+  box-shadow: 13px 3px 11px 0px #ccc;
+  border: 0px solid #111111;
+  z-index: 99999;
+  visibility: hidden;
+}
+[data-title-tooltip] {
+  position: relative;
 }

@@ -17,7 +17,7 @@
 					</tr>
 				</thead>
 				<tbody v-if="tableLoaded">				
-			        <tr v-for="(course, index) in createdCourses" :key="course.course_id" :data-counter="counter=0">
+			        <tr v-for="(course, index) in createdCourses" :key="course.id" :data-counter="counter=0">
 			            <td width="5%">
 			                <label class="container">
 			                    <input type="checkbox">
@@ -28,13 +28,13 @@
 			            <td width="10%">{{course.code}}</td>
 			            <td width="25%" :title="course.description">{{course.description.slice(0,20)}} ...</td>
 			            <td width="25%">
-			            	<a class="bullets line-h01 text-primary" v-for="(course_experiment,index) in course.course_experiment" href="#" @click="checktaskcreated(course_experiment.experiments.id,course_experiment.experiments.page,)"> {{course_experiment.experiments.name}}</a>
+			            	<a class="bullets line-h01 text-primary" v-for="(course_experiment,index) in course.course_experiment" href="#" :key="index+'_xc'" @click="checktaskcreated(course_experiment.experiments.id,course_experiment.experiments.page,)"> {{course_experiment.experiments.name}}</a>
 			            </td>
 			            <!-- <td width="15%">500L</td>	 -->		            
 			            <td width="10%">
 
-			            	<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" @click="editCourse(createdCourses[index])" style="border-left: 1px solid #ccc;"></span>
-			            	<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" @click="deleteCourse(course.course_id)"></span>
+			            	<span title="edit" class="ml-2 fa fa-edit pl-3  fs01 cursor-1" @click="editCourse(createdCourses[index])" style="border-left: 1px solid #ccc;"></span>
+			            	<span title="delete" class="ml-2 fa fa-trash pl-3  fs01 cursor-1" @click="deleteCourse(course.id)"></span>
 			            </td>
 			        </tr>
 		    	</tbody>
@@ -137,17 +137,7 @@
 					});*/
 				},
 				deleteCourse: function(id){
-					Swal.fire({
-						title:'are you sure you want to delete',
-						text:'',
-						showCancelButton: true,
-						CancelButtonText: 'No',
-						ConfirmButtonText: 'Yes'
-					}).then((result)=>{
-						if(result.value){
-							this.axiosDelete('api/courses/delete', {course_id: id});
-						}
-					});					
+					this.axiosDelete('api/courses/delete', {course_id: id});									
 				}
 		},
 		async created(){

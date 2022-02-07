@@ -210,9 +210,9 @@ export default {
   			}
   			return url.split('=')[1];
   		},
-  		axiosDelete:function(url, data){  			
+  		axiosDelete:function(url, data, msg="Delete"){  			
 			let retryCount = 0;			
-				let $this = this;
+				var $this = this;
 				
 				
 				let attemptsFailsV = function(){
@@ -243,7 +243,7 @@ export default {
                             if (response.status === 200) {     
                             	$this.hide_loader();                                	
                             	Swal.fire({
-                            		title:'deleted successfuly',
+                            		title: msg+ 'd Successfuly',
                             		icon: 'success',   
                             		confirmButtonColor:'#00b96b',	                         		
                             	}).then((result)=>{
@@ -272,7 +272,15 @@ export default {
                             		icon: 'warning',  
                             		confirmButtonColor:'#00b96b',	
                             	});
-                            }else{
+                            }else if(e.response.status === 404){
+								$this.hide_loader();
+                            	Swal.fire({
+                            		title:"This Data is Not Found",
+                            		text: 'Please Contact the Administrator',
+                            		icon: 'warning',  
+                            		confirmButtonColor:'#00b96b',	
+                            	});
+							}else{
                                attemptsFailsV()                                           
                              }                                                                   
                         })                             
@@ -283,7 +291,7 @@ export default {
 					//return datafetched;
 				}
 				Swal.fire({
-					title: 'Are you sure you want to delete',
+					title: 'Are you sure you want to '+ msg ,
 					cancelButtonText:'No',				      				      
 					confirmButtonText:'Yes',				      				      
 			        cancelButtonColor:'#dd000f',					      

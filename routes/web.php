@@ -19,7 +19,7 @@ Route::view('forgot_password', 'reset_password')->name('passwordReset');
 
 Route::view('reset_password/{token_p}', 'reset_password_form')->name('password.reset');
 
-Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
+Route::post('password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
 
 Route::post('password/send_link', [ForgotPasswordController::class, 'save_token']);
 
@@ -126,6 +126,7 @@ Route::middleware(['instructorauth'])->group(function(){
 Route::middleware(['twouserauth'])->group(function(){
 	Route::get('/unauthorized-e', function(){return view('unAuthorized.NotEnrolled');});
 	Route::get('/no-access', function(){return view('unAuthorized.noAccess');});
+	Route::get('/access-denied', function(){return view('unAuthorized.noMobile');});	
 	Route::get('/closed-409', function(){return view('unAuthorized.closed-409');});
 	 /*series and parallel*/
 	Route::get('/circuitconnection-sap','App\Http\Controllers\ExperimentController@circuitconnection1')->name('circuitconnection1');

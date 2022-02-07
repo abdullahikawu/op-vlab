@@ -89,7 +89,7 @@
         		<div class="form-body p-3 bg-white row">
         			<div class="col-lg-12 col-md-12 col-sm-12 d-flex flex-wrap mt-2 position-relative">
         				<div class="white-space mr-3">Old Password: </div>
-        				<input type="password" name="password" v-model="oldpassword"  class="form-control w-100">        
+        				<input type="password" :datx="clearDefault()"  name="password" v-model="oldpassword"  class="form-control w-100">        
         				<span  style="user-select: none;cursor: pointer;position:absolute; top: 40%;right: 3%;" class=" togglePwDisplay p-text-dark">show</span>
         			</div>
         			<div class="col-lg-12 col-md-12 col-sm-12 d-flex flex-wrap mt-2 position-relative">        				
@@ -157,6 +157,9 @@ export default {
         })
     },
     methods:{
+			clearDefault(){
+			this.oldpassword = "";						
+		},
     	togglePassword(e){
     	},
 

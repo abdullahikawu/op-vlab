@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+
+use Faker\Provider\Lorem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
@@ -21,8 +23,11 @@ class FacultySeeder extends Seeder
             'name'=>'Natural Science',
             'code'=>'FNS',            
             'picture'=>'',            
-            'description'=>'Faculty description... will soon be updated by admin',            
+            'description'=>'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque veritatis rem voluptatum, eum nesciunt id laudantium ad soluta. Dolorum eius explicabo, repudiandae laborum inventore error assumenda ut non? Beatae, laudantium.',            
             'status'=>'Active'
         ]);    
+        
     }
 }
+
+?>

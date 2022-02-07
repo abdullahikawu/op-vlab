@@ -15,6 +15,9 @@
 		<div class="m-0 mobileMenu p-display-none " id="MainMobile"></div>
 		<div  class="MenuLContainer scroll-y vh-70"  v-bind:class="{reduceSize:show}">	
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider" >
+				<a title="back" href="/"  v-bind:class="{btnActive:checkActive('home')}">
+					<span class="iconOV fa fa-cheveron-left "></span>
+				</a>
 				<a title="home" href="/"  v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconOV fa fa-home "></span>
 				</a>	
@@ -87,6 +90,7 @@
 			</div>
 			<!-- end mini side bar -->
 			<div id="wideMenu" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px;" >
+				
 				<a href="/" class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconV fa fa-home "></span><div class="labelV">Home</div>
 				</a>	

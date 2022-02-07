@@ -40,11 +40,11 @@
           	 </div>   
             
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  mt-4" id="closeForm">
-              <label>Timing</label>
+              <label>Timing (hh:mm)</label>
               <input type="time" name="title" v-model="limitation" min="00:00" class="form-control w-100 vI without_ampm">
             </div>                 
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  mt-4" id="closeForm">
-              <input id="swal-input2" type="checkbox" class="mr-1 mt-2 d-inline-block"><label class="mb-1 d-inline-block">Activate Test Mode</label>
+              <input id="swal-input2" type="checkbox" class="mr-1 mt-2 d-inline-block"><label class="mb-1 d-inline-block">Activate Test/Exam Mode</label>
             </div>  
               <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12  mt-4">
                   <label class="fs1 fw5 font form-header">Select Experiment to Set Data  
@@ -55,7 +55,7 @@
                         <input @click="InputData(exp.id)" :value="exp.id" type="radio" name="exp_t11" class="mr-1 mt-2 d-inline-block">
                         <label class="mb-1 d-inline-block text-capitalize">{{exp.name}}</label>                  
                         <span v-if="update" class="">
-                          <a class="venobox text-primary" data-vbtype="inline" :href="'#x'+exp.id">view</a>
+                          <a class="venobox text-primary" data-vbtype="inline" :href="'#x'+exp.id">View Entered Data</a>
                           <span v-html="guides"></span>
 
                             <div :id="'x'+exp.id" style="display:none;">

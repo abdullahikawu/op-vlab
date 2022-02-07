@@ -129,9 +129,9 @@
 		            			<div class="col-lg-12 col-md-12 m-0">
 		            				<p class="fs001 my-1">Select Experiment</p>
 		            				<div class="d-flex">
-		            					<select @keyup="normalize" v-model="selectedExperiment" class="form-control w-100 vI" id="selectExperiment">
+		            					<select @change="clearError" @keyup="normalize" v-model="selectedExperiment" class="form-control w-100 vI" id="selectExperiment">
 		            						<option ></option>
-		            						<option v-for="experiment in experiments" :value="experiment.value">{{experiment.name}}</option>
+		            						<option v-for="(experiment, index) in experiments" :key="index+'_cs'" :value="experiment.value">{{experiment.name}}</option>
 		            					</select>
 		            					<!-- <button class=" ml-2 sysbtn p-success text-white" @click="addEBox">Add</button> -->
 		            			<!-- 	</div>
@@ -174,7 +174,7 @@
 	    		<span v-if="update">Update</span> 
 	    		<span class="fa fa-arrow-right"></span>
         	</button>
-	        <button onclick="Swal.close()"  class="button bg-danger text-white px-3 py-2 ml-3">Cancel</button>            		
+	        <button  v-if="update" onclick="Swal.close()"  class="button bg-danger text-white px-3 py-2 ml-3">Cancel</button>            		
 
 
         </div>
@@ -237,6 +237,9 @@
 	    	}
         },
         methods:{
+			clearError:function(){
+				$('.requiredv').remove();
+			},
         	toggleExperimentGuider: function () {
 //        		alert(this.navState);
         		this.navState = !this.navState;
@@ -244,14 +247,17 @@
 			    //this.newTodoText = ''
 			},
 			onFileChange(event) {
-				console.log(event)
+			//	console.log(event)
             	this.ediagram = event.target.files[0];
             	$('#imageName').text(this.ediagram.name)
-            	let ext = ['image/jpeg','image/png','png','jpg','jpeg'];            	
-            	if (!ext.includes(this.ediagram.type)) {
-            		$('.requiredv').remove();
-            		this.ediagram =  '';
-            		$('.file-cover').after('<span class="text-danger requiredv" id="ar001">invalid file type</span>');
+            	let ext = ['png','jpg','jpeg'];            	
+            	this.clearError();
+				let mx = this.ediagram.name.split('.');
+				let mext = mx[mx.length-1];
+				console.log(mext);
+            	if (!ext.includes(mext.toLowerCase())) {
+            		this.ediagram =  '';					
+            		$('.file-cover').after('<span class="text-danger requiredv fs01" id="ar001">invalid file type</span>');					 
             		return false;
             	}
         	},
@@ -442,14 +448,14 @@
 			},			
 			singleValidate: function(id){
 				$('#'+id).css('border','1px solid #e45');
-				$('.requiredv').remove();
+				this.clearError();
 				$('#'+id).after('<span class="text-danger requiredv">Required !</span>')
 			},
 			validateR:function(data, id){
 				if (data == '') {
 					let thisDiv = $('#'+id);
 					thisDiv.css('border','1px solid #e45');
-					$('.requiredv').remove();
+					this.clearError();
 					thisDiv.after('<span class="text-danger requiredv">Required !</span>');					
 					this.validateState = false;
 					let scrollAmount = thisDiv.offset().top - $('#edetail').offset().top ;					
@@ -497,7 +503,7 @@
 			//turn input back normal
 			normalize:function(el){
 				el.target.style.border = "1px solid #eee";
-				$('.requiredv').remove();
+				this.clearError();
 			},
 			nextSection: function(){				
 				let $nv = this;				

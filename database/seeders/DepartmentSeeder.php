@@ -18,8 +18,8 @@ class DepartmentSeeder extends Seeder
         DB::table('departments')->insert([
             'id' => $id,           
             'faculty_id'=> $uuids->faculty_id,            
-            'name'=>'vlab-Admin',
-            'code'=>'vlab-A',                        
+            'name'=>'Physics',
+            'code'=>'PHY',                        
             'status'=>'Active'
         ]);    
     }

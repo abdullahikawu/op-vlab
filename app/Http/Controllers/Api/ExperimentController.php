@@ -10,7 +10,7 @@ use App\Models\ExperimentResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use \DB;
+use Illuminate\Support\Facades\DB;
 
 class ExperimentController extends Controller
 {
@@ -108,7 +108,7 @@ class ExperimentController extends Controller
     {
         $experimentId = $request->get('experiment_id');
 
-        $check = DB::table('course_experiment')->where('experiment_id',$experimentId)->first();
+        $check = DB::table('course_experiment')->where(['experiment_id'=>$experimentId, 'status'=>'Active'])->first();
 
         if (is_null($check)) {
             //delete
@@ -127,7 +127,7 @@ class ExperimentController extends Controller
 
         }else{
             //cant delete
-            return response()->json(['error' => "can't delete this faculty"], 409);                    
+            return response()->json(['error' => "can't delete this experiment"], 409);                    
         }
         
     }
