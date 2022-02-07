@@ -17,11 +17,13 @@
 </head>
 <body>
    <!-- loader elements -->
-
+    <input class="d-none" value="{{URL::previous()}}" id="previous-url">
+    <input class="d-none" value="{{Route::currentRouteName()}}" id="currentpage-url">
     <!--onclick progress loader  -->
     <div class="sysloader p-loader-bg-transparent p-display-none" id="system-loader">
       <div class="lds-dual-ring"></div>
     </div>
+    
     <!-- end onclick  progress loader-->
     <!--  -->
     <!-- page loader -->
@@ -29,7 +31,7 @@
       <div class="lds-dual-ring"></div>
     </div>
     <!-- end page loader -->
-
+    <div class="m-0 mobileMenu position-fixed" style="display:none;" id="MainMobile"></div>		
   <!--end loader element  -->
 
     <div class="container-fluid p-0" id="app" style="padding-right: 0;">

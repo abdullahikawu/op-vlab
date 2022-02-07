@@ -10,14 +10,11 @@
 			<!-- <span class="fa fa-square mr-2" style="font-size: 2em;"></span> -->
 			<img src="/vlab-nobg.png" width="100px"  class="forLeftSideBarLogo"><!-- 
 			<b class="menuLI" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}">V-LAB</b> -->
-		</div>
-
-		
-		<div class="m-0 mobileMenu p-display-none " id="MainMobile"></div>
-		<div  class="MenuLContainer scroll-y vh-70" id="wideMenu"  v-bind:class="{reduceSize:show}">			
+		</div>			
+		<div  class="MenuLContainer scroll-y vh-70" id="wideMenuC"  v-bind:class="{reduceSize:show}">			
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider">
 
-				<a :href="home"   title="home">
+				<a :href="backurl"   title="home">
 					<span v-bind:class="{btnActive: checkActive('home')}" class="iconOV fa fa-home" title="Home"></span>					
 				</a>
 				<!-- <a href="/UserDashboard"  >
@@ -44,7 +41,7 @@
 			</div>
 			<!-- end mini side bar -->
 			<div id="wideMenu" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px;" >
-				<a href="/" class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
+				<a :href="backurl"   class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconV fa fa-caret-left "></span><div class="labelV">Back</div>
 				</a>	
 				<a title="home"  href="/" class="nChildV" v-bind:class="{btnActive: checkActive('home')}">
@@ -85,7 +82,9 @@
             hideMiniMenu:true,
             showWideMenu:true,
             hideMiniMenuWideMenu:false,    
-            currentSession:''
+            currentSession:'',
+			backurl:"",
+			currentPage:""
 		    	}
         },
         methods:{
@@ -129,7 +128,7 @@
         props:['home','dashboard','explore','mycourse','courses','discussion','settings', 'active', 'incourse'],
         mounted(){
 			this.$eventBus.$on('changeSetSession',data=>{          	
-				console.log(data)
+				//console.log(data)
 				//this.currentSession = data;
           	})	
         	/*btn slider*/
@@ -150,8 +149,11 @@
 	 				elt.addClass('slidin');
 	 			}
 	 		})
-
-        	var $this = this;        	
+			var $this = this;        	
+			$(document).ready(function(){
+				$this.backurl = $("#previous-url").val();
+				$this.currentPage = $("#currentpage-url").val();
+			})
         	var screenSize = function(){
         		  if($(window).width()<= 700){
 	        	  	$this.hideMiniMenu = false;

@@ -1737,7 +1737,7 @@ span.ripple {
   font-weight: 500;
 }
 #MainMobile{
-  position: fixed;
+  position: relative;
   top: 10vh;
   height: 90vh;
   background: white;
@@ -1807,16 +1807,16 @@ span.ripple {
 }
 
 
-    .task-container {
-      font-family: 'Roboto', sans-serif;
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: auto auto auto;
-      width: 100%;
-      grid-gap: 10px;     
-      padding: 10px;
-      grid-template-columns: repeat(4, 1fr);
-    }
+.task-container {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  width: 100%;
+  grid-gap: 10px;     
+  padding: 10px;
+  grid-template-columns: repeat(4, 1fr);
+}
   
     .task-item1 {
       position: relative;
@@ -2428,4 +2428,7 @@ span.ripple {
 }
 [data-title-tooltip] {
   position: relative;
+}
+.bg-none{
+  background:transparent !important;
 }

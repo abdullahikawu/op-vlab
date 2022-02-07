@@ -15,7 +15,7 @@
             	<v-loader></v-loader>
             </div>
             <div v-if="section==0" class="row mt-4 w-100">
-                <div class="col-lg-4 col-md-6 col-sm-12 p-3 " v-for="course in courses">
+                <div class="col-lg-4 col-md-6 col-sm-12 p-3 " v-for="(course,index) in courses" :key="index+'_pl'">
                     <div @click="selectCourse(course)" class="shadow-sm r2 button bg-white d-flex flex-wrap justify-content-between w-100 pl-0 py-4 pr-4">                
                         <div class="p-0 image-bg-1"></div>
                         <div class="my-2">

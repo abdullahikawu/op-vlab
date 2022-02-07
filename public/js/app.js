@@ -8626,9 +8626,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8639,7 +8636,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       hideMiniMenu: true,
       showWideMenu: true,
       hideMiniMenuWideMenu: false,
-      currentSession: ''
+      currentSession: '',
+      backurl: "",
+      currentPage: ""
     };
   },
   methods: {
@@ -8714,8 +8713,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: ['home', 'dashboard', 'explore', 'mycourse', 'courses', 'discussion', 'settings', 'active', 'incourse'],
   mounted: function mounted() {
-    this.$eventBus.$on('changeSetSession', function (data) {
-      console.log(data); //this.currentSession = data;
+    this.$eventBus.$on('changeSetSession', function (data) {//console.log(data)
+      //this.currentSession = data;
     });
     /*btn slider*/
 
@@ -8737,6 +8736,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     });
     var $this = this;
+    $(document).ready(function () {
+      $this.backurl = $("#previous-url").val();
+      $this.currentPage = $("#currentpage-url").val();
+    });
 
     var screenSize = function screenSize() {
       if ($(window).width() <= 700) {
@@ -19051,9 +19054,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             } else {
               $('#slideId').animate({
                 'top': '-50%',
-                'opacity': 0
+                'opacity': 1
               }, 300, function () {
-                $('#slideId').hide();
+                setTimeout(function () {
+                  $('#slideId').hide();
+                }, 100);
               });
               this.navbarState = false;
               $('.navicon-small-screen').removeClass('change');
@@ -24474,7 +24479,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ndiv[data-v-f2343540]{\n\tfont-family: 'Roboto', sans-serif;\n}\n.navicon-wide-screen[data-v-f2343540]{\n\tdisplay: block;\n}\n.navicon-small-screen[data-v-f2343540]{\n\tdisplay: none;\n}\n@media(max-width: 750px){\n.navicon-small-screen[data-v-f2343540]{\n\t\tdisplay: block !important;\n}\n.navicon-wide-screen[data-v-f2343540]{\n\t\tdisplay: none !important;\n}\n}\n.topNav[data-v-f2343540]{\n\t-webkit-user-select: none;\n\t   -moz-user-select: none;\n\t    -ms-user-select: none;\n\t        user-select: none;\n\tmargin:0; \n\tpadding: 18px 20px 18px 20px;\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: 100%;\n\tbackground: #f0f0f0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ndiv[data-v-f2343540]{\n\tfont-family: 'Roboto', sans-serif;\n}\n.navicon-wide-screen[data-v-f2343540]{\n\tdisplay: block;\n}\n.navicon-small-screen[data-v-f2343540]{\n\tdisplay: none;\n}\n@media(max-width: 750px){\n.navicon-small-screen[data-v-f2343540]{\n\t\tdisplay: block !important;\n}\n.navicon-wide-screen[data-v-f2343540]{\n\t\tdisplay: none !important;\n}\n}\n.topNav[data-v-f2343540]{\n\t-webkit-user-select: none;\n\t   -moz-user-select: none;\n\t    -ms-user-select: none;\n\t        user-select: none;\t\n\tposition:relative;\n\tz-index: 1002;\n\ttop: 0;\n\tmargin: 0;\n\tpadding: 18px 20px 18px 20px;\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: 100%;\n\tbackground: #f0f0f0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -54250,17 +54255,12 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", {
-      staticClass: "m-0 mobileMenu p-display-none ",
-      attrs: { id: "MainMobile" }
-    }),
-    _vm._v(" "),
     _c(
       "div",
       {
         staticClass: "MenuLContainer scroll-y vh-70",
         class: { reduceSize: _vm.show },
-        attrs: { id: "wideMenu" }
+        attrs: { id: "wideMenuC" }
       },
       [
         _c(
@@ -54270,7 +54270,7 @@ var render = function() {
             class: { slidein: _vm.show, slideout: _vm.hideMiniMenu }
           },
           [
-            _c("a", { attrs: { href: _vm.home, title: "home" } }, [
+            _c("a", { attrs: { href: _vm.backurl, title: "home" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-home",
                 class: { btnActive: _vm.checkActive("home") },
@@ -54333,7 +54333,7 @@ var render = function() {
               {
                 staticClass: "nChildV",
                 class: { btnActive: _vm.checkActive("home") },
-                attrs: { href: "/" }
+                attrs: { href: _vm.backurl }
               },
               [
                 _c("span", { staticClass: "iconV fa fa-caret-left " }),
@@ -60788,10 +60788,13 @@ var render = function() {
         ? _c(
             "div",
             { staticClass: "row mt-4 w-100" },
-            _vm._l(_vm.courses, function(course) {
+            _vm._l(_vm.courses, function(course, index) {
               return _c(
                 "div",
-                { staticClass: "col-lg-4 col-md-6 col-sm-12 p-3 " },
+                {
+                  key: index + "_pl",
+                  staticClass: "col-lg-4 col-md-6 col-sm-12 p-3 "
+                },
                 [
                   _c(
                     "div",

@@ -123,12 +123,15 @@
 		}
 	}
 	.topNav{
-		user-select: none;
-		margin:0; 
+		user-select: none;	
+		position:relative;
+		z-index: 1002;
+		top: 0;
+		margin: 0;
 		padding: 18px 20px 18px 20px;
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
-		background: #f0f0f0; 
+		background: #f0f0f0;
 	}
 </style>

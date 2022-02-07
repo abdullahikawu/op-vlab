@@ -732,7 +732,7 @@ export default {
 
 	      		if (this.navbarState === false) {
 	      			
-	      			this.navbarState = true;
+	      			this.navbarState = true;   				  
 	      			$('.navicon-small-screen').addClass('change');
 	      			$('.mobileMenu').show();
 	      			$('#slideId').show()	      			
@@ -742,11 +742,14 @@ export default {
 	      			}, 300)
 
 	      		}else{
+					  
 	      			$('#slideId').animate({
 	      				'top':'-50%',
-	      				'opacity':0,
+	      				'opacity':1,
 	      			}, 300,function(){
-	      				$('#slideId').hide();
+						  setTimeout(() => {
+							  $('#slideId').hide();							  
+						  }, 100);						
 	      			})
 	      			this.navbarState = false;
 	      			$('.navicon-small-screen').removeClass('change');
