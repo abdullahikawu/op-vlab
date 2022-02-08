@@ -58,7 +58,7 @@ export default {
 					}
 				}
 			},
-			PrintArea(elem, title,length=400)
+		PrintArea(elem, title,length=400)
 			{
 			    var mywindow = window.open('', 'PRINT', 'height='+length+',width=600');
 
@@ -726,10 +726,29 @@ export default {
 					  $('.ripple').remove()
 					  $this.append("<span class='ripple b-warning' style='width:"+diameter+"px; height:"+diameter+"px; left:"+left+"px; top:"+top+"px;'></span>");
 					})			
-      			},
+      	},
+		navbarFunc: function(){
+			$('.listMenuBtn').click(function(){        		
+				$('.listMenu').not($(this).next()).slideUp(200);
+				 $(this).parent().find('ul.listMenu').slideToggle(200);
+			 })
+			 $('.listMenuVBtn').click(function(){   	 				 		
+
+				$('.listVMenu').not($(this).next()).addClass('slideout');
+				$('.listVMenu').not($(this).next()).removeClass('slidein');
+				let elt = $(this).parent().find('ul.listMenu');
+				if(elt.hasClass('slidein')){
+					elt.addClass('slideout');
+					elt.removeClass('slidin');
+				}else{
+					elt.removeClass('slideout');
+					elt.addClass('slidin');
+				}
+			 })
+		},		
       	naviconToggler: function(e){   
       		if ($(window).width() <720) {
-
+				this.navbarFunc()
 	      		if (this.navbarState === false) {
 	      			
 	      			this.navbarState = true;   				  

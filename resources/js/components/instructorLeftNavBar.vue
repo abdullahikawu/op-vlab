@@ -249,25 +249,7 @@
         mounted(){
         	
          	this.$nextTick(function(){
-         			$('.listMenuBtn').click(function(){        		
-        		$('.listMenu').not($(this).next()).slideUp(200);
-	 			$(this).parent().find('ul.listMenu').slideToggle(200);
-	 		})
-	 		$('.listMenuVBtn').click(function(){   	 				 		
-
-        		$('.listVMenu').not($(this).next()).addClass('slideout');
-        		$('.listVMenu').not($(this).next()).removeClass('slidein');
-        		let elt = $(this).parent().find('ul.listMenu');
-	 			if(elt.hasClass('slidein')){
-	 				elt.addClass('slideout');
-	 				elt.removeClass('slidin');
-	 			}else{
-	 				elt.removeClass('slideout');
-	 				elt.addClass('slidin');
-	 			}
-	 		})
-	 		
-	        	
+         	 this.navbarFunc();
          	})
         }
 	};

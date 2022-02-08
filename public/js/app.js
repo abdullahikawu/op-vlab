@@ -8510,23 +8510,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: ['active', 'activesub'],
   mounted: function mounted() {
     this.$nextTick(function () {
-      $('.listMenuBtn').click(function () {
-        $('.listMenu').not($(this).next()).slideUp(200);
-        $(this).parent().find('ul.listMenu').slideToggle(200);
-      });
-      $('.listMenuVBtn').click(function () {
-        $('.listVMenu').not($(this).next()).addClass('slideout');
-        $('.listVMenu').not($(this).next()).removeClass('slidein');
-        var elt = $(this).parent().find('ul.listMenu');
-
-        if (elt.hasClass('slidein')) {
-          elt.addClass('slideout');
-          elt.removeClass('slidin');
-        } else {
-          elt.removeClass('slideout');
-          elt.addClass('slidin');
-        }
-      });
+      this.navbarFunc();
     });
   }
 });
@@ -19040,8 +19024,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             $this.append("<span class='ripple b-warning' style='width:" + diameter + "px; height:" + diameter + "px; left:" + left + "px; top:" + top + "px;'></span>");
           });
         },
+        navbarFunc: function navbarFunc() {
+          $('.listMenuBtn').click(function () {
+            $('.listMenu').not($(this).next()).slideUp(200);
+            $(this).parent().find('ul.listMenu').slideToggle(200);
+          });
+          $('.listMenuVBtn').click(function () {
+            $('.listVMenu').not($(this).next()).addClass('slideout');
+            $('.listVMenu').not($(this).next()).removeClass('slidein');
+            var elt = $(this).parent().find('ul.listMenu');
+
+            if (elt.hasClass('slidein')) {
+              elt.addClass('slideout');
+              elt.removeClass('slidin');
+            } else {
+              elt.removeClass('slideout');
+              elt.addClass('slidin');
+            }
+          });
+        },
         naviconToggler: function naviconToggler(e) {
           if ($(window).width() < 720) {
+            this.navbarFunc();
+
             if (this.navbarState === false) {
               this.navbarState = true;
               $('.navicon-small-screen').addClass('change');
