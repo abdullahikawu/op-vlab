@@ -59,7 +59,7 @@ $resultTable ='
 
    //localStorage.setItem('objectSize',{{$toolSizes[0]}});
    var experimentSheet;
-   var url = '{{route('micrometerEquipment').'?size='.$toolSizes[0] }} ' //localStorage.getItem('objectSize');
+   var url = "{{route('micrometerEquipment').'?size='.$toolSizes[0] }}" //localStorage.getItem('objectSize');
    
    window.onload = function(){
     experimentSheet = document.getElementById('experimentSheet');
@@ -99,7 +99,7 @@ $resultTable ='
             <!-- experiment  -->
             <div  id="mainExp">
                <v-ribbon></v-ribbon>
-                <iframe width="100%" height="480px"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
+                <iframe width="100%" class="exp_frame"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
                <v-start access_code="{{$access_code}}" user_type="{{$user_type}}" starteddata="0" hourdata="{{$time_left['hour']}}" munitedata="{{$time_left['minute']}}"></v-start>             
             </div>
             <!-- end experiment -->

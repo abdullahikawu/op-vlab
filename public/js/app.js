@@ -2461,6 +2461,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_data$methods$props$e = {
   data: function data() {
     return {
@@ -2732,6 +2733,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2761,12 +2763,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.hide = !this.show;
 
       if (this.show) {
-        //this.show=true;                      
+        document.getElementById('mainExp').style.width = '61.7%';
         document.getElementById('expSideBar').classList.add('addSize');
-        document.getElementById('mainExp').style.width = '62%';
+        $('#exphowtogo').show("slide", {
+          direction: "left"
+        }, 500, function () {}); //this.show=true;                      
       } else {
-        document.getElementById('expSideBar').classList.remove('addSize');
         document.getElementById('mainExp').style.width = '88%';
+        document.getElementById('expSideBar').classList.remove('addSize');
+        $('#exphowtogo').hide("slide", {
+          direction: "left"
+        }, 790, function () {});
       }
     },
     toggller: function toggller(e) {
@@ -2879,14 +2886,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.eventBus.$off('toggleClick', this.toggleNavOnHover);
   },
   props: ['aim', 'aparatus', 'theory', 'requirment', 'exercise', 'resources'],
-  mounted: function mounted() {
-    /*		$('.accordion').click(function(){
-    			$('.accordBodyV').slideUp()
-    			$(this).next().slideToggle();
-    			$('.accordion').removeClass('accordActiv')
-    			$(this).addClass('accordActiv')
-    		})*/
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -3435,7 +3435,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -7765,6 +7764,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -7783,25 +7790,54 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       navState: false,
-      username: ''
+      username: '',
+      coursecode: {
+        code: ""
+      }
     };
   },
   methods: {
     toggleSysnav: function toggleSysnav() {
       //        		alert(this.navState);
       this.navState = !this.navState;
-      this.$eventBus.$emit('toggleSysNav', {
+      this.$eventBus.$emit('toggleFromSysTopNav', {
         text: this.navState
       }); //this.newTodoText = ''
     }
   },
   created: function created() {
-    this.username = this.currentUser.first_name;
+    var _this = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var SearchParams, id, coursecode;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this.username = _this.currentUser.first_name;
+              SearchParams = window.location.href.split('/');
+              id = SearchParams[SearchParams.length - 1];
+              _context.next = 5;
+              return _this.axiosGetByParams('api/courses/get_course_code_by_weekly_course_experiment_id', {
+                id: id
+              });
+
+            case 5:
+              coursecode = _context.sent;
+              _this.coursecode = coursecode[0];
+
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   },
   props: ['equipmentname', 'experimentnum'],
   mounted: function mounted() {},
   events: {
-    'toggleSysNav': 'toggleSysNav'
+    'toggleFromSysTopNav': 'toggleFromSysTopNav'
   }
 });
 
@@ -8536,6 +8572,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
 //
 //
 //
@@ -19057,16 +19095,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 'opacity': 1
               }, 300);
             } else {
-              $('#slideId').animate({
-                'top': '-50%',
-                'opacity': 1
-              }, 300, function () {
-                setTimeout(function () {
-                  $('#slideId').hide();
-                }, 100);
-              });
-              this.navbarState = false;
-              $('.navicon-small-screen').removeClass('change');
               $('.mobileMenu').hide(200);
             }
           }
@@ -24189,7 +24217,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400|Roboto:100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".countdown[data-v-60f51b08] {\n  display: flex;\n}\n.block[data-v-60f51b08] {\n  display: flex;\n  flex-direction: column;\n  margin: 5px 0px;\n}\n.text[data-v-60f51b08] {\n  color: #191236;\n  font-size: 0.8em;\n  font-family: \"Roboto Condensed\", serif;\n  font-weight: 40;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-align: center;\n}\n.digit[data-v-60f51b08] {\n  color: #4c5;\n  font-size: 1em;\n  font-weight: 500;\n  font-family: \"Roboto\", serif;\n  margin: 0px;\n  text-align: center;\n}\n.position-to-center[data-v-60f51b08] {\n  width: 100%;\n  position: relative;\n}\n.position-left[data-v-60f51b08] {\n  display: inline-block;\n  position: absolute;\n  left: 40%;\n  top: 25%;\n}\ninput.formControl[data-v-60f51b08] {\n  transition: 0.5s all;\n  width: 130px;\n  height: 26px;\n  padding: 7px;\n  border-radius: 0px;\n  border: none;\n  border-bottom: 1px solid #888;\n  top: 10px;\n  margin-bottom: 5px;\n}\n.formControl[data-v-60f51b08]:focus {\n  border-bottom: 1px solid #00b96b;\n  border-radius: 0px;\n  outline: 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".countdown[data-v-60f51b08] {\n  display: flex;\n  justify-content: center;\n}\n.block[data-v-60f51b08] {\n  display: flex;\n  flex-direction: column;\n  margin: 5px 0px;\n}\n.text[data-v-60f51b08] {\n  color: #191236;\n  font-size: 0.8em;\n  font-family: \"Roboto Condensed\", serif;\n  font-weight: 40;\n  margin-top: 10px;\n  margin-bottom: 2px;\n  text-align: center;\n}\n.digit[data-v-60f51b08] {\n  color: #4c5;\n  font-size: 1em;\n  font-weight: 500;\n  font-family: \"Roboto\", serif;\n  margin: 0px;\n  text-align: center;\n}\n.position-to-center[data-v-60f51b08] {\n  width: 100%;\n  position: relative;\n}\n.position-left[data-v-60f51b08] {\n  display: inline-block;\n  position: absolute;\n  left: 40%;\n  top: 25%;\n}\ninput.formControl[data-v-60f51b08] {\n  transition: 0.5s all;\n  width: 130px;\n  height: 26px;\n  padding: 7px;\n  border-radius: 0px;\n  border: none;\n  border-bottom: 1px solid #888;\n  top: 10px;\n  margin-bottom: 5px;\n}\n.formControl[data-v-60f51b08]:focus {\n  border-bottom: 1px solid #00b96b;\n  border-radius: 0px;\n  outline: 0;\n}\n.start[data-v-60f51b08]:hover {\n  opacity: 1 !important;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -24336,7 +24364,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n/*@import url(\"https://use.fontawesome.com/releases/v5.13.0/css/all.css\");*/\ndiv[data-v-fc4318ee]{\n\t\tfont-family: 'Roboto', sans-serif;\n}\n.slidewr[data-v-fc4318ee] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n}\n.slidein[data-v-fc4318ee] {\n    animation: slide-in-data-v-fc4318ee 0.5s forwards;\n    -webkit-animation: slide-in-data-v-fc4318ee 0.5s forwards;\n}\n.slideout[data-v-fc4318ee] {\n    animation: slide-out-data-v-fc4318ee 0.5s forwards;\n    -webkit-animation: slide-out-data-v-fc4318ee 0.5s forwards;\n}\n@keyframes slide-in-data-v-fc4318ee {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@-webkit-keyframes slide-in-data-v-fc4318ee {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@keyframes slide-out-data-v-fc4318ee {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.1); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:0;\n}\n}\n@-webkit-keyframes slide-out-data-v-fc4318ee {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.5); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:-10;\n}\n}\n[data-v-fc4318ee]::-webkit-scrollbar {\n  width: 9px; \n  cursor: pointer;\n}\n\n/* Track */\n[data-v-fc4318ee]::-webkit-scrollbar-track {\n\twidth: 50px;\n  border-radius: 5px;\n}\n \n/* Handle */\n[data-v-fc4318ee]::-webkit-scrollbar-thumb {\n  background: #eee; \n  border-radius: 10px;\n  cursor: pointer;\n}\n\n/* Handle on hover */\n[data-v-fc4318ee]::-webkit-scrollbar-thumb:hover {\n  background: #fff; \n  cursor: pointer;\n}\n.box[data-v-fc4318ee]{\n\theight: 35px; \n\t/*background-image:linear-gradient(#2F274E, #34d, #2F274E);*/\n\tbackground: darkblue;\n\tbox-shadow: 0px 0px 10px #fff;\n\tmargin: 35px auto;\n\ttext-align: center;\n\tcolor: #fff;\n\tpadding-top: 5px;\n\tborder-radius: 4px;\n\ttext-shadow: 1px 2px 2px #555;\n\tcursor: pointer !important;\n}\n.boxActive[data-v-fc4318ee]{\n\tbackground: #2F274E;\n}\n.containerR[data-v-fc4318ee]{\n\theight: 537px;\n\tbackground: #40356E;\n\toverflow-x: hidden;\n\tcolor: #fff;\n}\n.fa-align-justify[data-v-fc4318ee]{\n\tpadding: 5px;\n\tborder-radius: 0px 0px 3px 0px;\n\tcursor: pointer;\n\tborder-left: 1px solid #2F274E;\n\tcolor: #fff;\t\n\tbackground:transparent !important;\n}\n.fa-align-justify[data-v-fc4318ee]:hover{\n\tcolor: #2F274E;\n\tbackground:#fff !important;\n}\n.input-search[data-v-fc4318ee]{\n\twidth:100%;\n\theight:37px;\n\tbackground:#2F274E;\n\tpadding:10px;\n\tcolor:#fff;\n\tborder:none;\n}\n.input-alt[data-v-fc4318ee]{\n\twidth:100%;\n\theight:37px;\n\tbackground:#2F274E;\n\tpadding:10px;\n\tcolor:#fff;\n\tborder:none;\n\tposition: relative;\n\tz-index: 10;\n}\n.serachicon[data-v-fc4318ee]{\n\tcolor:#eee;\n\tposition: absolute;\n\tright: 10px; \n\ttop: 10px;\n}\n.pr[data-v-fc4318ee]{\n\tposition: relative;\n\tdisplay: block;\n}\n.z-1[data-v-fc4318ee]{\n\tz-index: 1;\n}\n.vhE-2[data-v-fc4318ee]{\n\theight: 87vh;\n\twidth: 100%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/*@import url(\"https://use.fontawesome.com/releases/v5.13.0/css/all.css\");*/\ndiv[data-v-fc4318ee]{\n\t\tfont-family: 'Roboto', sans-serif;\n}\n.slidewr[data-v-fc4318ee] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n}\n.slidein[data-v-fc4318ee] {\n    animation: slide-in-data-v-fc4318ee 0.5s forwards;\n    -webkit-animation: slide-in-data-v-fc4318ee 0.5s forwards;\n}\n.slideout[data-v-fc4318ee] {\n    animation: slide-out-data-v-fc4318ee 0.5s forwards;\n    -webkit-animation: slide-out-data-v-fc4318ee 0.5s forwards;\n}\n@keyframes slide-in-data-v-fc4318ee {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@-webkit-keyframes slide-in-data-v-fc4318ee {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@keyframes slide-out-data-v-fc4318ee {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.1); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:0;\n}\n}\n@-webkit-keyframes slide-out-data-v-fc4318ee {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.5); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:-10;\n}\n}\n[data-v-fc4318ee]::-webkit-scrollbar {\n  width: 9px; \n  cursor: pointer;\n}\n\n/* Track */\n[data-v-fc4318ee]::-webkit-scrollbar-track {\n\twidth: 50px;\n  border-radius: 5px;\n}\n \n/* Handle */\n[data-v-fc4318ee]::-webkit-scrollbar-thumb {\n  background: #eee; \n  border-radius: 10px;\n  cursor: pointer;\n}\n\n/* Handle on hover */\n[data-v-fc4318ee]::-webkit-scrollbar-thumb:hover {\n  background: #fff; \n  cursor: pointer;\n}\n.box[data-v-fc4318ee]{\n\theight: 35px; \n\t/*background-image:linear-gradient(#2F274E, #34d, #2F274E);*/\n\tbackground: darkblue;\n\tbox-shadow: 0px 0px 10px #fff;\n\tmargin: 35px auto;\n\ttext-align: center;\n\tcolor: #fff;\n\tpadding-top: 5px;\n\tborder-radius: 4px;\n\ttext-shadow: 1px 2px 2px #555;\n\tcursor: pointer !important;\n}\n.boxActive[data-v-fc4318ee]{\n\tbackground: #2F274E;\n}\n.containerR[data-v-fc4318ee]{\n\theight: 105%;\n\tbackground: #40356E;\n\toverflow-x: hidden;\n\tcolor: #fff;\n}\n.fa-align-justify[data-v-fc4318ee]{\n\tpadding: 5px;\n\tborder-radius: 0px 0px 3px 0px;\n\tcursor: pointer;\n\tborder-left: 1px solid #2F274E;\n\tcolor: #fff;\t\n\tbackground:transparent !important;\n}\n.fa-align-justify[data-v-fc4318ee]:hover{\n\tcolor: #2F274E;\n\tbackground:#fff !important;\n}\n.input-search[data-v-fc4318ee]{\n\twidth:100%;\n\theight:37px;\n\tbackground:#2F274E;\n\tpadding:10px;\n\tcolor:#fff;\n\tborder:none;\n}\n.input-alt[data-v-fc4318ee]{\n\twidth:100%;\n\theight:37px;\n\tbackground:#2F274E;\n\tpadding:10px;\n\tcolor:#fff;\n\tborder:none;\n\tposition: relative;\n\tz-index: 10;\n}\n.serachicon[data-v-fc4318ee]{\n\tcolor:#eee;\n\tposition: absolute;\n\tright: 10px; \n\ttop: 10px;\n}\n.pr[data-v-fc4318ee]{\n\tposition: relative;\n\tdisplay: block;\n}\n.z-1[data-v-fc4318ee]{\n\tz-index: 1;\n}\n.vhE-2[data-v-fc4318ee]{\n\theight: 87vh;\n\twidth: 100%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47193,7 +47221,7 @@ var render = function() {
         "div",
         {
           staticClass: "containerR",
-          staticStyle: { height: "100%" },
+          staticStyle: { height: "105%" },
           attrs: { id: "tools" }
         },
         [
@@ -47229,82 +47257,66 @@ var render = function() {
                 _vm.type == "measurement" && _vm.startExperiment == true
                   ? _c(
                       "span",
-                      [
-                        _c("span", {
-                          staticClass:
-                            "fa fa-align-justify bg-white rightnavexpander",
-                          on: { click: _vm.rightnavexpander }
-                        }),
-                        _vm._v(" "),
-                        _vm._l(_vm.toolsizes_r[0].length, function(i) {
-                          return _c(
-                            "div",
-                            {
-                              key: i,
-                              staticClass: "box",
-                              style: { width: +"150px" },
-                              on: {
-                                click: function($event) {
-                                  _vm.addactivate($event)
-                                  _vm.changeApparatus(
-                                    _vm.toolsizes_r[0][i - 1],
-                                    _vm.toolsizes_r[1][i - 1],
-                                    _vm.toolsizes_r[2][i - 1]
-                                  )
-                                }
+                      _vm._l(_vm.toolsizes_r[0].length, function(i) {
+                        return _c(
+                          "div",
+                          {
+                            key: i,
+                            staticClass: "box",
+                            style: { width: +"150px" },
+                            on: {
+                              click: function($event) {
+                                _vm.addactivate($event)
+                                _vm.changeApparatus(
+                                  _vm.toolsizes_r[0][i - 1],
+                                  _vm.toolsizes_r[1][i - 1],
+                                  _vm.toolsizes_r[2][i - 1]
+                                )
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n\t\t            \t\tObject " +
-                                  _vm._s(i) +
-                                  "\n\t\t        \t"
-                              )
-                            ]
-                          )
-                        })
-                      ],
-                      2
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t            \t\tObject " +
+                                _vm._s(i) +
+                                "\n\t\t        \t"
+                            )
+                          ]
+                        )
+                      }),
+                      0
                     )
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.type == "micrometer" && _vm.startExperiment == true
                   ? _c(
                       "span",
-                      [
-                        _c("span", {
-                          staticClass:
-                            "fa fa-align-justify bg-white rightnavexpander",
-                          on: { click: _vm.rightnavexpander }
-                        }),
-                        _vm._v(" "),
-                        _vm._l(_vm.toolsizes_r.length, function(j) {
-                          return _c(
-                            "div",
-                            {
-                              key: j,
-                              staticClass: "box",
-                              style: { width: +"150px" },
-                              on: {
-                                click: function($event) {
-                                  _vm.addactivate($event)
-                                  _vm.changeApparatusForMicrometer(
-                                    _vm.toolsizes_r[j - 1]
-                                  )
-                                }
+                      _vm._l(_vm.toolsizes_r.length, function(j) {
+                        return _c(
+                          "div",
+                          {
+                            key: j,
+                            staticClass: "box",
+                            style: { width: +"150px" },
+                            on: {
+                              click: function($event) {
+                                _vm.addactivate($event)
+                                _vm.changeApparatusForMicrometer(
+                                  _vm.toolsizes_r[j - 1]
+                                )
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n\t\t            \t\tObject " +
-                                  _vm._s(j) +
-                                  "\n\t\t        \t"
-                              )
-                            ]
-                          )
-                        })
-                      ],
-                      2
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t            \t\tObject " +
+                                _vm._s(j) +
+                                "\n\t\t        \t"
+                            )
+                          ]
+                        )
+                      }),
+                      0
                     )
                   : _vm._e()
               ])
@@ -47456,7 +47468,9 @@ var render = function() {
         "justify-content": "space-between",
         background: "#40356E",
         position: "relative",
-        "z-index": "100000000"
+        "z-index": "10",
+        width: "100%",
+        height: "37px"
       }
     },
     [
@@ -47593,15 +47607,19 @@ var render = function() {
   return _c(
     "div",
     {
-      staticStyle: { display: "flex", width: "0px" },
+      staticStyle: {
+        display: "flex",
+        width: "0px",
+        transition: "all 0.45s linear"
+      },
       attrs: { id: "expSideBar" }
     },
     [
       _c(
         "div",
         {
-          class: { slidein: _vm.show, slideout: _vm.hide },
-          staticStyle: { width: "300px" }
+          staticStyle: { width: "300px", display: "none" },
+          attrs: { id: "exphowtogo" }
         },
         [
           _c(
@@ -47656,7 +47674,11 @@ var render = function() {
             ? _c(
                 "div",
                 {
-                  staticStyle: { background: "#40356E", "padding-right": "9px" }
+                  staticStyle: {
+                    background: "#40356E",
+                    "padding-right": "9px",
+                    height: "96%"
+                  }
                 },
                 [
                   _c(
@@ -47690,10 +47712,12 @@ var render = function() {
                               _vm._v(" "),
                               _c("div", {
                                 staticClass:
-                                  "panel accordBodyV mt-2 bg-white text-dark fw5 px-2",
+                                  "panel accordBodyV mt-2  text-white  px-2",
                                 staticStyle: {
-                                  overflow: "auto",
                                   "text-align": "justify",
+                                  "font-size": "1.2em",
+                                  "letter-spacing": "1.1px",
+                                  overflow: "auto",
                                   height: "77.8vh"
                                 },
                                 domProps: {
@@ -47707,21 +47731,43 @@ var render = function() {
                           _vm._v(" "),
                           _vm._m(1),
                           _vm._v(" "),
-                          _c("div", { staticClass: "panel accordBodyV" }, [
-                            _vm._v(_vm._s(_vm.experiment.experiment_goal))
-                          ]),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "panel accordBodyV",
+                              staticStyle: {
+                                "text-align": "justify",
+                                "font-size": "1.2em",
+                                "letter-spacing": "1.1px"
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.experiment.experiment_goal))]
+                          ),
                           _vm._v(" "),
                           _vm._m(2),
                           _vm._v(" "),
-                          _c("div", { staticClass: "panel accordBodyV" }, [
-                            _vm._v(_vm._s(_vm.experiment.apparatus))
-                          ]),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "panel accordBodyV",
+                              staticStyle: {
+                                "text-align": "justify",
+                                "font-size": "1.2em",
+                                "letter-spacing": "1.1px"
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.experiment.apparatus))]
+                          ),
                           _vm._v(" "),
                           _vm._m(3),
                           _vm._v(" "),
                           _c("div", {
-                            staticClass:
-                              "panel accordBodyV bg-white text-dark fw5",
+                            staticClass: "panel accordBodyV text-dark fw5",
+                            staticStyle: {
+                              "text-align": "justify",
+                              "font-size": "1.2em",
+                              "letter-spacing": "1.1px"
+                            },
                             domProps: {
                               innerHTML: _vm._s(_vm.experiment.required)
                             }
@@ -47751,6 +47797,7 @@ var render = function() {
                                 ? _c("div", { staticClass: "videoContainer" }, [
                                     _c("video", {
                                       staticClass: "mx-auto",
+                                      staticStyle: { width: "100%" },
                                       attrs: {
                                         "data-id": _vm.youtubeID(
                                           _vm.experiment.video_url
@@ -47765,8 +47812,13 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("div", {
-                        staticClass: "text-dark fw5",
-                        staticStyle: { display: "none", padding: "10px 14px" },
+                        staticStyle: {
+                          "text-align": "justify",
+                          "font-size": "1.2em",
+                          "letter-spacing": "1.1px",
+                          display: "none",
+                          padding: "10px 14px"
+                        },
                         attrs: { id: "exercise" },
                         domProps: { innerHTML: _vm._s(_vm.experiment.exercise) }
                       }),
@@ -47775,6 +47827,9 @@ var render = function() {
                         "div",
                         {
                           staticStyle: {
+                            "text-align": "justify",
+                            "font-size": "1.2em",
+                            "letter-spacing": "1.1px",
                             display: "none",
                             padding: "10px 14px"
                           },
@@ -48851,9 +48906,11 @@ var render = function() {
         staticClass: "timer bg-dark",
         staticStyle: {
           position: "absolute",
-          top: "13vh",
-          right: "24px",
-          "z-index": "15"
+          top: "4.6vh",
+          right: "7px",
+          "z-index": "15",
+          padding: "1.2px",
+          width: "194px"
         }
       },
       [
@@ -48904,12 +48961,13 @@ var render = function() {
           {
             staticClass: "start",
             staticStyle: {
-              position: "absolute",
-              top: "78%",
-              left: "45%",
+              display: "block",
+              margin: "46vh auto 0px auto",
+              width: "185px",
               cursor: "pointer",
-              background: "#7d9",
-              color: "#fff",
+              background: "rgb(17 194 76)",
+              opacity: "0.8",
+              color: "rgb(255, 255, 255)",
               padding: "15px 20px",
               "border-radius": "8px"
             },
@@ -50392,7 +50450,7 @@ var render = function() {
                     class: { btnActive: _vm.checkActive("explore") },
                     attrs: { href: "/explore" }
                   },
-                  [_c("span", { staticClass: "iconOV  fa fa-spinner" })]
+                  [_c("span", { staticClass: "iconOV  fa fa-search" })]
                 ),
                 _vm._v(" "),
                 _c(
@@ -50548,7 +50606,7 @@ var render = function() {
                     attrs: { href: "/explore" }
                   },
                   [
-                    _c("span", { staticClass: "iconV fa fa-spinner" }),
+                    _c("span", { staticClass: "iconV fa fa-search" }),
                     _c("div", { staticClass: "labelV" }, [_vm._v("Explore")])
                   ]
                 ),
@@ -53382,7 +53440,7 @@ var render = function() {
     {
       staticStyle: {
         margin: "0",
-        padding: "35px 20px 10px 20px",
+        padding: "5px 20px 5px 20px",
         display: "flex",
         "justify-content": "space-between",
         width: "100%",
@@ -53407,14 +53465,19 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("b", [
-            _c(
-              "span",
-              { staticStyle: { "font-weight": "800", "font-size": "1.7em" } },
-              [_vm._v(_vm._s(_vm.equipmentname) + "/")]
+            _c("span", {
+              staticStyle: { "font-weight": "800", "font-size": "1em" }
+            }),
+            _vm._v(
+              " " +
+                _vm._s(_vm.coursecode.code) +
+                "/" +
+                _vm._s(_vm.equipmentname) +
+                "/"
             ),
             _c(
               "span",
-              { staticStyle: { "font-weight": "600", "font-size": "1.3em" } },
+              { staticStyle: { "font-weight": "600", "font-size": "0.9em" } },
               [_vm._v(_vm._s(_vm.experimentnum))]
             )
           ])
@@ -54275,6 +54338,19 @@ var render = function() {
             class: { slidein: _vm.show, slideout: _vm.hideMiniMenu }
           },
           [
+            _c(
+              "a",
+              {
+                staticClass: "nChildV",
+                class: { btnActive: _vm.checkActive("home") },
+                attrs: { href: _vm.backurl }
+              },
+              [
+                _c("span", { staticClass: "iconV fa fa-caret-left " }),
+                _c("div", { staticClass: "labelV" }, [_vm._v("Back")])
+              ]
+            ),
+            _vm._v(" "),
             _c("a", { attrs: { href: _vm.backurl, title: "home" } }, [
               _c("span", {
                 staticClass: "iconOV fa fa-home",
@@ -54285,7 +54361,7 @@ var render = function() {
             _vm._v(" "),
             _c("a", { attrs: { href: "/explore", title: "explore" } }, [
               _c("span", {
-                staticClass: "iconOV fa fa-spinner",
+                staticClass: "iconOV fa fa-search",
                 class: { btnActive: _vm.checkActive("explore") },
                 attrs: { title: "Explore" }
               })
@@ -54367,7 +54443,7 @@ var render = function() {
                 attrs: { title: "explore", href: "/explore" }
               },
               [
-                _c("span", { staticClass: "iconV fa fa-spinner" }),
+                _c("span", { staticClass: "iconV fa fa-search" }),
                 _c("div", { staticClass: "labelV" }, [_vm._v("Explore")])
               ]
             ),

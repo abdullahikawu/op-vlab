@@ -3,6 +3,7 @@
 <script src="{{ asset('js/choose.js')}}"></script>
 <script src="{{ asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('js/datatable/datatables.min.js')}}"></script>
 <script src="{{ asset('js/bootstrap-select.js')}}"></script>
 <script src="{{ asset('js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{ asset('js/sweetalert2.js')}}"></script>

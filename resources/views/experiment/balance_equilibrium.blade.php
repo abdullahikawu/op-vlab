@@ -97,7 +97,7 @@ $resultTable ='
             <!-- experiment  -->
             <div id="mainExp">
                <v-ribbon></v-ribbon>
-                <iframe width="100%" height="500px"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
+                <iframe width="100%" class="exp_frame"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
                <v-start access_code="{{$access_code}}" user_type="{{$user_type}}" hourdata="{{$time_left['hour']}}" munitedata="{{$time_left['minute']}}"></v-start>               
             </div>
             <!-- end experiment -->

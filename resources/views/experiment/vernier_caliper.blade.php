@@ -25,8 +25,18 @@ if ($time_default) {
       'minute'=>30
    ];
 }
-
-
+$tr="";
+$x = 0;
+for ($i=0; $i < 5; $i++) { 
+  $x++;
+  $tr .= '<tr>
+            <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="'.$x.'" disabled> </td>
+            <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
+            <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
+            <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
+            <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
+          </tr>';  
+}
 $resultTable ='
     <div id="result_table" class="bg-white p-2 mx-auto mt-2" style="border-radius:10px;width:450px;overflow:auto;"> 
       <h4 class="text-warning font2 mb-0">Table of Measurements</h4>
@@ -40,27 +50,7 @@ $resultTable ='
             <th class="p-1 fs01 text-center" width="22%">Length (L) Reading (cm)</th>
           </thead>
           <tbody>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="1." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="2." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="Average" disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
+           '.$tr.'
           </tbody>
       </table>
       <h5 class="text-dark font2 fs1 fw6 mt-2">Diameter of Cylinder</h5>
@@ -73,27 +63,7 @@ $resultTable ='
             <th class="p-1 fs01 text-center" width="22%">Length (L) Reading (cm)</th>
           </thead>
           <tbody>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="1." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="2." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="Average" disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
+            '.$tr.'
           </tbody>
       </table>
       <h5 class="text-dark font2 fs1 fw6 mt-2">Diameter of Bob</h5>
@@ -106,27 +76,7 @@ $resultTable ='
             <th class="p-1 fs01 text-center" width="22%">Length (L) Reading (cm)</th>
           </thead>
           <tbody>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="1." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="2." disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
-            <tr>
-              <td class="r-template p-1 text-center" width="12%"><input type="text" class="resultReading form-control h-100 bg-white" value="Average" disabled> </td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>
-              <td class="r-template p-0" width="22%"><input type="text" class="resultReading form-control h-100 bg-white"></td>                    
-            </tr>
+            '.$tr.'
           </tbody>
       </table>
 
@@ -161,7 +111,7 @@ $resultTable ='
 
    <div class="w-100 vh-100 position-relative" style="overflow-y: hidden;">
          <!-- top nav bar -->
-         <v-topnave class="vh-1" equipmentname="Vernier Caliper" experimentnum='Experiment I'></v-topnave>
+         <v-topnave equipmentname="Vernier Caliper" experimentnum='Experiment I'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->
@@ -175,7 +125,7 @@ $resultTable ='
             <!-- experiment  -->
             <div  id="mainExp">
                <v-ribbon></v-ribbon>
-                <iframe width="100%" height="480px"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
+                <iframe width="100%" class="exp_frame"  frameborder="0" style="display: none;" src="" id="experimentSheet"></iframe>
                <v-start access_code="{{$access_code}}" user_type="{{$user_type}}" hourdata="{{$time_left['hour']}}" munitedata="{{$time_left['minute']}}"></v-start>
             </div>
             <!-- end experiment -->

@@ -650,6 +650,11 @@ class CourseController extends Controller
 
         return response()->json(['success' => true], 200);
     }
+    public function getCourseCode(Request $request){
+        $id = $request->get('id');//weekly course experiment id
+        $course = DB::table('weekly_work_experiments', 'w')->join('course_experiment',  'w.experiment_id','course_experiment.experiment_id')->join('courses', 'courses.id', 'course_experiment.course_id')->where('w.id', $id)->get();
+        return response()->json($course, 200);
 
+    }
 
 }

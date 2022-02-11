@@ -13,7 +13,9 @@
 		</div>			
 		<div  class="MenuLContainer scroll-y vh-70" id="wideMenuC"  v-bind:class="{reduceSize:show}">			
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider">
-
+				<a :href="backurl"   class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
+					<span class="iconV fa fa-caret-left "></span><div class="labelV">Back</div>
+				</a>	
 				<a :href="backurl"   title="home">
 					<span v-bind:class="{btnActive: checkActive('home')}" class="iconOV fa fa-home" title="Home"></span>					
 				</a>
@@ -21,7 +23,7 @@
 					<span v-bind:class="{btnActive: checkActive('dashboard')}" class="iconOV fa fa-dashboard" title="Dashboard"></span>					
 				</a> -->
 				<a href="/explore"  title="explore">
-					<span v-bind:class="{btnActive: checkActive('explore')}" class="iconOV fa fa-spinner" title="Explore"></span>					
+					<span v-bind:class="{btnActive: checkActive('explore')}" class="iconOV fa fa-search" title="Explore"></span>					
 				</a>
 				<!-- <a href="/my-courses"   >
 					<span class="iconOV fa fa-toggle-on" title="Courses" v-bind:class="{btnActive: checkActive('courses')}"></span>					
@@ -51,7 +53,7 @@
 					<span class="iconV fa fa-dashboard"></span><div class="labelV">Dashboard</div>
 				</a>	 -->
 				<a title="explore" href="/explore" class="nChildV"  v-bind:class="{btnActive: checkActive('explore')}">
-					<span class="iconV fa fa-spinner"></span><div class="labelV">Explore</div>
+					<span class="iconV fa fa-search"></span><div class="labelV">Explore</div>
 				</a>	
 			<!-- 	<a href="/my-courses"  class="nChildV" v-bind:class="{btnActive: checkActive('courses')}">
 					<span class="iconV fa fa-toggle-on"></span><div class="labelV">Course</div>
@@ -113,7 +115,7 @@
         	},
  
         },
-        async created(){
+        async created(){			
         	this.currentSession = await this.axiosGet('api/current_session',false, 'Constact the Administrator to Set a Session');          
             window.sessionNow = this.currentSession; 
 		  this.$eventBus.$on('toggleFromSysTopNav', data => {

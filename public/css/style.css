@@ -527,7 +527,7 @@ img{
 .exp-cont-view{
   display: flex;
   flex-wrap: wrap;
-  min-height: 87vh;
+  min-height: 91vh;
 }
 @media screen and (min-width: 644px){  
   .lg-flex{
@@ -658,8 +658,11 @@ input.login-input{
   width: 100%;
 }
 #mainExp{
-  width: 88%;
+  width: 84.7%;  
+  transition:  all .05s linear;
   overflow-x: scroll;
+  display: flex;
+  flex-direction: column;
 }
 .systabActive{
  border-bottom: 2px solid #00b96b !important; 
@@ -2331,7 +2334,7 @@ span.ripple {
 }
 .forSessionOnNav{
   background: #2F274E;
-  height:69px;
+  height:71px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2431,4 +2434,7 @@ span.ripple {
 }
 .bg-none{
   background:transparent !important;
+}
+.exp_frame{
+  height: 96%;
 }

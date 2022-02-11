@@ -85,7 +85,7 @@ $resultTable ='
             <!-- experiment  -->
             <div  id="mainExp">
                <v-ribbon></v-ribbon>
-               <div class="w-100" style="height: 480px;display: none;position: relative;" id="experimentSheet">
+               <div class="w-100 exp_frame"  style="display: none;position: relative;" id="experimentSheet">
                                  
                </div>          
                <v-start access_code="{{$access_code}}" user_type="{{$user_type}}" hourdata="{{$time_left['hour']}}" munitedata="{{$time_left['minute']}}"></v-start>               

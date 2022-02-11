@@ -1,17 +1,16 @@
 <template>
 	<div>
     
+    
     <div  class="position-to-center alert-danger py-5" :style="'height:'+accessCodeheight+'px;'" v-if="accessCode == false">
       <div class="position-left">
         <label  class="ml-2 pl-2"><i >Access Code</i></label><br>
         <input type="text" name="enrollment_code" @keyup="compare($event.target.value, $event)" class="formControl ">
       </div>
-    </div>   
-		<div style="position: absolute;top: 13vh; right: 24px; z-index: 15;" class="timer bg-dark">
+    </div>  
+		<div style="position: absolute;top: 4.6vh; right: 7px; z-index: 15;padding: 1.2px;width: 194px; " class="timer bg-dark">
 			  <div class="countdown">
-			    <!-- <div class="block">
-			      <p class="digit">{{ days}}:</p>
-			      <p class="text">Days</p>
+			    <!-- <div class="block"> 
 			    </div> -->
 			    <div class="block">
 			      <p class="digit">{{hours}}:</p>
@@ -30,7 +29,7 @@
 		<span v-if="timeexpires==true" class="start" style="position: absolute;top:45%; left: 45%;  cursor: pointer;background: #a23;color: #fff;padding: 15px 20px;border-radius: 8px;">
 			<span class="fa fa-lock mr-1" ></span>Time Up
 		</span>
-		<span class="start" style="position: absolute;top:78%; left: 45%;  cursor: pointer;background: #7d9;color: #fff;padding: 15px 20px;border-radius: 8px;" @click="startT" v-if="start==false && accessCode == true">
+		<span class="start" style="display: block;margin: 46vh auto 0px auto;width: 185px;cursor: pointer;background:rgb(17 194 76);opacity:0.8;color: rgb(255, 255, 255);padding: 15px 20px;border-radius: 8px;" @click="startT" v-if="start==false && accessCode == true">
 			<span class="fa fa-caret-right mr-1" ></span>Start Experiment
 		</span>
 		
@@ -212,6 +211,7 @@ mounted() {
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400|Roboto:100);
 .countdown {
   display: flex;
+  justify-content: center
 }
 
 .block {
@@ -264,6 +264,9 @@ input.formControl{
   border-bottom:1px solid #00b96b;  
   border-radius: 0px;
   outline: 0;
+}
+.start:hover{
+  opacity: 1 !important;
 }
 
 </style>

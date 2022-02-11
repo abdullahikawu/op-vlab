@@ -1,8 +1,8 @@
 <template>
-	<div style="margin:0; padding: 35px 20px 10px 20px;display: flex;justify-content: space-between;width: 100%;background: #eee;">
+	<div style="margin:0; padding: 5px 20px 5px 20px;display: flex;justify-content: space-between;width: 100%;background: #eee;">
 		<div style="display: flex;flex-wrap: wrap;align-items: center; ">
 			<span @click="toggleSysnav" style="font-size: 1.4em;cursor: pointer;" class="fa fa-align-justify mr-3"></span>
-			<b><span style="font-weight: 800;font-size: 1.7em;">{{equipmentname}}/</span><span style="font-weight: 600;font-size: 1.3em;" >{{experimentnum}}</span></b>
+			<b><span style="font-weight: 800;font-size: 1em;"></span> {{coursecode.code}}/{{equipmentname}}/</span><span style="font-weight: 600;font-size: 0.9em;" >{{experimentnum}}</span></b>
 		</div>
 		<div style="display: flex;flex-wrap: wrap;align-items: center;">
 			<span class="fa fa-user mr-2"></span>
@@ -19,25 +19,30 @@
 	    	return{
 	    	 navState:false,
 	    	 username:'',
+			 coursecode:{code:""},
 	    	}
         },
         methods:{
-        	toggleSysnav: function () {
+        	toggleSysnav: function () {				
 //        		alert(this.navState);
         		this.navState = !this.navState;
-			   this.$eventBus.$emit('toggleSysNav',{text:this.navState});
+			   this.$eventBus.$emit('toggleFromSysTopNav',{text:this.navState});
 			    //this.newTodoText = ''
-			}
+			} 
         },	
-        created(){
-        	this.username = this.currentUser.first_name;
+        async created(){
+        	this.username = this.currentUser.first_name; 
+			let SearchParams =window.location.href.split('/');
+			let id = SearchParams[SearchParams.length-1];
+			let coursecode = await this.axiosGetByParams('api/courses/get_course_code_by_weekly_course_experiment_id',{id:id});
+			this.coursecode = coursecode[0];
         },
         
          props: ['equipmentname','experimentnum'],
          mounted(){	         	
          },
          events :{
-         	'toggleSysNav':'toggleSysNav'
+         	'toggleFromSysTopNav':'toggleFromSysTopNav' 
          }
 
 	}

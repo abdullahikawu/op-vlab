@@ -182,6 +182,8 @@ Route::group([
             Route::post('add_experiment', [CourseController::class, 'addExperiment']); //consume
             Route::post('delete_resources', [CourseController::class, 'deleteResources']); //consume
             Route::post('delete_experiment', [CourseController::class, 'deleteExperiment']); //consume
+            Route::post('get_course_code_by_weekly_course_experiment_id', [CourseController::class, 'getCourseCode']); //consume
+            
 
         });
     });

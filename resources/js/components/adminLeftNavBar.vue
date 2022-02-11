@@ -31,7 +31,7 @@
 				</a>	
 			
 				<a href="/explore"   v-bind:class="{btnActive:checkActive('explore')}">
-					<span class="iconOV  fa fa-spinner"></span>
+					<span class="iconOV  fa fa-search"></span>
 				</a>	
 				
 				<!-- manage faculty -->
@@ -87,7 +87,7 @@
 				</a>		
 
 				<a href="/explore" class="nChildV"  v-bind:class="{btnActive:checkActive('explore')}">
-					<span class="iconV fa fa-spinner"></span><div class="labelV">Explore</div>
+					<span class="iconV fa fa-search"></span><div class="labelV">Explore</div>
 				</a>	
 				
 				<a href="/logout"  class="nChildV">				

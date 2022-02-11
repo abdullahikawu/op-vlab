@@ -748,9 +748,8 @@ export default {
 		},		
       	naviconToggler: function(e){   
       		if ($(window).width() <720) {
-				this.navbarFunc()
-	      		if (this.navbarState === false) {
-	      			
+				this.navbarFunc();
+	      		if (this.navbarState === false) {	      			
 	      			this.navbarState = true;   				  
 	      			$('.navicon-small-screen').addClass('change');
 	      			$('.mobileMenu').show();
@@ -761,18 +760,7 @@ export default {
 	      			}, 300)
 
 	      		}else{
-					  
-	      			$('#slideId').animate({
-	      				'top':'-50%',
-	      				'opacity':1,
-	      			}, 300,function(){
-						  setTimeout(() => {
-							  $('#slideId').hide();							  
-						  }, 100);						
-	      			})
-	      			this.navbarState = false;
-	      			$('.navicon-small-screen').removeClass('change');
-	      			$('.mobileMenu').hide(200);
+				 	$('.mobileMenu').hide(200);
 	      		}
       		}
       	}

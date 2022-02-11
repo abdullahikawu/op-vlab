@@ -1,47 +1,48 @@
 <template>
-	<div style="display: flex;width:0px;" id="expSideBar">
+	<div style="display: flex;width:0px; transition:all 0.45s linear;" id="expSideBar">
 		
-		<div   v-bind:class="{slidein:show, slideout:hide}" style="width: 300px;" >	
+		<div id="exphowtogo" style="width: 300px; display:none;" >	
+	<!-- 	<div   v-bind:class="{slidein:show, slideout:hide}" style="width: 300px;" >	 -->
 
-		<div style="display: flex;background: #2F274E;" >
-			<div v-bind:class="{btnVActive:proced}" class="btnV"  @click="toggller('procedure')">Procedure</div>
-			<div v-bind:class="{btnVActive:exerc}"  class="btnV" @click="toggller('exercise')">Exercise</div>
-			<div v-bind:class="{btnVActive:resour}"  class="btnV"  @click="toggller('resources')">Resources</div>
-		</div>
-		<div style="background: #40356E; padding-right: 9px;" v-if="!guide_loading">
-				<div class="holder" style="height:78.5vh">
-					<div id="procedure" class="m-0 p-0">	
-						<div style="font-family: 'Roboto';">
-							<p class="pl-3 pt-2 m-0" style="font-weight: 300;font-size: 0.95;">Title</p>
-							<h3 class="accordion accordBtnV" >Introduction <span class="fa fa-chevron-right fontType-ico" style=""></span></h3>
-					    	<div class="panel accordBodyV mt-2 bg-white text-dark fw5 px-2" style="overflow:auto;text-align:justify;height: 77.8vh;" v-html="experiment.experiment_intro"></div>							
-						</div>
-						<!-- Aim -->
-						<h3 class="accordion accordBtnV" >Aim<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
-						<div class="panel accordBodyV" >{{experiment.experiment_goal}}</div>						  								
-						<!-- Aparatus -->
-						<h3 class="accordion accordBtnV" >Aparatus<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
-						<div class="panel accordBodyV" >{{experiment.apparatus}}</div>					    		
-						<!-- Theory -->
-				 		<!-- <h3 class="accordion accordBtnV">Theory<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
-						<div class="panel accordBodyV" v-html="theory">		{{experiment.theory}}				    </div>		 -->
-						
-						<!-- Requirment -->
-						<h3 class="accordion accordBtnV" >Requirement<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
-						<div class="panel accordBodyV bg-white text-dark fw5" v-html="experiment.required">						    		
-						</div>		
-						<p class="fontType-ico mt-2" style="font-size: 1.3em;padding: 0px 14px;">Instructor's Mock Experiment</p>
-						<div class="mt-1" id="smallArea" style="padding: 0px 14px;">
-							<div class="videoContainer" v-if="!guide_loading" style="">
-								<video class="mx-auto" :data-id="youtubeID(experiment.video_url)"></video>
-							</div>							
-						</div>
+			<div style="display: flex;background: #2F274E;" >
+				<div v-bind:class="{btnVActive:proced}" class="btnV"  @click="toggller('procedure')">Procedure</div>
+				<div v-bind:class="{btnVActive:exerc}"  class="btnV" @click="toggller('exercise')">Exercise</div>
+				<div v-bind:class="{btnVActive:resour}"  class="btnV"  @click="toggller('resources')">Resources</div>
+			</div>
+			<div style="background: #40356E; padding-right: 9px; height:96%;" v-if="!guide_loading">
+					<div class="holder" style="height:78.5vh">
+						<div id="procedure" class="m-0 p-0">	
+							<div style="font-family: 'Roboto';">
+								<p class="pl-3 pt-2 m-0" style="font-weight: 300;font-size: 0.95;">Title</p>
+								<h3 class="accordion accordBtnV" >Introduction <span class="fa fa-chevron-right fontType-ico" style=""></span></h3>
+								<div class="panel accordBodyV mt-2  text-white  px-2" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;overflow:auto;text-align:justify;height: 77.8vh;" v-html="experiment.experiment_intro"></div>							
+							</div>
+							<!-- Aim -->
+							<h3 class="accordion accordBtnV" >Aim<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
+							<div class="panel accordBodyV" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;" >{{experiment.experiment_goal}}</div>						  								
+							<!-- Aparatus -->
+							<h3 class="accordion accordBtnV" >Aparatus<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
+							<div class="panel accordBodyV" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;" >{{experiment.apparatus}}</div>					    		
+							<!-- Theory -->
+							<!-- <h3 class="accordion accordBtnV">Theory<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
+							<div class="panel accordBodyV" v-html="theory">		{{experiment.theory}}				    </div>		 -->
+							
+							<!-- Requirment -->
+							<h3 class="accordion accordBtnV" >Requirement<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
+							<div class="panel accordBodyV text-dark fw5" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;" v-html="experiment.required">						    		
+							</div>		
+							<p class="fontType-ico mt-2" style="font-size: 1.3em;padding: 0px 14px;">Instructor's Mock Experiment</p>
+							<div class="mt-1" id="smallArea" style="padding: 0px 14px;">
+								<div class="videoContainer" v-if="!guide_loading" style="">
+									<video style="width:100%;" class="mx-auto" :data-id="youtubeID(experiment.video_url)"></video>
+								</div>							
+							</div>
 
+						</div>
+						<div id="exercise" class="" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;display: none; padding: 10px 14px;" v-html="experiment.exercise"></div>
+						<div id="resources" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;display: none; padding: 10px 14px" v-html="experiment.experiment_resource" >resources</div>
 					</div>
-					<div id="exercise" class="text-dark fw5" style="display: none; padding: 10px 14px;" v-html="experiment.exercise"></div>
-					<div id="resources" style="display: none; padding: 10px 14px" v-html="experiment.experiment_resource" >resources</div>
-				</div>
-		</div>
+			</div>
 		</div>	
 		<div id="wideArea"></div>
 
@@ -77,15 +78,19 @@
         		//this.control = true;
         		//alert(value);
         		this.show = !this.show;
-        		this.hide= !this.show; 
+        		this.hide= !this.show; 				
                if (this.show){
+				   document.getElementById('mainExp').style.width= '61.7%';                    		 
+					document.getElementById('expSideBar').classList.add('addSize');  
+				   $('#exphowtogo').show("slide", {direction: "left"}, 500, function(){
+					
+				   });
             	    //this.show=true;                      
-            		document.getElementById('expSideBar').classList.add('addSize');  
-    	        	document.getElementById('mainExp').style.width= '62%';                    		 
 	            		
                 }else{              		
-	            	document.getElementById('expSideBar').classList.remove('addSize');  	
-	            		document.getElementById('mainExp').style.width= '88%';	
+					document.getElementById('mainExp').style.width= '88%';	
+					document.getElementById('expSideBar').classList.remove('addSize');  	
+					$('#exphowtogo').hide("slide", {direction: "left"}, 790, function(){});					
                 }  
             },            
         	toggller(e){
@@ -174,14 +179,8 @@
 
          props: ['aim','aparatus','theory','requirment', 'exercise', 'resources'],
          mounted(){	       
-         	
-         	
-	/*		$('.accordion').click(function(){
-				$('.accordBodyV').slideUp()
-				$(this).next().slideToggle();
-				$('.accordion').removeClass('accordActiv')
-				$(this).addClass('accordActiv')
-			})*/
+
+
          
          }
 	}

@@ -1,6 +1,6 @@
 <template>
 	<div class="vhE-2 " id="rightNavigation">
-		<div class="containerR" id="tools" style="height:100%;">	
+		<div class="containerR" id="tools" style="height:105%;">	
 			
 		   	<div class="input-alt"></div>	
 		   	<span v-if="circuitconnectiontools==true" class="pr z-1" >		 
@@ -12,13 +12,13 @@
 		   	</span>
 		   	<span v-if="othertools==true">	 
 		   		<span v-if= "type=='measurement' && startExperiment == true">		   		
-				   	<span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>
+				   	<!-- <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span> -->
 		            <div v-for="i in toolsizes_r[0].length"  :key="i" @click="addactivate($event);changeApparatus(toolsizes_r[0][i-1],toolsizes_r[1][i-1],toolsizes_r[2][i-1])"  v-bind:style="{width:+'150px'}" class="box">
 		            		Object {{i}}
 		        	</div>                  
 		   		</span>
 		   		<span v-if= "type=='micrometer' && startExperiment == true">		   		
-				   	<span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>
+				   	<!-- <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span> -->
 		            <div v-for="j in toolsizes_r.length"  :key="j" @click="addactivate($event);changeApparatusForMicrometer(toolsizes_r[j-1])"  v-bind:style="{width:+'150px'}" class="box">
 		            		Object {{j}}
 		        	</div>                  
@@ -286,7 +286,7 @@
 	background: #2F274E;	
 }
 .containerR{
-	height: 537px;
+	height: 105%;
 	background: #40356E;
 	overflow-x: hidden;
 	color: #fff;
