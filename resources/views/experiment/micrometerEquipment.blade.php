@@ -9,6 +9,7 @@
 <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-3326007-19"></script>
 <?php
    $sizes = $_GET['size'];
+
        if(Session::has('experimentMode')){
           if (session('experimentMode') == 1) {
               $mode  = true;            
@@ -19,13 +20,19 @@
           $mode = false;
         }
 ?>
-<script>
+<script>  
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'UA-3326007-19');
-var testMode = <?php echo json_encode($mode); ?>;
-  
+  var testMode = <?= empty($mode)?0:1 ?>;
+  if(testMode == 1){
+    testMode = true;
+  }else{
+    testMode = false;
+  }
+
+  //alert(testMode)
 </script>
 <script data-ad-client="ca-pub-0121577198857509" async="true" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>    
 <link rel="stylesheet" type="text/css" href="{{ asset('experiments/micrometerscrewguage/_ejs_library/css/ejss.css')}}"></link>
@@ -39,7 +46,7 @@ var testMode = <?php echo json_encode($mode); ?>;
     
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 /* _inputParameters: an object with different values for the model parameters */
-var testMode = false;
+
 function Micrometer02(_topFrame,_libraryPath,_codebasePath, _inputParameters) {
   var _model = EJSS_CORE.createAnimationLMS();
   var _view;
@@ -833,15 +840,15 @@ var _stringProperties = {};
 
   _model.addToReset(function() {
     __pagesEnabled["Init Page"] = true;
-    __pagesEnabled["message"] = true;
+    __pagesEnabled["message"] = !testMode;
     __pagesEnabled["undefined"] = true;
     __pagesEnabled["radial"] = true;
-    __pagesEnabled["alert"] = true;
+    __pagesEnabled["alert"] = !testMode;
     __pagesEnabled["Evol Page"] = true;
     __pagesEnabled["FixRel Page 2"] = true;
-    __pagesEnabled["hintnew"] = true;
-    __pagesEnabled["showanswer"] = true;
-    __pagesEnabled["check"] = true;
+    __pagesEnabled["hintnew"] = !testMode;
+    __pagesEnabled["showanswer"] = !testMode;
+    __pagesEnabled["check"] = !testMode;
     __pagesEnabled["preventgoing over"] = true;
   });
 
@@ -1308,7 +1315,7 @@ var _stringProperties = {};
       }  // > Initialization.undefined:12
         // > Initialization.undefined:13
       if (showhint==undefined){  // > Initialization.undefined:14
-      showhint=true;  // > Initialization.undefined:15
+      showhint=!testMode;  // > Initialization.undefined:15
       }  // > Initialization.undefined:16
       if (firsttime==undefined){  // > Initialization.undefined:17
       firsttime=true;  // > Initialization.undefined:18
@@ -1482,7 +1489,7 @@ var _stringProperties = {};
   });
 
   _model.addToFixedRelations(function() {
-    if (testMode) {
+    //if (testMode) {
 
     if (!__pagesEnabled["showanswer"]) return;
     if(id/10===parseInt(id/10)) {  // > FixedRelations.showanswer:1
@@ -1507,7 +1514,7 @@ var _stringProperties = {};
       else {  // > FixedRelations.showanswer:20
       l_msg="d = ??? mm";  // > FixedRelations.showanswer:21
            }  // > FixedRelations.showanswer:22
-    }
+   // }
   });
 
   _model.addToFixedRelations(function() {
@@ -1668,6 +1675,9 @@ var _stringProperties = {};
   }
 
 }); // HtmlView Page setting action 'OnDrag' for element 'bottomresize'
+if(testMode){
+  var l_integerd2 =l_decimald2="";
+}
           _view.arrowdragme2.linkProperty("SizeX",  function() { return bottomdragmesize-dragmex; } ); // HtmlView Page linking property 'SizeX' for element 'arrowdragme2'
           _view.arrowdragme2.linkProperty("X",  function() { return dragmex; }, function(_v) { dragmex = _v; } ); // HtmlView Page linking property 'X' for element 'arrowdragme2'
           _view.arrowdragme2.linkProperty("Y",  function() { return dragmey; }, function(_v) { dragmey = _v; } ); // HtmlView Page linking property 'Y' for element 'arrowdragme2'

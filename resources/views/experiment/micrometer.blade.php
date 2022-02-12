@@ -55,11 +55,11 @@ $resultTable ='
 
 @section('head')
 <script>
-   var toolSizes = <?php echo json_encode($toolSizes); ?>;
+   var toolSizes = <?php echo json_encode($toolSizes[0]); ?>;
 
-   //localStorage.setItem('objectSize',{{$toolSizes[0]}});
+   
    var experimentSheet;
-   var url = "{{route('micrometerEquipment').'?size='.$toolSizes[0] }}" //localStorage.getItem('objectSize');
+   var url = "{{route('micrometerEquipment').'?size='.$toolSizes[0][0] }}" //localStorage.getItem('objectSize');
    
    window.onload = function(){
     experimentSheet = document.getElementById('experimentSheet');
@@ -85,7 +85,7 @@ $resultTable ='
 
    <div class="w-100 vh-100 position-relative">
          <!-- top nav bar -->
-         <v-topnave class="vh-1" equipmentname="Micrometer Screw Guage" experimentnum='Experiment I'></v-topnave>
+         <v-topnave  equipmentname="Micrometer Screw Guage" experimentnum='Experiment I'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->
@@ -104,7 +104,7 @@ $resultTable ='
             </div>
             <!-- end experiment -->
             <div  class="zero-space exprightNav" id="rightNav">               
-               <v-rightnav result="{{$resultTable}}" :toolstate=true :othertools=true type='micrometer' toolsizes="{{json_encode($toolSizes)}}" url="{{route('micrometerEquipment').'?size='}}" ></v-rightnav>
+               <v-rightnav result="{{$resultTable}}" :toolstate=true :othertools=true type='micrometer' toolsizes="{{json_encode($toolSizes[0])}}" url="{{route('micrometerEquipment').'?size='}}" ></v-rightnav>
             </div>
             <!-- experiment footer -->
             <div class="position-absolute bottom-0 w-100">

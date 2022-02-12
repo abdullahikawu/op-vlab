@@ -83,7 +83,7 @@ $resultTable ='
 
    <div class="w-100 vh-100 position-relative">
          <!-- top nav bar -->
-         <v-topnave class="vh-1" equipmentname="{{$experimentName}}" experimentnum='{{$experimentNum}}'></v-topnave>
+         <v-topnave equipmentname="{{$experimentName}}" experimentnum='{{$experimentNum}}'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->

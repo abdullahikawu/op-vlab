@@ -71,7 +71,7 @@ $resultTable ='
 
    <div class="w-100 vh-100 position-relative">
          <!-- top nav bar -->
-         <v-topnave class="vh-1" equipmentname="Electricity" experimentnum='Resistor Color Code'></v-topnave>
+         <v-topnave  equipmentname="Electricity" experimentnum='Resistor Color Code'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->

@@ -46,7 +46,7 @@ $user_type = session('user_type');
 
    <div class="w-100 vh-100 position-relative">
          <!-- top nav bar -->
-         <v-topnave class="vh-1"  equipmentname="Simple Circuit" experimentnum='Experiment I'></v-topnave>
+         <v-topnave  equipmentname="Simple Circuit" experimentnum='Experiment I'></v-topnave>
          <!-- end to nav bar -->
 
          <!-- content -->
