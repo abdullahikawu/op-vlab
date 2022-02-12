@@ -1,11 +1,11 @@
 <template>
 	
-	<div style="display: flex;justify-content: space-between; background: #40356E;position: relative;z-index: 10;width:100%;height:37px;">		
+	<div style="display: flex;justify-content: space-between; background:var(--blue);position: relative;z-index: 10;width:100%;height:37px;">		
 		<span style=" width: 30%;display: flex;flex-wrap: wrap;align-items: center; ">			
 			<span class="fa fa-chevron-right text-dark ml-4 pl-2 tbtn" v-if="btnState==true" @click="toggleExperimentGuider"></span>
 			<span class="fa fa-chevron-left text-dark ml-4  tbtn" @click="toggleExperimentGuider" v-else></span>
 		</span>
-		<div style="display: flex;justify-content: space-between; background: #40356E;width: 70%;color: white;">
+		<div style="display: flex;justify-content: space-between; background: var(--blue);width: 70%;color: white;">
 			<div style="padding: 6px;">				
 				<span class="fa fa-flask fa-ico activeIco" @click="toggleRightNav" rel="tools"></span>
 				<span class="fa fa-table fa-ico" @click="toggleRightNav" rel="resulttable"></span>

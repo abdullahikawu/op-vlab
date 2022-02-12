@@ -1,17 +1,19 @@
 <template>	
-		<div class="w-100 mt-2 py-3 position-relative row" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">			
-			<div class="col-md-12 mb-3 ml-2">
-				<a v-if="!loaderState"  href="#" @click="createuser" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Create user <span class="text-white fa fa-chevron-down"></span></a>
-				<a v-if="!loaderState" href="#" @click="uploadstudent" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs1 font1 p-success btn-lg pull-right" style="border-radius: 3px;">Upload Student <span class="text-white fa fa-cloud-upload"></span></a>
-				<a href="templateFiles/userupload_template.csv" target="_self" class="btn-admin-user btn py-1 my-1 mr-2 px-2 text-white fs01 font1 bg-dark btn-lg pull-right" style="border-radius: 3px;">Download Template<span class="text-white fa fa-cloud-download"></span></a>
+		<div class="w-100 mt-2 py-3 mx-auto position-relative row" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">						
+			<div class="col-md-2 offset-md-10 pt-3">
+				<button v-if="!loaderStatex"   href="#" @click="viewMenu" style="z-index:5;border:0px;" :class="'Menux d-flex justify-content-between p-success text-left position-relative'+ btnclasses+' w-179'">Action <span class="text-white fa fa-chevron-up"></span></button>
+				<div class="w-179 " id="Menu" style="position: absolute;z-index:-1;opacity:0; top:40px;">
+					<button v-if="!loaderStatex"  href="#" @click="createuser" :class="'p-success  w-100 r-0 '+ btnclasses">Create user <span class="text-white fa fa-chevron-down"></span></button>			
+					<button v-if="!loaderStatex" href="#" @click="uploadstudent" :class="'p-success  w-100 r-0 '+ btnclasses">Upload Student <span class="text-white fa fa-cloud-upload"></span></button>			
+					<a href="templateFiles/userupload_template.csv" target="_self" :class="'bg-dark  w-100 r-0 '+ btnclasses">Download Template<span class="text-white fa fa-cloud-download"></span></a>			
+					<button v-if="usertype" :class="'btn-danger  w-100 r-t-0 '+ btnclasses " @click="swichUser(true)" >See Inactive Users <span class="fa fa-user-times text-white"></span></button>
+					<button v-else :class="'bg-success w-100 r-t-0 ' + btnclasses " @click="swichUser(false)" >See Active Users <span class="fa fa-user  text-white"></span></button>			
+				</div>
 			</div>
-          
-          <br>
-
-      	<div class="w-100 col-md-12 mb-2" id="#editArea" style="pointer-events: none;"> 			  
+      <!-- 	<div class="w-100 col-md-12 mb-2" id="#editArea" style="pointer-events: none;"> 			  
 		    <div class="py-2 mx-auto"  style="pointer-events: auto;">		        
 				<div class="row w-100 mx-auto px-0">
-					<div class="col-sm-6 col-md-3 px-1">
+				<div class="col-sm-6 col-md-3 px-1">
 						<select id="sessionid" class="form-control mb-1 mt-1"  placeholder="select session">
 							<option value="">By Session</option>
 							<option v-for="(session,index) in sessions" :key="index+'_ac'" :value="session.id">{{session.session}}</option>
@@ -28,27 +30,25 @@
 							<option value="">Department</option>		        	
 							<option v-for="(department,index) in departments" :key="index+'_ad'" :value="department.id">{{department.code}}</option>
 						</select>
-					</div>
+					</div> 
 					<div class="col-sm-6 col-md-1 pt-1 px-1">
 		        		<button class="button mb-1 mt-2" @click="fetchUser" >Go</button>
 					</div>
-					<div class="col-sm-6 col-md-2 px-0 ">
-		        		<button v-if="usertype" class="btn btn-danger w-179 shadow text-white ml-md-auto mb-1 mt-1" @click="swichUser(true)" >See Inactive Users <span class="fa fa-user-times text-white"></span></button>
-		        		<button v-else class="btn bg-success shadow ml-md-auto text-white w-179 mb-1 mt-1" @click="swichUser(false)" >See Active Users <span class="fa fa-user  text-white"></span></button>
-					</div>
+			
+					
 				</div>
 				<hr style="border-top:0.5px solid #ccc;">
 		    </div>
 
-		</div>
-		<br>
-		<div v-if="loaderState" class="col-md-12">
+		</div> -->
+		
+		<div v-show="loaderStatex" class="col-md-12">
 			<br><br>
           	<v-loader count="2"></v-loader>
          </div>
-		 <div class=" position-relative row mx-auto w-100">		 
+		 <div v-show="!loaderStatex"  class=" position-relative row mx-auto mt-5 w-100">				 
 			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y" style="display:none" id="forInActive" >			     			     
-				<table id="usertable0" class="table table-hover">
+				<table id="usertable0" class="table table-hover w-100">
 						<thead>
 							<tr id="cheadV">							
 								<th width="30%">user name</th>
@@ -58,7 +58,7 @@
 								<th width="10%">Action</th>
 							</tr>
 						</thead>
-						<tbody v-if="!loaderState">
+						<tbody>
 							<tr v-for="(user, index) in inactiveUser" :key="index">	         
 								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
 								<td width="40%" style="white-space: nowrap;">
@@ -75,18 +75,18 @@
 						</tbody>
 					</table>            
 			</div>
-			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y " id="forActive" >			     			     
-					<table id="usertable" class="table table-hover">
+			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y px-0 " id="forActive" >			     			     
+					<table id="usertable" class="table table-hover w-100">
 						<thead>
 							<tr id="cheadV">							
-								<th width="30%">user name</th>
+								<th width="30%">Full Name</th>							
 								<th width="40%">Email/Matric Number</th>	            
-								<th width="10%">role</th>	            
+								<th width="10%">role </th>	            
 								<th width="10%">Department</th>				            			           
 								<th width="10%">Action</th>
 							</tr>
 						</thead>
-						<tbody v-if="!loaderState">
+						<!-- <tbody v-if="!loaderState">
 							<tr v-for="(user, index) in createduser" :key="index">	         
 								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
 								<td width="40%" style="white-space: nowrap;">
@@ -97,11 +97,11 @@
 								<td width="20%">{{ getRoleName(user.role_id) }}</td>	           
 								<td width="20%">{{user.department.code}}</td>	           			                  
 								<td width="15%" >
-									<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" @click="edituser(user)" style="border-left: 1px solid #ccc;"></span>
-									<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" @click="deleteuser(user.id)"></span>
+									<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" onclick="edituser(user)" style="border-left: 1px solid #ccc;"></span>
+									<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" onclick="deleteuser(user.id)"></span>
 								</td>
 							</tr>
-						</tbody>
+						</tbody> -->
 					</table>            
 			</div>
 			<br><br>
@@ -114,6 +114,9 @@
 	export default{
 		data(){
 			return{
+				vclass1: ' col-md-2 offset-md-4 ',
+				vclass2: ' col-md-2',
+				btnclasses: "btn mx-auto d-block shadow text-white fs1 font1 btn-lg my-0",				
 				createduser:null,
 				inactiveUser:null,
 				tableLoaded:false,
@@ -125,16 +128,42 @@
 				listTrHtml:"",
 				sessions:[],
 				loaderState:true,
+				loaderStatex:true,
 				response:'',
 				dTable:'',
 				usertype:true,
-
+				setOut:false,
+				menuToggle: false
 			}
 		},
 		components:{		
 			'v-loader':loader,
 		},
 		methods: {
+			viewMenu:function(){
+				if(this.menuToggle){										
+					this.hideMenu()
+				}else{			
+					this.menuToggle = true
+					$('#Menu').animate({
+						direction: "down",
+						opacity:1,
+						top:'53px',						
+					}, 300, function(){
+						});			
+					$('#Menu').css('z-index',4);		
+				}				
+			},
+			hideMenu:function(){
+				$('#Menu').animate({
+						direction: "down",
+						opacity:0,
+						top:'20px',					
+				}, 300, function(){
+					$('#Menu').css('z-index',-1);
+				});			
+				this.menuToggle = false
+			},
 			activateUser:function(id){
 				this.axiosDelete('api/users/activate_user',{'user_id': id},"Activate this user")
 			},
@@ -380,22 +409,21 @@
 					title: 'confirm delete',
 					icon:'warning',
 					confirmButtonText:'Continue',					      
-			      cancelButtonText:'Cancel',				      				      
-			      cancelButtonColor:'#dd000f',					      
-			      confirmButtonColor:'#00b96b',					      
-			      showCancelButton:true,					      
-			      showLoaderOnConfirm: true,
+					cancelButtonText:'Cancel',				      				      
+					cancelButtonColor:'#dd000f',					      
+					confirmButtonColor:'#00b96b',					      
+					showCancelButton:true,					      
+					showLoaderOnConfirm: true,
 				}).then((result)=>{
 					if (result.value) {
 						this.axiosDelete('api/users/delete',{'user_id': id})					
-
 					}
 				})					
 			},
 			singleValidate: function(id){
-			$('#'+id).css('border','1px solid #e45');
-			$('.requiredv').remove();
-			$('#'+id).after('<span class="text-danger requiredv">Required !</span>')
+				$('#'+id).css('border','1px solid #e45');
+				$('.requiredv').remove();
+				$('#'+id).after('<span class="text-danger requiredv">Required !</span>')
 			},
 			uploadstudent: function(){					
 				this.swal_form(false, null);					
@@ -450,24 +478,80 @@
 		async created(){			
 			this.faculties       =  await this.axiosGet('api/faculties/faculties');						
 			this.departments	 = await  this.axiosGet('api/departments/departments');					
-			this.createduser     = await this.axiosGet('api/users/users');	
+		//	this.createduser     = await this.axiosGet('api/users/users');	
 			this.inactiveUser     = await this.axiosGet('api/users/inactive_users');						
 			this.sessions        = await this.axiosGet('api/session/all_session');			
 			this.facultiesHTML   = this.selectHtmlGen(this.faculties,'code','faculty_id' )							
 			this.departmentsHTML = this.selectHtmlGen(this.departments,'code','department_id' )							
 			
-			this.loaderState = false;
-			this.tableLoaded = false;
+			//this.loaderState = false;			
 			    /*initialize datatable */
 			    var $this = this;
-	        setTimeout(function() {
+	        /* setTimeout(function() { */
 	         	$this.dTable = $('#usertable').DataTable({
-			    	pageLength : 5,
+					processing: true,
+					serverSide: true,
+					deferRender: false,
+					responsive:true,
+					pageLength: 6,			    	
+					ajax:{
+						url: 'api/users/users',
+						'type': 'GET',
+						'beforeSend': function (request) {
+							request.setRequestHeader("Authorization",$this.axiosHeader.Authorization);
+						}
+					}, 
+					columns:[
+						{"data":'fullname'},
+						{"data":'username'}, 						
+						{"data":'title'},
+						{"data":'code'},
+						{"data":'id'},
+					],
+					drawCallback: function (settings) {
+						let json = settings.json.data
+						
+						$("#usertable tbody").find('tr td:last-child').each(function(index){
+							$(this).prev().prev().prev().css('text-transform','lowercase')
+							
+							$(this).html(`
+							<span class="ml-2 fa fa-edit pl-3 fedit  fs01 cursor-1" style="border-left: 1px solid #ccc;"></span>
+							<span class="ml-2 fa fa-trash pl-3 fdelete fs01 cursor-1" ></span>`);
+							$(this).on("click", ".fedit", function(){
+								$this.VueSweetAlert2('v-userform', {
+								type:'',
+								update:true,
+								faculties: $this.faculties,
+								departments: $this.departments,
+								roles:$this.roles,
+								alldata: json[index]
+							}); 	
+							})
+							$(this).on("click", ".fdelete", function(){
+								Swal.fire({
+									title: 'confirm delete',
+									icon:'warning',
+									confirmButtonText:'Continue',					      
+									cancelButtonText:'Cancel',				      				      
+									cancelButtonColor:'#dd000f',					      
+									confirmButtonColor:'#00b96b',					      
+									showCancelButton:true,					      
+									showLoaderOnConfirm: true,
+								}).then((result)=>{
+									if (result.value) {
+										$this.axiosDelete('api/users/delete',{'user_id': json[index].id})					
+									}
+								})		
+							}); 	
+							
+						})							
+						$this.loaderStatex = false;							
+					}
 			    });					
-				$this.dTable = $('#usertable0').DataTable({
+				/* $this.dTable = $('#usertable0').DataTable({
 			    	pageLength : 5,
-			    });								
-	         }, 50);
+			    });	 */							
+	       /*   }, 50); */
 			
 		},
 		 props:{
@@ -482,9 +566,17 @@
 			
 			this.$nextTick(function(){ 		
 				setTimeout(() => {
-					$( "#forInActive" ).hide();
-				//	introJs().start();
+					$( "#forInActive" ).hide();				
 				}, 4000);		
+				var $this = this;
+
+				$(document).click(function(e){
+					if (!$(e.target).hasClass("Menux")) 
+					{                	
+						$this.hideMenu();
+            		}
+				});
+
 				function PrintArea(elem, title,length=400)
 				{
 				    var mywindow = window.open('', 'PRINT', 'height='+length+',width=600');
@@ -514,6 +606,9 @@
 	code{
 		text-transform: lowercase ;		
 	}	
+	thead tr th{
+		background: white;
+	}
 	table.dataTable.no-footer{
 		border-bottom: none;
 	}
@@ -521,12 +616,23 @@
 		/* box-shadow: 0px 1.5px 5px #bbb; */
 	}
 #forInActive, #forActive{
+	top:20px;
 	position:absolute;
+	box-shadow: 7px 10px 16px #ccc;
+    padding: 13px !important;
+    border-radius: 0px;
+    width: 100%;
 }
 .display-none{
 	display: none;
 }
 .w-179{
 	width:179px;
+}
+.r-0{
+	border-radius: 0px !important;
+}
+.r-t-0{
+	border-radius: 0px 0px 4px 4px !important;
 }
 </style>

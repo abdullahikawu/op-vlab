@@ -1,5 +1,5 @@
 <template>
-	<div style="width:100%;background: #2F274E;color: #fff; padding: 0px 39px;"  class="d-flex flex-wrap">
+	<div style="width:100%;background: var(--blue);color: #fff; padding: 0px 39px;"  class="d-flex flex-wrap">
 		<div class=" w-25">
 			<!-- <span class="fa fa-arrows-alt mr-5 pr-4" style="font-size: 1.4em;padding-top: 5px;"></span> -->
 			<span class="fa fa-arrows-alt mr-5 pr-4"  @click="expandVideo"  style="font-size: 1.5em;padding-top: 5px;color:white;cursor: pointer;"></span>			

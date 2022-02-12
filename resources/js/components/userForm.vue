@@ -280,6 +280,7 @@ import axios_x from 'axios';
 		async created(){
 			
 			if (this.update) {
+//				console.log(this.alldata)
 					this.typex = "Update User";
 					this.first_name = 	this.alldata.first_name;
 					this.other_names = 	this.alldata.other_names;

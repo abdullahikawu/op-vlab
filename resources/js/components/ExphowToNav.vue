@@ -9,7 +9,7 @@
 				<div v-bind:class="{btnVActive:exerc}"  class="btnV" @click="toggller('exercise')">Exercise</div>
 				<div v-bind:class="{btnVActive:resour}"  class="btnV"  @click="toggller('resources')">Resources</div>
 			</div>
-			<div style="background: #40356E; padding-right: 9px; height:96%;" v-if="!guide_loading">
+			<div style="background:var(--blue); padding-right: 9px; height:96%;" v-if="!guide_loading">
 					<div class="holder" style="height:78.5vh">
 						<div id="procedure" class="m-0 p-0">	
 							<div style="font-family: 'Roboto';">
@@ -29,7 +29,7 @@
 							
 							<!-- Requirment -->
 							<h3 class="accordion accordBtnV" >Requirement<span class="fa fa-chevron-right fontType-ico" style=""></span> </h3>
-							<div class="panel accordBodyV text-dark fw5" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;" v-html="experiment.required">						    		
+							<div class="panel accordBodyV text-white" style="text-align: justify;font-size: 1.2em;letter-spacing: 1.1px;" v-html="experiment.required">						    		
 							</div>		
 							<p class="fontType-ico mt-2" style="font-size: 1.3em;padding: 0px 14px;">Instructor's Mock Experiment</p>
 							<div class="mt-1" id="smallArea" style="padding: 0px 14px;">

@@ -9,6 +9,7 @@ export default {
 		},
       data(){
       	return {
+			isLargeView:true,
       		userLoggedInOld: "", 
       		axiosHeader:"",
       		axiosHeaderWithFiles:"",
@@ -795,7 +796,7 @@ export default {
       	let $vm = this;
       	this.$nextTick(function(){
 			
-	      	$(document).ready(function(){
+	      	$(function(){
 	      		
       			/*minimize vido player*/
 		      	$('#wideArea').not('.videoContainer iframe').click(function(){
@@ -814,8 +815,11 @@ export default {
 	        	 	$vm.currentWidth = (($('.scroll-y').width()/windowWidth)* 100)+2;
 	      		}        	 	
       		},5);
+			  
       		let mobileS = function(size) {
-      			if(size < 720) {      				
+				  
+      			if(size < 720) {      	
+					 // this.isLargeView = false;			
       				/*hide wide screen element*/
 	      				$('.MenuLContainer').addClass('removeMenu');
 	      				$('.menuBtnToggler').addClass('removeMenu');      				
@@ -835,21 +839,29 @@ export default {
        				$('.listMenu').not($(this).next()).slideUp(200);
   	 			    $(this).parent().find('ul.listMenu').slideDown(200);
       			}else{
+					//this.isLargeView = true;
 	      			$('#showSessionOnMobile').hide()      				
       				$('#MainMobile').css('display','none');      				
       				$('.MenuLContainer').removeClass('removeMenu');
       				$('.menuBtnToggler').removeClass('removeMenu');
 				}
 
+				if(size < 1419) {					
+					$vm.isLargeView = false;
+					
+				}else{
+					$vm.isLargeView = true;
+				}
+
       		}
       		mobileS($(window).width());
-      		$(window).resize(function(){
+      		$(window).on('resize',function(){
       			mobileS($(this).width())
       		})
 
       		/*btn slider for left side bar */
         	var $this = this;
-	 		$(window).resize(function() {
+	 		$(window).on('resize',function() {
      			$('.listVMenu').not($(this).next()).addClass('slideout');
     			$('.listVMenu').not($(this).next()).removeClass('slidein');
     			let elt = $(this).parent().find('ul.listMenu');

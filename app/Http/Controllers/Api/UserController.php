@@ -222,7 +222,7 @@ class UserController extends Controller
     
     public function getAllUsersBySearch(Request $request)
     {       
-
+        
         $department_id = $request->get('department_id');
         $session_id = $request->get('session_id');
         $role_id = $request->get('role_id');      
@@ -236,10 +236,38 @@ class UserController extends Controller
     }
 
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
-        $users = User::with('department')->take(2000)->get();            
-        return $users;
+        
+        $length = $request->get('length');
+        $start = $request->get('start');
+        $search = $request->get('search')['value'];        
+        $users = DB::table('users', 'u')->selectRaw("u.*, code,departments.id as department_id, role.id as role_id, title,LOWER(CONCAT(u.email,' /' ,u.matric_number)) AS uname, CONCAT(u.first_name,' ', u.other_names) AS fullname ")
+        ->join('departments', 'departments.id', 'u.department_id')
+        ->join('role', 'role.id', 'u.role_id')
+        ->where('u.status','Active')->skip($start)->take($length)->get();            
+        
+        if(empty($search)){
+            $data = [
+              "draw"=> $request->get('draw'),
+              "recordsTotal"=>  sizeof( User::all()),
+              "recordsFiltered"=> sizeof( User::all()),
+              "data"=>$users
+            ];
+          }else{
+            $users = DB::table('users', 'u')->selectRaw("u.*, code,departments.id as department_id, role.id as role_id, title,LOWER(CONCAT(u.email,' /' ,u.matric_number)) AS uname, CONCAT(u.first_name,' ', u.other_names) AS fullname ")->join('departments', 'departments.id', 'u.department_id')->join('role', 'role.id', 'u.role_id')
+            ->whereRaw("u.username like '".$search."' OR title like '".$search."' OR  CONCAT(u.first_name,' ', u.other_names) like '".$search."' OR code like '".$search."' OR email like '".$search."'")
+            ->where('u.status', 'Active')->skip($start)->take($length)->get();            
+
+            $data = [
+              "draw"=> $request->get('draw'),
+              "length"=>sizeof($users),
+              "recordsTotal"=>  sizeof($users),
+              "recordsFiltered"=> sizeof($users),
+              "data"=>$users
+            ];
+          }
+          return $data;
     }
     public function getAllInActiveUsers(){    
         $users = DB::table('users')->where('status', 'Inactive')->get();

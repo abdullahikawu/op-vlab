@@ -31,10 +31,8 @@
 		</div>
 		<div class="containerR px-2" style="display: none;" id="resulttable">
 		   	<div class="input-alt"></div>
-		   <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>
-		   
-		   <div v-html="result" v-if="startExperiment">
-		   	
+		   <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>		   
+		   <div v-html="result" v-if="startExperiment">		   	
 		   </div>				                
 		</div>
 		<div class="containerR" style="display: none;" id="resultgraph">				
@@ -271,8 +269,8 @@
 
 .box{
 	height: 35px; 
-	/*background-image:linear-gradient(#2F274E, #34d, #2F274E);*/
-	background: darkblue;
+	/*background-image:linear-gradient(var(--blue), #34d, var(--blue));*/
+	background: var(--blue);
 	box-shadow: 0px 0px 10px #fff;
 	margin: 35px auto;
 	text-align: center;
@@ -283,11 +281,11 @@
 	cursor: pointer !important;
 }
 .boxActive{
-	background: #2F274E;	
+	background: var(--blue);	
 }
 .containerR{
 	height: 105%;
-	background: #40356E;
+	background: var(--blue);
 	overflow-x: hidden;
 	color: #fff;
 }
@@ -295,18 +293,18 @@
 	padding: 5px;
 	border-radius: 0px 0px 3px 0px;
 	cursor: pointer;
-	border-left: 1px solid #2F274E;
+	border-left: 1px solid var(--blue);
 	color: #fff;	
 	background:transparent !important;
 }
 .fa-align-justify:hover{
-	color: #2F274E;
+	color: var(--blue);
 	background:#fff !important;
 }
 .input-search{
 	width:100%;
 	height:37px;
-	background:#2F274E;
+	background:var(--blue);
 	padding:10px;
 	color:#fff;
 	border:none;
@@ -314,7 +312,7 @@
 .input-alt{
 	width:100%;
 	height:37px;
-	background:#2F274E;
+	background:var(--blue);
 	padding:10px;
 	color:#fff;
 	border:none;

@@ -82,6 +82,10 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
     {
         return $this->belongsTo(Department::class, 'department_id');
     }    
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }    
 
 
     public function result()
