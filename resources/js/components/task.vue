@@ -89,22 +89,27 @@
 					      showCancelButton:true,					      
 					      showLoaderOnConfirm: true,	
 					      focusConfirm: false,					  
-						  preConfirm: () => {						  		
-						  	return	$this.axios.post($this.baseApiUrl+'verify_user',$this.createFormData({username:$this.currentUser.username,password:document.getElementById('swal-input1').value}), $this.axiosHeader,{headers:$this.axiosHeader}).then(response => {	
-								        if (!response.data.sucess) {
+						  preConfirm: () => {						
+							  try{
+
+								  return	$this.axios.post($this.baseApiUrl+'verify_user',$this.createFormData({username:$this.currentUser.username,password:document.getElementById('swal-input1').value}), $this.axiosHeader,{headers:$this.axiosHeader}).then(response => {	
+									  if (!response.data.sucess) {
 								           throw new Error(response.statusText)	
 								        }						   
 								        return response.data.success;
 						  		}).catch(error => {						  									  		
 							      	if (error.response) {
-								      	if (error.response.status == 409) {
-								      	}else if(error.response.status == 401){
-								      		location.reload();
+										  if (error.response.status == 409) {
+											  }else if(error.response.status == 401){
+												  location.reload();
 								      	}else{
 								      		Swal.showValidationMessage('Failed: wrong password');						      								      		
 								      	}
 							      	}
 					      	})	
+							}catch(e){
+								console.log(e)
+							}  		
 						  	
 						  },
 					}).then((result)=>{
