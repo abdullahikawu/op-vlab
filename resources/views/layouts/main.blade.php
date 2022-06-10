@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     <meta name="base-api-url" content="{{config('app.baseurl')}}">
     <meta name="csrf-token" content="{{csrf_token()}}">
     <meta content="VLab give access to University students to coductt practicals and experiments in a Virtual environment" name="descriptison">
