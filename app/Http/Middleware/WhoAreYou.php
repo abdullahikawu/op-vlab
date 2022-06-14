@@ -46,8 +46,9 @@ class WhoAreYou
                         'experiments.page'=>$page,
                         'user_courses.user_id'=>$user_id,   
                         'user_courses.session_id'=>$currentSession                     
-                    ])->first();                
-                if ($existInDB->completion_status != null) {
+                    ])->first();   
+                $completion_status = $existInDB->completion_status?? null;
+                if ($completion_status  != null) {
                     $time= explode(':', $existInDB->time_left);                    
                 }else{
                     $time= explode(':', $existInDB->limitation);                                        
