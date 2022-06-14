@@ -8,7 +8,7 @@
         <input type="text" name="enrollment_code" @keyup="compare($event.target.value, $event)" class="formControl ">
       </div>
     </div>  
-		<div style="position: absolute;top: 4.6vh; right: 7px; z-index: 15;padding: 1.2px;width: 194px; background:var(--blue)" class="timer">
+		<div style="position: absolute;top: 4.6vh; right: 7px; z-index: 15;padding: 1.2px;width: 194px; background:var(--sys-primary)" class="timer">
 			  <div class="countdown">
 			    <!-- <div class="block"> 
 			    </div> -->

@@ -20,7 +20,7 @@ class EnrollmentAccess
         $course_id =  $request->route()->parameter('id');
         $userData = session('info')->data->user ?? '';
         if($course_id != '' ){
-            $enrolled = CourseStudents::where(['course_id'=>$course_id, 'user_id'=>$userData->id, 'session_id'=>$userData->session_id])->first();                    
+            $enrolled = CourseStudents::where(['course_id'=>$course_id, 'user_id'=>$userData->id])->first();                                
             if ($enrolled != null) {
                 return $next($request);                
             }else{

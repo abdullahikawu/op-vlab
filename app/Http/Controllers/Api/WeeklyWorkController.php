@@ -228,7 +228,8 @@ class WeeklyWorkController extends Controller
             $query->with('course_resources');
         },'weekly_work.weekly_work_experiments.experiments','weekly_work.weekly_work_experiments.result'=>function($query)use($user_id){
             $query->where('user_id',$user_id);
-        }])->where(['session_id'=>$this->currentSession,'user_id'=>$user_id,'course_id'=>$course_id])->first();
+        }])->where(['user_id'=>$user_id,'course_id'=>$course_id])->first();
+        //}])->where(['session_id'=>$this->currentSession,'user_id'=>$user_id,'course_id'=>$course_id])->first();
 
         $allData = [];        
         for ($i=0; $i < sizeof($weeklyWorks->weekly_work) ; $i++) { 

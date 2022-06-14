@@ -7,7 +7,7 @@
         <div class="col-lg-6 col-md-12 col-sm-12 p-0">         
           <v-loader v-if="loadederState" type='line'></v-loader>                       
           <p v-if="!loadederState" style="font-size: 3em; font-family: 'Roboto', serif; font-weight:400;">{{faculty.name}}</p>
-          <p class="text-justify" style="font-family: 'Roboto', serif;font-size: 0.9em;font-weight: 300;">
+          <p v-if="!loadederState" class="text-justify" style="font-family: 'Roboto', serif;font-size: 0.9em;font-weight: 300;">
             {{faculty.description}}
           </p>
         </div>
@@ -39,7 +39,7 @@
         </div>          
       </div>
       <br><br>
-      <div class="px-6">          
+      <div class="px-6"  v-if="!loadederState" >          
           <!-- search and filter box for course -->       
         <div class="row d-lg-flex w-100 m-0" style="">          
           <div class="col-lg-4 col-md-3 pt-1 pl-0 ml-0 mb-5">
@@ -84,7 +84,7 @@
                       <!-- if not enrolled -->                      
                         <span v-if="course.enrollment_code != ''">
                           <!-- if enrollment code is required  -->
-                          <button @click="viewEnrolledCourse(course.id)" class="fw5 fs01 button shadow-sm bg-success px-3 py-2 text-white p-display-none">View Course</button>
+                          <button @click="viewEnrolledCourse(course.id)" class="fw5 fs01 button shadow-sm bg-success px-3 py-2 text-white p-display-none">View Course </button>
                           <button @click="enrollmentCode(course.enrollment_code, course.id)" class="fw5 fs01 button shadow-sm bg-dark px-3 py-2 text-white d-inline-block">Enroll</button>
                           <input type="text" name="enrollment_code" @keyup="compare(course.enrollment_code,$event.target.value,course.id, $event)" :placeholder="ecode" class="formControl ">
                           <span class="fa fa-check text-success display-none"></span>
@@ -188,6 +188,7 @@
         })
     },
     checkEnrollment: function(course_id){      
+      console.log(this.student_courses, course_id);
         for (var i = 0; i < this.student_courses.length; i++) {
           if(this.student_courses[i].id == course_id){
             return true;
@@ -322,16 +323,18 @@
     
   },
   async created(){
-        let pathname = location.pathname.split('/')
+        let pathname = location.pathname.split('/'), $this = this;
         this.faculty_id = pathname[pathname.length -1];
+
          this.faculty_courses  = await this.axiosGetById('api/courses/faculty_courses','faculty_id', this.faculty_id);
-         this.student_courses  = await this.axiosGetById('api/courses/student_courses','user_id', this.currentUser.id);
-         this.student_courses = this.student_courses[0].courses;
+         //this.student_courses = this.student_courses[0].courses;
          this.faculty  = await this.axiosGetById('api/faculties/faculty','faculty_id', this.faculty_id);
+         this.axiosGetById('api/courses/student_courses','user_id', this.currentUser.id).then(function(res){
+           $this.student_courses = res[0].courses;
+            //console.log($this.student_courses)
+            $this.loadederState = false;         
+         });
          //this.student_courses = this.student_courses.courses;
-          //console.log(this.student_courses)
-         this.loadederState = false;
-         let $this = this;
          let interval = setInterval(function () {
           if ($this.total_courses < $this.faculty_courses.length) {
             $this.total_courses +=1;

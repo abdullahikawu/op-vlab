@@ -269,8 +269,8 @@
 
 .box{
 	height: 35px; 
-	/*background-image:linear-gradient(var(--blue), #34d, var(--blue));*/
-	background: var(--blue);
+	/*background-image:linear-gradient(var(--sys-primary), #34d, var(--sys-primary));*/
+	background: var(--sys-primary);
 	box-shadow: 0px 0px 10px #fff;
 	margin: 35px auto;
 	text-align: center;
@@ -281,11 +281,11 @@
 	cursor: pointer !important;
 }
 .boxActive{
-	background: var(--blue);	
+	background: var(--sys-primary);	
 }
 .containerR{
 	height: 105%;
-	background: var(--blue);
+	background: var(--sys-primary);
 	overflow-x: hidden;
 	color: #fff;
 }
@@ -293,18 +293,18 @@
 	padding: 5px;
 	border-radius: 0px 0px 3px 0px;
 	cursor: pointer;
-	border-left: 1px solid var(--blue);
+	border-left: 1px solid var(--sys-primary);
 	color: #fff;	
 	background:transparent !important;
 }
 .fa-align-justify:hover{
-	color: var(--blue);
+	color: var(--sys-primary);
 	background:#fff !important;
 }
 .input-search{
 	width:100%;
 	height:37px;
-	background:var(--blue);
+	background:var(--sys-primary);
 	padding:10px;
 	color:#fff;
 	border:none;
@@ -312,7 +312,7 @@
 .input-alt{
 	width:100%;
 	height:37px;
-	background:var(--blue);
+	background:var(--sys-primary);
 	padding:10px;
 	color:#fff;
 	border:none;
