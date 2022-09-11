@@ -1,10 +1,10 @@
 <template>
   <div>  
-       <h1 class="my-5 text-center explore__header">Explore Available V-lab Courses</h1>
-        <div class="w-100 bg-white px-6" style="box-shadow: 1px 6px 5px rgba(100,100,100,.1);position: relative;z-index: 2;">
+       <h1 class="my-5 text-center explore__header animate-charcter">Explore Available V-lab Courses</h1>
+        <div class="w-100 bg-white px-6" style="display:flex; box-shadow: 1px 6px 5px rgba(100,100,100,.1);position: relative;z-index: 2;">
           <div class="font2 fw4  systab systab--active ">Course Category</div>
-        <div class="font2 fw4 systab ml-3" @click="notAvailable">Most Visited Courses</div>
-        </div>
+          <div class="font2 fw4 systab ml-3" @click="notAvailable">Most Visited Courses</div>
+        </div> 
         <div class="row hm300 w-100 px-6 py-5 m-0" style="background: #f0f0f0;overflow-y:scroll;min-height:493px; position:absolute;">          
           <div class="col-lg-4 col-md-6 col-lg-4 mt-5" v-for="(cat,ix) in courseCate.faculties" :key="ix" >
             <a :href="link+cat.id" class="w-100 cadin pcard" v-if="cat.courses_count >0 && roletype=='student'">
@@ -143,7 +143,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .pcard{
   text-decoration: none;
   display:block;

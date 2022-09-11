@@ -1,6 +1,7 @@
 <template>
 	<div class="mx-auto p-5 taskForm" style="">             
-          <h3 class="form-header">Create Task</h3>
+          <h3 v-if="!update" class="form-header">Create Task  {{session_name}}</h3>
+          <h3 v-else class="form-header">Update Task  {{session_name}}</h3>
           <div class="m-0 row  p-3 form-body">
           	 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mt-4" id="titleForm">
           	 	<label>Title</label>
@@ -163,7 +164,7 @@
                     }
                   }    */                                
                },         
-               createTask: function(){
+               createTask: function(){                                
                     var ActivateMode = '0';
                     if($('#swal-input2').prop('checked')){
                         ActivateMode = '1';                   
@@ -278,11 +279,24 @@
                     let route = 'create';
                     let success_msg = $this.createdMessage                    
                     let formData = { setdata: JSON.stringify(this.setdata), mode:ActivateMode, course_id:this.selectedCourse,title:title.val(), date_open:open.val(), date_close:close.val(), experiment_ids:this.selectedExerpiment,access_code:access.val(), limitation:this.limitation}
+
                      if (this.update === true){ 
-                        formData = {setdata: JSON.stringify(this.setdata), mode:ActivateMode, course_id:this.selectedCourse,work_id: this.alldata.id, title:title.val(), date_open:open.val(), date_close:close.val(), experiment_ids:JSON.stringify(this.selectedExerpiment),access_code:access.val(),limitation:this.limitation}
+                        formData = {
+                          setdata: JSON.stringify(this.setdata),
+                          mode:ActivateMode,
+                          course_id:this.selectedCourse,
+                          work_id: this.alldata.id,
+                          title:title.val(),
+                          date_open:open.val(),
+                          date_close:close.val(),
+                          experiment_ids:JSON.stringify(this.selectedExerpiment),
+                          access_code:access.val(),
+                          limitation:this.limitation,                          
+                        }
                          route = 'update';                         
                         success_msg = "Updated Successfully";
                      }
+                     formData.session_id = this.session
                     this.axios.post(this.baseApiUrl+'works/'+route,this.createFormData(formData),{headers:this.axiosHeader})
                     .then(function(response, status, request) {                                          
                               $this.hide_loader();
@@ -496,45 +510,57 @@
   
       },
       props:{
-               update:{
-                    type:Boolean,
-                    default:function () {
-                         return false;
-                    }
-               },
-               task_id:{
-                    type:String,
-                    default:function () {
-                         return '';
-                    }
-               },
-               experiment_data_format:{
-                  type:Object,
-                  default: function(){
-                    return {}
-                  }
-               },
-               guides:{
-                 type:String,
-                    default:function () {
-                         return '';
-                    }
-               },
-               alldata:{
-                    type:Object              
-               },
-               faculty_courses:{
-                    type:Array,             
-                    default:function(){
-                         return [{"empty":"-"}]
-                    }
-               },
-               courses_experiments:{
-                    type:Array,             
-                    default:function(){
-                         return [{"empty":"-"}]
-                    }
-               }
+            update:{
+                type:Boolean,
+                default:function () {
+                      return false;
+                }
+            },
+            session:{
+              type:String,
+              default:function(){
+                return '';
+              }
+            },
+            session_name:{
+              type:String,
+              default:function(){
+                return '';
+              }
+            },
+            task_id:{
+                type:String,
+                default:function () {
+                      return '';
+                }
+            },
+            experiment_data_format:{
+              type:Object,
+              default: function(){
+                return {}
+              }
+            },
+            guides:{
+              type:String,
+                default:function () {
+                      return '';
+                }
+            },
+            alldata:{
+                type:Object              
+            },
+            faculty_courses:{
+                type:Array,             
+                default:function(){
+                      return [{"empty":"-"}]
+                }
+            },
+            courses_experiments:{
+                type:Array,             
+                default:function(){
+                      return [{"empty":"-"}]
+                }
+            }
           },
           mounted(){
             var $this = this;

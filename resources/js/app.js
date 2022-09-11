@@ -135,20 +135,32 @@ Vue.component('v-adminprofile', require('./components/adminProfile.vue').default
      },
       mounted(){     
         $('body').append(`
-          <a href="https://forms.gle/UFBRWF1KwiwGeuS66" class="flex-wrap forBug" style=" width:50px; height:50px; display:flex; justify-content:center;"><span class="fa fa-bug text-danger fs8 p-0"></span></a>
-          `);
-        $('body').append(`
-          <div class="flex-wrap justify-between forThumb d-flex">
-          <span>Did you like this page?</span>
-              <span>
-              <i class="fa fa-thumbs-o-down likeThisPage" rel="no" style="font-size:1.3em;"></i>          
-              <i class="fa fa-thumbs-o-up likeThisPage"   rel="yes"  style="font-size:1.3em;"></i>          
-              </span>
+        <div class='position-relative'>
+          <div class="position-absolute" style="bottom:1px;width:100%; ">
+          <div id='feedbackbutton' style=' width:100px;border-radius:0px 4px 4px 0px;cursor:pointer; position:relative;left:0;bottom: 1px;' class="px-2 py-1 fs1 font2 bg-success text-white">Feedback</div>
+          <div id="bottomElements" class="display-none position-relative" style="bottom:0px;background: #4c556491;padding:4px 5px;">
+            <div class="d-flex w-100   justify-content-between" >
+              <div class="flex-wrap justify-between forThumb d-flex">
+              <span>Did you like this page?</span>
+                  <span>
+                  <i class="fa fa-thumbs-o-down likeThisPage" rel="no" style="font-size:1.3em;"></i>          
+                  <i class="fa fa-thumbs-o-up likeThisPage"   rel="yes"  style="font-size:1.3em;"></i>          
+                  </span>
+              </div>
+              <div>
+                <a href="https://forms.gle/UFBRWF1KwiwGeuS66" target="_blank" class="flex-wrap forBug" style=" width:50px; height:50px; display:flex; justify-content:center;"><span class="fa fa-bug text-danger fs8 p-0"></span></a>
+              </div>
+            </div>
           </div>
-          <div style="position:absolute;top:95.5%;height:30px;width:100%;"></div>
-          `); 
-
-
+          </div>        
+        </div>
+          `);
+        $('#feedbackbutton').on('click', function(){
+          $("#bottomElements").slideToggle()          
+        });
+        $("#app").not('#bottomElements').on('click',function(){          
+          $("#bottomElements").slideUp()          
+        })
         $('.likeThisPage').on('click', function(){
           let res = $(this).attr('rel');
           let $vm = this;      
@@ -212,13 +224,11 @@ Vue.component('v-adminprofile', require('./components/adminProfile.vue').default
                   title: 'Than you for your feedback',
                   showConfirmButton: false,
                   timer: 1500
-
                 })*/
             })
-          }else{
-
+          }else{            
               const formData = new FormData();
-                formData.append('message', '-');
+              formData.append('message', '-');
                 formData.append('like',res); 
                 formData.append('page_name',pathname);  
               axios.post('api/feedback',formData,{headers:$vm.axiosHeader})

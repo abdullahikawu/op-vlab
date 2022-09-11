@@ -13,8 +13,8 @@
 		</div>			
 		<div  class="MenuLContainer scroll-y vh-70" id="wideMenuC"  v-bind:class="{reduceSize:show}">			
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider">
-				<a :href="backurl"   class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
-					<span class="iconV fa fa-caret-left "></span><div class="labelV">Back</div>
+				<a href="javascript: history.go(-1)"   class="nChildV" title="back" v-bind:class="{btnActive:checkActive('home')}">
+					<span class="iconV fa fa-caret-left "></span>
 				</a>	
 				<a :href="backurl"   title="home">
 					<span v-bind:class="{btnActive: checkActive('home')}" class="iconOV fa fa-home" title="Home"></span>					
@@ -43,11 +43,13 @@
 			</div>
 			<!-- end mini side bar -->
 			<div id="wideMenu" v-bind:class="{slidein:showWideMenu, slideout:hideMiniMenuWideMenu}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px;" >
-				<a :href="backurl"   class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
-					<span class="iconV fa fa-caret-left "></span><div class="labelV">Back</div>
+				<a href="javascript: history.go(-1)"  class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
+					<span class="iconV fa fa-caret-left "></span>
+					<div class="labelV">Back</div>
 				</a>	
 				<a title="home"  href="/" class="nChildV" v-bind:class="{btnActive: checkActive('home')}">
-					<span class="iconV fa fa-home "></span><div class="labelV">Home</div>
+					<span class="iconV fa fa-home "></span>
+					<div class="labelV">Home</div>
 				</a>	
 				<!-- <a href="UserDashboard" class="nChildV"  v-bind:class="{btnActive: checkActive('dashboard')}">
 					<span class="iconV fa fa-dashboard"></span><div class="labelV">Dashboard</div>
@@ -90,6 +92,9 @@
 		    	}
         },
         methods:{
+			homePageUrl(){
+				console.log(this.user)
+			},
             toggleMenu(e){                      	
                 this.show=!this.show;    
                 if (this.show){
@@ -115,29 +120,32 @@
         	},
  
         },
-        async created(){			
+        async created(){						
         	this.currentSession = await this.axiosGet('api/current_session',false, 'Constact the Administrator to Set a Session');          
             window.sessionNow = this.currentSession; 
 		  this.$eventBus.$on('toggleFromSysTopNav', data => {
 		  	this.toggleMenu();
 		  })		          
-		  console.log(this.incourse)
+		  
         },
         
 		beforeDestroy: function () {
 		  this.eventBus.$off('toggleFromSysTopNav', this.toggleNavOnHover)		  
 		},
         props:['home','dashboard','explore','mycourse','courses','discussion','settings', 'active', 'incourse'],
-        mounted(){
+        mounted(){			
+			
 			this.$eventBus.$on('changeSetSession',data=>{          	
 				//console.log(data)
 				//this.currentSession = data;
           	})	
+			
         	/*btn slider*/
         	$('.listMenuBtn').click(function(){        		
         		$('.listMenu').not($(this).next()).slideUp(200);
 	 			$(this).parent().find('ul.listMenu').slideToggle(200);
 	 		})
+
 	 		$('.listMenuVBtn').click(function(){   	 				 		
 
         		$('.listVMenu').not($(this).next()).addClass('slideout');
@@ -153,7 +161,7 @@
 	 		})
 			var $this = this;        	
 			$(document).ready(function(){
-				$this.backurl = $("#previous-url").val();
+				$this.backurl = '/';
 				$this.currentPage = $("#currentpage-url").val();
 			})
         	var screenSize = function(){

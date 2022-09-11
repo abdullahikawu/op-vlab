@@ -1,5 +1,5 @@
 <template>
-	<div style="margin:0; padding: 5px 20px 5px 20px;display: flex;justify-content: space-between;width: 100%;background: #eee;">
+	<div style=" background:var(--blue); margin:0; padding: 5px 20px 5px 20px;display: flex;justify-content: space-between;width: 100%;background: #eee;">
 		<div style="display: flex;flex-wrap: wrap;align-items: center; ">
 			<span @click="toggleSysnav" style="font-size: 1.4em;cursor: pointer;" class="fa fa-align-justify mr-3"></span>
 			<b><span style="font-weight: 800;font-size: 1em;"></span> {{coursecode.code}}/{{equipmentname}}/</span><span style="font-weight: 600;font-size: 0.9em;" >{{experimentnum}}</span></b>

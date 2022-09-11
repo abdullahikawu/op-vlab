@@ -15,6 +15,27 @@
             <div class="ssc-line mb w-75"></div>
             <div class="ssc-line mb w-50"></div>
         </div>
+
+        <div class="w-100 m-0 p-0 row" v-if="type=='cards'">
+            <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+             <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+             <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+             <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+            <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+            <div class="col-md-4 col-sm-12 my-2 px-2">
+                <div class="ssc-line mb w-100" style="height:180px"></div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -39,3 +60,8 @@
 
 	}
 </script>
+<style scoped>
+.d-flex-grids{
+
+}
+</style>

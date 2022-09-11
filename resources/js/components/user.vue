@@ -1,7 +1,7 @@
 <template>	
 		<div class="w-100 mt-2 py-3 mx-auto position-relative row" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">						
 			<div class="col-md-2 offset-md-10 pt-3">
-				<button v-if="!loaderStatex"   href="#" @click="viewMenu" style="z-index:5;border:0px;" :class="'Menux d-flex justify-content-between p-success text-left position-relative'+ btnclasses+' w-179'">Action <span class="text-white fa fa-chevron-up"></span></button>
+				<button v-if="!loaderStatex"   href="#" @click="viewMenu" style="z-index:5;border:0px;" :class="'Menux d-flex justify-content-between p-success text-left position-relative'+ btnclasses+' btn-width-179'">Action <span class="text-white fa fa-chevron-up"></span></button>
 				<div class="w-179 " id="Menu" style="position: absolute;z-index:-1;opacity:0; top:40px;">
 					<button v-if="!loaderStatex"  href="#" @click="createuser" :class="'p-success  w-100 r-0 '+ btnclasses">Create user <span class="text-white fa fa-chevron-down"></span></button>			
 					<button v-if="!loaderStatex" href="#" @click="uploadstudent" :class="'p-success  w-100 r-0 '+ btnclasses">Upload Student <span class="text-white fa fa-cloud-upload"></span></button>			
@@ -626,13 +626,21 @@
 .display-none{
 	display: none;
 }
-.w-179{
+.btn-width-179{
 	width:179px;
+}
+.w-179{
+	width:179px;	
 }
 .r-0{
 	border-radius: 0px !important;
 }
 .r-t-0{
 	border-radius: 0px 0px 4px 4px !important;
+}
+  @media (max-width: 768px  ) {
+      .btn-width-179{
+        width: 100% !important;
+      } 
 }
 </style>

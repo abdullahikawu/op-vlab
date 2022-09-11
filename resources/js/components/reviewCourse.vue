@@ -1,14 +1,21 @@
 <template>
-	<div class="m-0 p-0 w-100">
-		<div style="position: relative;top:10px;left:50px;z-index: 100;text-transform: uppercase;" class="font2 fs1 w-75">
-			::My Courses Review
-			<span>
-				<i class="fa fa-angle-double-right"></i>
-				{{course_with_exp.code}}		
-			</span>
-		</div>
+	<div class="m-0 p-0 w-100 position-relative">
+		<div style="width:100%;position: relative;top:10px;z-index: 100;text-transform: uppercase;" class="font2 fs1 row pd-lg-3 py-0 mx-auto">
+			<div class="col-md-5">
+				::My Courses Review
+				<span>
+					<i class="fa fa-angle-double-right"></i>
+					{{course_with_exp.code}}		
+				</span>
+			</div>
+			<div class="offset-md-5 col-md-2">
+				<select id="session_id" v-model="selectedSession" @change="selectSession()" class="form-control ">
+					<option  v-for="session in sessions" :value="session.id"  :key="'x_'+session.id">{{session.session}}</option>
+				</select>
+			</div>
+		</div>		
 		<div id="wideArea"></div>		
-		 <div class="row pd-lg-3 pd-sm-2  " style="width: 98%;margin: 16px auto 0px auto;height: 85.5vh;overflow-y: scroll;">
+		 <div class="row pd-lg-3 pd-sm-2  " style="width: 98%;margin: 16px auto 0px auto;height: 82.5vh;overflow-y: scroll;">
      	<div class="col-lg-7 col-md-8 col-sm-12 col-xs-12">   
      		<p class="fw6 font2">Introduction</p>
      		<v-loader type='line' v-if="loaderState"></v-loader>
@@ -20,7 +27,7 @@
 	    </div>
      	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb-5">
      		<div style="width: 90%;height: 150px;border-radius: 9px;background: #333;" class="mx-auto shadow" v-if="!loaderState && course_with_exp.video_url != null" >     			
-            		<a href="https://youtu.be/IaDbk6MvQPs?rel=0&autoplay=1" data-overlay="rgba(15,14,100,0.8)" class="venobox 		play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>					     			
+            		<a :href="course_with_exp.video_url" data-overlay="rgba(15,14,100,0.8)" class="venobox 	play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>					     			
      		</div>
      	</div>
      	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row ml-3"> 
@@ -91,7 +98,7 @@
      		<div class="d-flex w-100" v-show="weeksExp.length >0" >
      			<!-- start thread  -->     			
 				<div class="p-0 thread" v-if="threadReady" >
-					<v-thread :weeks="threadTrends" key='noew'></v-thread>
+					<v-thread :weeks="threadTrends" ></v-thread>
 				</div>
      			<!-- end thread  -->
 
@@ -199,6 +206,8 @@
 				minitab:'experiments',
 				evalue:0,
 				avalue:0,
+				selectedSession:"",
+				sessions:[],
 				weeksExp:[
 					/*{
 						title:'week 1',
@@ -234,8 +243,55 @@
 			}
 		},
 		methods:{
-			switchTab:function(tab){
-				//alert(tab);
+			selectSession(){			
+				this.stepBack=1	
+				this.section =0
+				this.queryData(this.selectedSession)
+			},
+			async queryData(session_id){				
+				let $this = this;	
+				let pathname = location.pathname.split('/');
+				let course_id = pathname[pathname.length -1];
+				this.weeksExp = await this.axiosGetByParams('api/works/student_task2',{'user_id':this.currentUser.id, 'course_id':course_id,'session_id':session_id});		        	
+				this.course_with_exp = await this.axiosPost('api/courses/course_experiments',{course_id:course_id,'session_id':session_id});			
+				this.threadReady = false
+				this.threadTrends = [];
+				let threadTrends = [];
+				for (let i = 0; i < this.weeksExp.length; i++) {				
+					threadTrends.push([
+						this.weeksExp[i].title,
+						this.checkCompletionStatus(this.weeksExp[i].experiments),
+						this.checkExperimentsStatus(this.weeksExp[i].experiments)
+					])					
+					if (i == this.weeksExp.length-1) {						
+						this.threadTrends = threadTrends
+						setTimeout(()=>{							
+							$this.threadReady = true;
+						},500)
+						
+					}
+				}			
+
+				this.loaderState = false;								
+				var count =0, t=0;
+				for(var i =0; i< this.weeksExp.length; i++){								
+					for (var j= 0; j < this.weeksExp[i].experiments.length; j++) {											
+						t++;
+						if(this.weeksExp[i].experiments[j].experiment_results.length > 0){							
+							count+=1;							
+						}
+					}
+				}				
+				this.evalue = count;
+				this.avalue = t;
+
+			//console.log(this.threadTrends)
+			/*[1,1,[1,1,1]],//sub array is for exercises in the week 1=>completed, 0=> not completed
+	 	 	[2,1,[1,0]],
+	 	 	[3,0,[0]],
+	 	 	[4,0,[0]]*/			               			
+			},
+			switchTab:function(tab){				
 				this.minitab = tab
 				if(tab == 'resources'){					
 					$('#forTask').hide('slide', {direction:'left'}, 500);
@@ -342,41 +398,24 @@
 
 			})
 		},
-		async created(){
-			
-			let pathname = location.pathname.split('/');
-        	let course_id = pathname[pathname.length -1];
-			this.weeksExp = await this.axiosGetByParams('api/works/student_task2',{'user_id':this.currentUser.id, 'course_id':course_id});		        	
-			this.course_with_exp = await this.axiosPost('api/courses/course_experiments',{course_id:course_id});			
-			for (let i = 0; i < this.weeksExp.length; i++) {				
-				this.threadTrends[i] = [
-					this.weeksExp[i].title,
-					this.checkCompletionStatus(this.weeksExp[i].experiments),
-					this.checkExperimentsStatus(this.weeksExp[i].experiments)
-				]
-				if (i == this.weeksExp.length-1) {
-					this.threadReady = true;
-				}
-			}
-			this.loaderState = false;
-				let $this = this;				
-				var count =0, t=0;
-				for(var i =0; i< this.weeksExp.length; i++){								
-					for (var j= 0; j < this.weeksExp[i].experiments.length; j++) {											
-						t++;
-						if(this.weeksExp[i].experiments[j].experiment_results.length > 0){							
-							count+=1;							
-						}
+		async created(){						
+			let	$this = this;
+			this.axiosGet('api/session/all_session').then(async function(res){
+				$this.sessions = res;				
+				if($this.sessions.length >0){
+					let session;
+					session = $this.sessions.filter((a,b)=>a.is_current == 1)
+					if(session.length>0){
+						$this.selectedSession = session[0].id						
 					}
-				}				
-				this.evalue = count;
-				this.avalue = t;
-
-			//console.log(this.threadTrends)
-			/*[1,1,[1,1,1]],//sub array is for exercises in the week 1=>completed, 0=> not completed
-	 	 	[2,1,[1,0]],
-	 	 	[3,0,[0]],
-	 	 	[4,0,[0]]*/
+				}	
+			/* 	$this.faculty_courses  = await $this.axiosGetById('api/courses/faculty_courses','faculty_id', faculty_id); */
+				try{
+					$this.queryData($this.selectedSession)
+				}catch(e){
+					console.log(e)
+				}
+			});				
 		},
 		props:['publicPath']
 	}

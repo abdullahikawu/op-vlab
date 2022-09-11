@@ -15,10 +15,10 @@
 		<div class="m-0 mobileMenu p-display-none " id="MainMobile"></div>
 		<div  class="MenuLContainer scroll-y vh-70"  v-bind:class="{reduceSize:show}">	
 			<div v-bind:class="{slidein:show, slideout:hideMiniMenu}" class="niconsV slider" >
-				<a title="back" href="/"  v-bind:class="{btnActive:checkActive('home')}">
+				<a title="back" href="javascript: history.go(-1)"  v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconOV fa fa-cheveron-left "></span>
 				</a>
-				<a title="home" href="/"  v-bind:class="{btnActive:checkActive('home')}">
+				<a title="home" :href="homePageUrl"  v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconOV fa fa-home "></span>
 				</a>	
 				<!-- <a href="/dashboard"   v-bind:class="{btnActive:checkActive('dashboard')}">

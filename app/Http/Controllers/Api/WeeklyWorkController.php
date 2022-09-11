@@ -51,7 +51,11 @@ class WeeklyWorkController extends Controller
         $dateClose = $request->get('date_close');
         $accessCode = $request->get('access_code');
         $mode = $request->get('mode');
+        $session_id = $request->get('session_id')??'';
         $setdata = json_decode($request->get('setdata'));
+        if($session_id == '' ){
+            $session_id = $this->currentSession;
+        }
         $limitation = $request->get('limitation');
 
         $experimentIds = explode(',', $experimentIds);
@@ -66,8 +70,7 @@ class WeeklyWorkController extends Controller
         $weeklyWork->limitation = $limitation;
         $weeklyWork->school_id = $this->schoolId;
         $weeklyWork->faculty_id = $this->facultyId;
-        $weeklyWork->session_id = $this->currentSession;
-        
+        $weeklyWork->session_id = $session_id;            
         if ($weeklyWork->save()) {
             foreach ($experimentIds as $experimentId) {
                 $this->assignWeeklyWorkExperiment($id, $experimentId,$setdata);
@@ -212,22 +215,29 @@ class WeeklyWorkController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
             'course_id' => 'required',
+            'session_id'=>'required'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => "work_id field is required"], 400);
         }
 
-        $session_id = $this->currentSession;
+        $session_id = $request->get('session_id');
         $course_id = $request->get('course_id');
         $user_id = $request->get('user_id');
 
 
         $allData = array();
         $weeklyWorks = CourseStudents::with(['course'=>function($query){
-            $query->with('course_resources');
-        },'weekly_work.weekly_work_experiments.experiments','weekly_work.weekly_work_experiments.result'=>function($query)use($user_id){
-            $query->where('user_id',$user_id);
+                $query->with('course_resources');
+            },
+            'weekly_work'=>function($query) use($session_id){
+                $query->with('weekly_work_experiments.experiments')->where('session_id', $session_id);
+            },
+            'weekly_work'=>function($query)use($session_id, $user_id){
+            $query->with(['weekly_work_experiments.result'=>function($query)use($user_id){
+                $query->where('user_id',$user_id);
+            }])->where('session_id', $session_id);
         }])->where(['user_id'=>$user_id,'course_id'=>$course_id])->first();
         //}])->where(['session_id'=>$this->currentSession,'user_id'=>$user_id,'course_id'=>$course_id])->first();
 
@@ -273,28 +283,32 @@ class WeeklyWorkController extends Controller
 
     }
 
-    public function getWeeklyWorks()
+    public function getWeeklyWorks(Request $request)
     {
 
-        $weeklyWorks = WeeklyWork::select(['id as work_id','id','mode','course_id','access_code','date_open','date_close','session_id','limitation','title'])->with(['course','weekly_work_experiments.experiments'])->where('status','Active')->get();
+        $weeklyWorks = WeeklyWork::select(['id as work_id','id','mode','course_id','access_code','date_open','date_close','session_id','limitation','title'])
+                        ->with(['course','weekly_work_experiments.experiments'])
+                        ->where(['status'=>'Active', 'session_id'=>$request->session_id])->get();
         return response()->json($weeklyWorks, 200);
     }
 
     public function getWeeklyWork(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'work_id' => 'required',
+            'work_id'    => 'required',
+            'session_id' =>'required'
         ]);
 
+        $session_id = $request->get('session_id');
         if ($validator->fails()) {
             return response()->json(['error' => "work_id field is required"], 400);
         }
-
+  
         $workId = $request->get('work_id');
-        $weeklyWork = WeeklyWork::find($workId);
-
+        $weeklyWork = WeeklyWork::with('experiments')->where(['id'=>$workId, 'session_id'=>$session_id])->get();
+  
         if ($weeklyWork) {
-            return response()->json($weeklyWork->with('experiments')->get(), 200);
+            return response()->json($weeklyWork, 200);
         } else {
             return response()->json(['error' => 'Weekly Work not found'], 404);
         }

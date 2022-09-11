@@ -69,7 +69,8 @@
         props:{
            weeks: Array,
         },        
-        mounted(){        	      
+        mounted(){        	    
+			//console.log() 			
           this.$nextTick(function(){
 
           })
@@ -121,6 +122,7 @@
 	}
 	.w10{
 		width: 60px;
+		white-space: nowrap;
 	}
 	.timelineX{
 		margin-top: 10px; 

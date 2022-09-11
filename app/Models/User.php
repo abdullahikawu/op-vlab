@@ -47,7 +47,8 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
 
     protected $appends = [
         'name',
-        'session_id'
+        'session_id',
+        'role'
     ];
     public function newQuery($excludeDeleted = true) {
         return parent::newQuery($excludeDeleted)
@@ -112,4 +113,14 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
     {
         return [];
     }
+    
+    public function getRoleAttribute(){
+        $role = Role::find($this->role_id);
+        if(!is_null($role)){
+            return $role->title;
+        }else{
+            return '';
+        }
+    }
+    
 }

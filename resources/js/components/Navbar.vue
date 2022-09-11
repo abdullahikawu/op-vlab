@@ -1,12 +1,17 @@
-<template>
-  <nav id="navbarId" class="navbar py-3 w-100" :style="'width:'+currentWidth+'%;'" >
+<template>  
+     <nav
+    id="navbarId"
+    class="navbar py-3 w-100"
+    :style="'width:' + currentWidth + '%;'"
+  >
     <div class="container align-items-center mb-0">
       <div class="navbar__logo">
-        <img src="/vlab.png"  width="100" class="mt-2" alt="vlab-logo" />
+        <img src="/vlab.png" width="100" class="mt-2" alt="vlab-logo" />
       </div>
       <ul
         class="navbar__list d-lg-flex mobile-nav mb-0"
-        :class="showNav ? 'mobile-nav--open' : null"      >
+        :class="showNav ? 'mobile-nav--open' : null"
+      >
         <button
           class="navbar__toggle d-inline-block d-lg-none"
           :class="showNav ? 'navbar__toggle--active' : null"
@@ -16,8 +21,14 @@
         </button>
         <li class="navbar__list__item"><a href="/">Home</a></li>
         <li class="navbar__list__item"><a href="/explore">Explore</a></li>
-        <li class="navbar__list__item"><a href="https://www.youtube.com/watch?v=dw7IAZa0VYc&list=PL--mhtYCTMobbvT1bDbfCAUS5Sdksnltm">Videos</a></li>
-        <li class="navbar__list__item survey-main"><a href="#">Survey <span class="fa fa-caret-down"></span></a>
+        <li class="navbar__list__item">
+          <a
+            href="https://www.youtube.com/watch?v=dw7IAZa0VYc&list=PL--mhtYCTMobbvT1bDbfCAUS5Sdksnltm"
+            >Videos</a
+          >
+        </li>
+        <li class="navbar__list__item survey-main">
+          <a href="#">Survey <span class="fa fa-caret-down"></span></a>
           <ul class="survey-sub d-none">
             <li><a href="/faculty-survey">Faculty Survey</a></li>
             <li><a href="/student-survey">Student Survey</a></li>
@@ -32,31 +43,47 @@
             <a href="#">Signup</a>
           </li>
         </div>
-        <div class="d-inline-block d-lg-none sys-acc" @click="forLogout =!forLogout"  v-if="username != '' ">
-            <span class="fa fa-user mr-2"></span>
-            <span style="font-size: 0.9em; font-weight: 300;">{{username}}</span>
-            <span class="fa fa-chevron-down ml-2"></span>
-            <div class="forLogout" v-bind:class="{extra:forLogout}">
-              <a :href="mydashboard">My Account</a>
-              <a @click="logout">Logout</a>              
-            </div>
-            <!-- <a @click="logout" class="forLogout" v-bind:class="{extra:forLogout}">Logout</a>             -->
+        <div
+          class="d-inline-block d-lg-none sys-acc"
+          @click="forLogout = !forLogout"
+          v-if="username != ''"
+        >
+          <span class="fa fa-user mr-2"></span>
+          <span style="font-size: 0.9em; font-weight: 300">{{ username }}</span>
+          <span class="fa fa-chevron-down ml-2"></span>
+          <div class="forLogout" v-bind:class="{ extra: forLogout }">
+            <a :href="mydashboard">My Account</a>
+            <a @click="logout">Logout</a>
+          </div>
+          <!-- <a @click="logout" class="forLogout" v-bind:class="{extra:forLogout}">Logout</a>             -->
         </div>
       </ul>
-      <ul id="lnav" class="navbar__list d-none d-lg-flex align-items-lg-center mb-0">
-        <li v-if="username == ''"  class="navbar__list__item"><a :href="login">Login</a></li>
-        <li v-if="username == ''" class="navbar__list__item navbar__list__item--btn">
+      <ul
+        id="lnav"
+        class="navbar__list d-none d-lg-flex align-items-lg-center mb-0"
+      >
+        <li v-if="username == ''" class="navbar__list__item">
+          <a :href="login">Login</a>
+        </li>
+        <li
+          v-if="username == ''"
+          class="navbar__list__item navbar__list__item--btn"
+        >
           <a href="#">Signup</a>
         </li>
-          <li class="sys-acc p-0" @click="forLogout =!forLogout" v-if="username != '' " >
-            <span class="fa fa-user mr-2"></span>
-            <span style="font-size: 0.9em; font-weight: 300;">{{username}}</span>
-            <span class="fa fa-chevron-down ml-2"></span>
-            <div class="forLogout" v-bind:class="{extra:forLogout}">
-              <a :href="mydashboard">My Account</a>
-              <a @click="logout">Logout</a>              
-            </div>
-          </li>
+        <li
+          class="sys-acc p-0"
+          @click="forLogout = !forLogout"
+          v-if="username != ''"
+        >
+          <span class="fa fa-user mr-2"></span>
+          <span style="font-size: 0.9em; font-weight: 300">{{ username }}</span>
+          <span class="fa fa-chevron-down ml-2"></span>
+          <div class="forLogout" v-bind:class="{ extra: forLogout }">
+            <a :href="mydashboard">My Account</a>
+            <a @click="logout">Logout</a>
+          </div>
+        </li>
       </ul>
       <button
         class="navbar__toggle d-inline-block d-lg-none"
@@ -65,190 +92,199 @@
       >
         <div class="navbar__toggle__block"></div>
       </button>
-    </div>
-  </nav>
+    </div>    
+     </nav>    
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 
-export default {  
-  data(){
-    return{
-
-    showNav: false,
-    username:'',
-    mydashboard: '#',
-    forLogout:false,
-    role_id:'',
-    }
+export default {
+  data() {
+    return {
+      showNav: false,
+      username: "",
+      mydashboard: "#",
+      forLogout: false,
+      role_id: "",
+    };
   },
-  created(){            
-
-      if(localStorage.hasOwnProperty('LoggedUser')){                                
-        let role_id =  JSON.parse(localStorage.getItem('LoggedUser')).user.role_id;                     
-        if (this.all_roles !== '') {
-         let RoleName = this.getKeyByValue(JSON.parse(this.all_roles),role_id)
-         if (RoleName != undefined) {
-           if (RoleName == 'admin'){
-            this.mydashboard = '/manage-user'
-           }
-           if (RoleName == 'instructor'){
-            this.mydashboard = '/view-student';
-           }
-           if (RoleName == 'student'){
-            this.mydashboard = '/my-courses';
-           }
-         }    
-
+  created() {
+    if (localStorage.hasOwnProperty("LoggedUser")) {
+      let role_id = JSON.parse(localStorage.getItem("LoggedUser")).user.role_id;
+      if (this.all_roles !== "") {
+        let RoleName = this.getKeyByValue(JSON.parse(this.all_roles), role_id);
+        if (RoleName != undefined) {
+          if (RoleName == "admin") {
+            this.mydashboard = "/manage-user";
+          }
+          if (RoleName == "instructor") {
+            this.mydashboard = "/view-student";
+          }
+          if (RoleName == "student") {
+            this.mydashboard = "/my-courses";
+          }
         }
-        this.username =  JSON.parse(localStorage.getItem('LoggedUser')).user.first_name;          
-      }else{
-        this.username ='';
       }
+      this.username = JSON.parse(
+        localStorage.getItem("LoggedUser")
+      ).user.first_name;
+    } else {
+      this.username = "";
+    }
   },
   props: {
-    home:String,
-    explore:String,
-    login:String,
-    all_roles:{
-        type:String,
-        default:function(){
-          return '';
-        }
-    }
+    home: String,
+    explore: String,
+    login: String,
+    all_roles: {
+      type: String,
+      default: function () {
+        return "";
+      },
+    },
   },
   methods: {
-    getDashboard(){
-              
-    },
+    getDashboard() {},
     getKeyByValue(object, value) {
-      for(let k in object){                       
+      for (let k in object) {
         if (object[k] === value) {
           return k;
           break;
         }
-      }    
+      }
     },
     toggleNav() {
       this.showNav = !this.showNav;
     },
-    sysAcc(){
-
-    }
+    sysAcc() {},
   },
-  mounted(){
-    let $this =this;
-    $('#navbarId').next().click(function(){      
-      $this.forLogout = false;
-    })
-  }
+  mounted() {
+    let $this = this;
+    $("#navbarId").next().click(function () {
+        $this.forLogout = false;
+      });
+    $("#navbarId").addClass('addLine');
+    $(window).scroll(function (event) {
+      var scrolled_val = window.scrollY;
+      if(scrolled_val >82){
+        $("#navbarId").addClass('addShadow');
+        $("#navbarId").removeClass('addLine');        
+      }else{
+        $("#navbarId").removeClass('addShadow');
+        $("#navbarId").addClass('addLine');        
+      }
+    });    
+  },
 };
 </script>
-<style lang="scss" scoped>  
-  ul li.navbar__list__item.survey-main:hover{
-      color:#4d6 !important;
-  }
-  .survey-main:hover >.survey-sub{
-      display: block !important;
-  }
-  .survey-main{
-    position: relative;    
-  }
-  .survey-sub li a:hover{    
-      color: #4b7 !important;    
-      text-decoration: none;
-  }  
-  .survey-sub li{
-    list-style: none;    
-    align-items: left;
-    width: 100%;
-    height: 40px;
-  }
-  .survey-sub li a{
-    width: 100%;
-    padding: 7px 11px;
-    display: block;
-
-  }
-  .survey-sub li:not(:last-child){
-    border-bottom: 1px solid #eee;
-
-  }
-  .survey-sub{
-    z-index: 100;
-    position: absolute;
-    left: -30px;
-    width: 150px;
-    margin: 0;
-    padding: 0px;
-    border-top: 3px solid rgb(30,10,60);
-    box-shadow: 1px 2px 4px #eee;
-    background: #fff;
-    border-radius: 5px;
-  }
-  #navbarId{
-    user-select: none;
-  }
-  .forLogout{
-    position: absolute;
-    left: -15px;
-    top: 0px;
-    border-top: 3px solid rgb(30,10,60);
-    border-radius: 5px;
-    box-shadow: 1px 2px 4px #eee;
-    padding: 0px;
-    background: #fff;
-    width: 150px;    
-    text-align: center;
-    transition: 1s top;
-    display: none;
-  }
-  .forLogout a{
-    display: block;    
-    color:rgb(30,10,60);
-    padding: 10px 15px;
-
-  }
-  .forLogout a:hover{
-    text-decoration: none;
-    background: rgba(30,10,60);
-    color: white;
-  }
-  .forLogout a:not(:last-child){    
-    border-bottom: 1px solid #eee;
-  }
-  .forLogout a:hover:not(:first-child){    
-    border-radius: 5px;
-  }
-
-@keyframes fdown {
-  
-    100% { transform:scale(1.0); opacity:1.0; top:35px}
-
+<style lang="scss" scoped>
+ul li.navbar__list__item.survey-main:hover {
+  color: #4d6 !important;
+}
+.survey-main:hover > .survey-sub {
+  display: block !important;
+}
+.survey-main {
+  position: relative;
+}
+.survey-sub li a:hover {
+  color: #4b7 !important;
+  text-decoration: none;
+}
+.survey-sub li {
+  list-style: none;
+  align-items: left;
+  width: 100%;
+  height: 40px;
+}
+.survey-sub li a {
+  width: 100%;
+  padding: 7px 11px;
+  display: block;
+}
+.survey-sub li:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+.survey-sub {
+  z-index: 100;
+  position: absolute;
+  left: -30px;
+  width: 150px;
+  margin: 0;
+  padding: 0px;
+  border-top: 3px solid rgb(30, 10, 60);
+  box-shadow: 1px 2px 4px #eee;
+  background: #fff;
+  border-radius: 5px;
+}
+#navbarId {
+  user-select: none;
+}
+.forLogout {
+  position: absolute;
+  left: -15px;
+  top: 0px;
+  border-top: 3px solid rgb(30, 10, 60);
+  border-radius: 5px;
+  box-shadow: 1px 2px 4px #eee;
+  padding: 0px;
+  background: #fff;
+  width: 150px;
+  text-align: center;
+  transition: 1s top;
+  display: none;
+}
+.forLogout a {
+  display: block;
+  color: rgb(30, 10, 60);
+  padding: 10px 15px;
+}
+.forLogout a:hover {
+  text-decoration: none;
+  background: rgba(30, 10, 60);
+  color: white;
+}
+.forLogout a:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+.forLogout a:hover:not(:first-child) {
+  border-radius: 5px;
 }
 
-  .extra{
-    display: block;
-    animation: fdown 0.2s forwards;
-    -webkit-animation: fdown 0.2s forwards;
-    
-    
+@keyframes fdown {
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    top: 35px;
   }
-  .sys-acc{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-  }
+}
+
+.extra {
+  display: block;
+  animation: fdown 0.2s forwards;
+  -webkit-animation: fdown 0.2s forwards;
+}
+.sys-acc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.addShadow {
+  box-shadow:rgb(0 0 0 / 20%) 0px 25px 20px -20px;
+}
+.addLine {
+  border-bottom: 1px solid #eee;
+}
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   max-height: 81px;
   background-color: #fff;
-  box-shadow: 6px 4px 3px rgba($color: #000, $alpha: .1);
   z-index: 10;
+  transition: all 0.3s;
 
   &__logo {
     position: relative;
@@ -271,7 +307,7 @@ export default {
       a {
         color: #2f2651;
         &:hover {
-          color: rgba($color: #2f2651, $alpha: 0.8) !important; 
+          color: rgba($color: #2f2651, $alpha: 0.8) !important;
         }
       }
 
@@ -298,8 +334,8 @@ export default {
     border: none;
     background-color: transparent;
     transition-timing-function: linear;
-    transition-duration: .15s;
-    transition-property: opacity,filter;
+    transition-duration: 0.15s;
+    transition-property: opacity, filter;
 
     &__block {
       width: 100%;
@@ -315,7 +351,7 @@ export default {
       &::after,
       &::before {
         display: block;
-        content: '';
+        content: "";
         width: 100%;
         height: 4px;
         position: absolute;
@@ -333,18 +369,19 @@ export default {
 
     &--active {
       .navbar__toggle__block {
-        transition-delay: .12s;
-        transition-timing-function: cubic-bezier(.215,.61,.355,1);
+        transition-delay: 0.12s;
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         transform: rotate(45deg);
         &::before {
           top: 0;
-          transition: top 75ms ease,opacity 75ms ease .12s;
+          transition: top 75ms ease, opacity 75ms ease 0.12s;
           opacity: 0;
         }
 
         &::after {
           bottom: 0;
-          transition: bottom 75ms ease,transform 75ms cubic-bezier(.215,.61,.355,1) .12s;
+          transition: bottom 75ms ease,
+            transform 75ms cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s;
           transform: rotate(-90deg);
         }
       }

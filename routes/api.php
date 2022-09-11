@@ -144,7 +144,7 @@ Route::group([
             Route::post('delete', [WeeklyWorkController::class, 'delete']);
             Route::post('assign_work_experiment', [WeeklyWorkController::class, 'assignWeeklyWorkExperiment']);
             Route::post('weekly_work', [WeeklyWorkController::class, 'getWeeklyWork']);
-            Route::get('weekly_works', [WeeklyWorkController::class, 'getWeeklyWorks']);
+            Route::get('weekly_works/{session_id}', [WeeklyWorkController::class, 'getWeeklyWorks']);
             Route::get('weekly_works_only', [WeeklyWorkController::class, 'getOnlyWeeklyWorks']);
             Route::post('student_task', [WeeklyWorkController::class, 'getStudentWeeklyWork']);
             Route::post('student_task2', [WeeklyWorkController::class, 'getStudentWeeklyWork2']);
@@ -163,6 +163,8 @@ Route::group([
             Route::post('delete', [CourseController::class, 'deleteCourse']);
             Route::post('course', [CourseController::class, 'getCourse']);
             Route::get('courses', [CourseController::class, 'getAllCourses']);
+            Route::get('courses_with_students/{session_id}', [CourseController::class, 'getAllCoursesWithStudent']);            
+            Route::get('courses_with_experiments', [CourseController::class, 'getCoursesWithExperiment']);
             Route::get('allcourses', [CourseController::class, 'allCourses']);            
             Route::post('enroll_student', [CourseController::class, 'enrollStudent']);
             Route::get('courses_students', [CourseController::class, 'courseStudents']);

@@ -11,7 +11,7 @@
 </head>
 <body style="background-color:#20154e">
 
-    <div class="container-fluid" id="app" style="padding-right: 0;">
+    <div class="" id="app" style="padding-right: 0;">
        @yield('content-body')
     </div>
 

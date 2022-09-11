@@ -51,7 +51,7 @@
 				</div>									
 			</div>
 			<div class="col-lg-9 col-md-12 v-scroll-x" v-show="section">						
-					<table id="studenttable" class="table table-hover">
+					<table id="studenttable" title="enrolled student" class="table table-hover">
 						<thead>
 							<tr id="cheadV">					
 							<th width="10%">S/N</th>
@@ -79,13 +79,13 @@
 		    <div class="col-lg-3 col-md-12 p-1 d-xs-none d-sm-none d-md-none d-lg-block" >		    	
 		    	<div class="task-list-container">
 		    		<h4 style="border-radius: 5px 5px 0px 0px; background: #00b96b;" class="p-2 text-white text-center font m-0 fw3">Task</h4>
-	    			<div v-for="task in tasks" class="bg-white " >
+	    			<div v-for="task in tasks" :key="'y'+task.id" class="bg-white " >
 	    				<div class="d-flex justify-between flex-wrap btn-spec px-3 pt-3 pb-1" tabindex="1">
 		    				<h6 class="fw3 text-dark">{{task.title}}</h6>
 		    				<span class="fa fa-chevron-up fs01 spanIconM iconM d-flex flex-wrap" style="color: #bbb;"></span>	    					
 	    				</div>
 	    				<ul class="display-none px-3 py-2 ulLeft">
-	    <li v-for="exp in task.weekly_work_experiments" @click="showResult(exp.id,$root)" class="font2 text-dark">
+	    <li v-for="exp in task.weekly_work_experiments" :key="'z'+exp.id" @click="showResult(exp.id,$root)" class="font2 text-dark">
 	    						{{exp.experiments.name}}
 	    					</li>
 	    				</ul>
@@ -118,15 +118,7 @@
 				iconchange:false,
 				course_code:'',
 				limitation:'01:00',
-				students: [
-					{id:1,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:2,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:3,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:4,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:5,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:6,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-					{id:7,first_name:'ismail',other_names:'hamza',gender:'male',matric_number:'u15/fns/csc/1011'},
-				],
+				students: [],
 				experiments:[
 					{id:1,name:'simple pendulum'},
 					{id:2,name:'Vernier Caliper'}
@@ -400,6 +392,7 @@
 											
 					    const formdata  = new FormData();						  
 					    formdata .append('weekly_experiment_id', id)			    	    
+					    formdata .append('session_id', $this.session)			    	    
 	                    $this.axios.post($this.baseApiUrl+'experiments/experiment_results_esid',formdata,{headers: $this.axiosHeader}).then(function(response, status, request) {        
 	                            if (response.status === 200) {  	                                       
 	                               $this.results = response.data	                               
@@ -466,6 +459,9 @@
 		props:{
 			course:{
 				type:Object,				
+			},
+			session:{
+				type:String,
 			}
 		},	
 		async created(){

@@ -1,7 +1,10 @@
 <template>
 	<div class="mx-auto">
-		<v-loader v-if="loadederState" type="line"></v-loader>
-		  <a v-if="!loadederState" href="#" @click="create" class="btn py-3 mb-5 mr-2 px-4 text-white fs1 font1 p-success btn-lg" style="border-radius: 0.6rem">Create New <span class="text-white fa fa-chevron-down"></span></a>
+		  <a  href="#" @click="create" class="btn py-3 mb-3 mr-2 px-4 text-white fs1 font1 p-success btn-lg" style="border-radius: 0.6rem">Create New <span class="text-white fa fa-chevron-down"></span></a>
+		  <select id="session_id" v-model="selectedSession" @change="selectSession()" class="form-control col-lg-3 col-md-4 ">
+				<option  v-for="session in sessions" :value="session.id"  :key="'x_'+session.id">{{session.session}}</option>
+		   </select>
+		<v-loader class="mt-2" v-if="loadederState" type="cards"></v-loader>
          <div class="task-container" style="width: 100%;">
 			<div v-for="weeklywork in weeklyworks" class="task-item1 " v-bind:class="{'task-not-active':weeklywork.expired,'task-active':!weeklywork.expired}" tabindex="1">
 				<span class="">				
@@ -24,7 +27,7 @@
 				</div>
 			</div>
         </div>
-			<div v-if="weeklyworks.length < 1" style="display: flex;flex-wrap: wrap;justify-content: center;align-items: center; width: 100%" >
+			<div v-if="weeklyworks.length < 1 && !loadederState" style="display: flex;flex-wrap: wrap;justify-content: center;align-items: center; width: 100%" >
             	<h3 style="color: #bbbbbc;" class="font">No Task Has Been Created</h3>
             </div> 		
 <!--         <template id='code-toast'>
@@ -44,19 +47,50 @@
 				courses_experiments:null,
 				faculty_courses: null,
 				loadederState: true,
+				selectedSession:"",
+				sessions:[],
 				weeklyworks:[
 					/* {id: 1, date_open:'12/02/2021', date_close:'12/04/2021', access_code:'1235', title: 'week 1',course_code:'phy 106',is_expired:true,course:{id:12,code:''}, experiments:[{id:1,name:'Vernier Caliper'},{id:2,name:'micrometer Screw Guage'}] } */
 				] 
 			}
 		},
 		methods:{
-			create:function () {
+			selectSession(){			
+				this.stepBack=1	
+				this.section =0
+				this.queryData(this.selectedSession)
+			},
+			queryData(session_id){				
+				let $this = this;	
+				this.axiosGet(this.baseApiUrl+'works/weekly_works/'+session_id).then(function(res){
+					$this.weeklyworks = res				
+					if ($this.weeklyworks.length<1) {
+						Swal.fire({
+							title:'No Task Found',
+							text:"You have not created any task, click on the 'create new' button on the page",
+							icon:'warning',
+							showDenyButton: false,
+							showCancelButton: true,				    
+							confirmButtonColor:'#00b96b',		
+							cancelButtonColor:'#d33',		
+						})
+					}
+					$this.loadederState = false;						
+					/* initialize button ripple */
+					setTimeout(function() {
+						$this.rippleButton(); 								
+					}, 200);			
+				})                   			
+			},
+			create:function () {								
 				this.VueSweetAlert2('v-taskform',{
-						faculty_courses:this.faculty_courses,
-						courses_experiments:this.courses_experiments,
-						update:false,
-						experiment_data_format:this.$store.state.experiment_data_format
-					})
+					faculty_courses:this.faculty_courses,
+					courses_experiments:this.courses_experiments,
+					update:false,
+					session:this.selectedSession,
+					session_name: $(`#session_id option[value=${this.selectedSession}]`).text(),
+					experiment_data_format: this.$store.state.experiment_data_format
+				})
 			},
 			 deletework:function(id){			 	
                  this.axiosDelete(this.baseApiUrl+'works/delete', {work_id:id});
@@ -67,6 +101,8 @@
 						courses_experiments:this.courses_experiments,
 						update:true,
 						alldata:obj,
+						session:this.selectedSession,
+						session_name: $(`#session_id option[value=${this.selectedSession}]`).text(),
 						experiment_data_format:this.$store.state.experiment_data_format						
 					})
 					setTimeout(function() {
@@ -129,30 +165,26 @@
 
 		},
 		 async created(){        
-         let faculty_id = this.currentUser.faculty_id;
-         this.faculty_courses  = await this.axiosGetById('api/courses/faculty_courses','faculty_id', faculty_id);
-         this.weeklyworks  = await this.axiosGet(this.baseApiUrl+'works/weekly_works');          
+         	let faculty_id = this.currentUser.faculty_id;
+			let $this = this;
+		    this.axiosGet('api/session/all_session').then(async function(res){
+				$this.sessions = res;				
+				if($this.sessions.length >0){
+					let session;
+					session = $this.sessions.filter((a,b)=>a.is_current == 1)
+					if(session.length>0){
+						$this.selectedSession = session[0].id						
+					}
+				}	
+				$this.faculty_courses  = await $this.axiosGetById('api/courses/faculty_courses','faculty_id', faculty_id);
+				try{
+					$this.queryData($this.selectedSession)
+				}catch(e){
+					console.log(e)
+				}
+			});	
+
          
-         //this.courses_experiments  = await this.axiosGet('api/courses/course_experiments');
-          if (this.weeklyworks.length<1) {
-		     	Swal.fire({
-		     		title:'No Task Found',
-		     		text:"You have not created any task, click on the 'create new' button on the page",
-		     		icon:'warning',
-		     		showDenyButton: false,
-				    showCancelButton: true,				    
-	      		    confirmButtonColor:'#00b96b',		
-	      		    cancelButtonColor:'#d33',		
-				})
-		     }
-         this.loadederState = false;
-         let $this = this;
-   
-          /*initialize datatable */
-          setTimeout(function() {
-            $this.rippleButton(); 
-                    
-          }, 200);
       
           },
          

@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use Exception;
 class CourseController extends Controller
 {
     private $currentUser;
@@ -223,6 +223,35 @@ class CourseController extends Controller
         return response()->json($course, 200);
     }
 
+    public function getAllCoursesWithStudent(Request $request){
+        try{
+
+        
+            $session_id = $request->session_id;
+            $course = Course::with(['faculty','weekly_work'=>function($q) use($session_id){
+                $q->with(['weekly_work_experiments.experiments'])->where('session_id', $session_id);
+            },'course_experiment'=>function($query){
+                $query->with('experiments:id,name,page');
+            },'course_resources','course_student'=>function($query) use($session_id){
+            $query->with(['students'=>function($q){
+                            $q->where('matric_number','!=','');
+                        }])
+                  ->where('session_id', $session_id);            
+            }])->where(['faculty_id'=>$this->facultyId,'status'=>'Active'])->get();
+            return response()->json($course, 200);
+
+        }catch(Exception $e){   
+            return response()->json($e->getMessage(), 400);
+        }
+    }
+
+    public function getCoursesWithExperiment(){
+        $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
+            $query->with('experiments:id,name,page');
+         },'course_resources'])->where(['faculty_id'=>$this->facultyId,'status'=>'Active'])->get();
+        return response()->json($course, 200);
+    }
+
     public function allCourses()
     {
         $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
@@ -254,16 +283,17 @@ class CourseController extends Controller
     public function getCoursesByFacultyId(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'faculty_id' => 'required',
+            'faculty_id' => 'required'            
         ]);
 
+        $session_id = $request->get('session_id');
         if ($validator->fails()) {
             return response()->json(['error' => "faculty_id is required"], 400);
         }
 
         $facultyId = $request->get('faculty_id');        
-        $courses = Course::with(['experiments','weekly_work'=>function($query){
-                    $query->where('session_id',$this->currentSession);
+        $courses = Course::with(['experiments','weekly_work'=>function($query) use($session_id){
+                    $query->where('session_id',$session_id);
                 }])->withCount('experiments')->where(['faculty_id'=> $facultyId,'Status'=>'Active'])->get();
 
         if (!empty($courses)) {
@@ -321,8 +351,7 @@ class CourseController extends Controller
         $students = Util::csvToArray($file);
 
         foreach ($students as $student) {
-            $userId = UserController::studentByMatricNumber($student['matric_number'])['id'];
-            //Todo: Handle exception where student does not exist.
+            $userId = UserController::studentByMatricNumber($student['matric_number'])['id'];            
             if ($userId != null) {
                 $this->addStudentCourse($userId, $course_id);
             }
@@ -498,14 +527,14 @@ class CourseController extends Controller
     public function courseExperiments(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'course_id' => 'required'
+            'course_id' => 'required',             
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => "course_id field is required"], 400);
         }
 
-        $courseId = $request->get('course_id');
+        $courseId   = $request->get('course_id');        
         $courseStudent = Course::with(['course_experiment.experiments','course_resources'])->where('id', $courseId)->get();
         if ($courseStudent) {
             return response()->json($courseStudent[0], 200);

@@ -7,9 +7,12 @@
 				{{selectedCourse.code}}
 			</span>
 			</div>
-            <div v-if="section!=0" class="mb-2" style="position: fixed;z-index: 101;">
+			<select v-model="selectedSession" @change="selectSession()" class="form-control col-lg-3 col-md-4 ">
+				<option  v-for="session in sessions" :value="session.id"  :key="'x_'+session.id">{{session.session}}</option>
+			</select>
+            <div v-if="section!=0" class="mb-2" style="position: fixed;top:167px;z-index: 101; display:flex;">
             	<button v-show="stepBack==1" class="button bg-dark text-white px-1 py-1  pr-3" @click="sectionControl"><span class="fa fa-chevron-left ml-2 mr-1 text-white fs01 text-white fs01"></span>Back</button>
-            	<button v-show="stepBack==2"  class="button bg-success text-white px-1 py-1  pr-3" @click="viewstudentBtn"><span class="fa fa-chevron-left ml-2 mr-1 text-white fs01 text-white fs01"></span>Back</button>
+            	<button v-show="stepBack==2"  class="button bg-success text-white px-1 py-1  pr-3" @click="viewstudentBtn"><span class="fa fa-chevron-left ml-2 mr-1 text-white fs01 text-white fs01"></span>Back</button>				
             </div>
             <div v-if="loaderState">
             	<v-loader></v-loader>
@@ -40,7 +43,7 @@
 	            </div>   
 	        </div>
             <div v-if="section==1">
-            	<v-viewstudentbycourse :course="selectedCourse"></v-viewstudentbycourse>
+            	<v-viewstudentbycourse :course="selectedCourse" :session="selectedSession" ></v-viewstudentbycourse>
             </div>
         </div>
 </template>
@@ -61,6 +64,8 @@
 				selectedCourse: null,
 				courses:null,
 				stepBack:1,
+				selectedSession:"",
+				sessions:[],
 				coursestudents:{},
 				departments:[
 					{departments: 'physics', total:60},
@@ -77,6 +82,11 @@
 			}
 		},
 		methods: {
+			selectSession(){			
+				this.stepBack=1	
+				this.section =0
+				this.queryData(this.selectedSession)
+			},
 			selectCourse: function(obj){
 				let $this = this;				
 				setTimeout(function() {					
@@ -152,41 +162,63 @@
 				  }
 				})
 			}*/
+			queryData(session_id){				
+				let $this = this;				
+				$this.courses  = $this.axiosGet('api/courses/courses_with_students/'+session_id).then(function(res){
+					$this.courses = res;						
+					$this.tableLoaded = true;
+					/*initialize datatable */		    
+					if ($this.courses.length<1) {
+						Swal.fire({
+							title:'No Course Found',
+							text:'You have not created any course',
+							icon:'warning',
+							showDenyButton: false,
+							showCancelButton: true,				    
+							confirmButtonColor:'#00b96b',		
+							cancelButtonColor:'#d33',		
+							confirmButtonText: `Goto Create Course`,						       
+						}).then((result) => {
+						
+						if (result.isConfirmed) {
+							location.href = "/create-course";
+						}
+						})
+					}
+
+					setTimeout(function() {
+						$this.loaderState =false;
+						$this.rippleButton();
+						$('#coursetable').DataTable({
+							pageLength : 5,
+						});
+					}, 200);
+				});	
+									    
+		
+			}
 		},
 		async created(){
+			let $this = this;
+			
 			this.$eventBus.$on('viewStudentExperiment',data=>{
 				this.stepBack =2;
 			});
-		    this.courses  = await this.axiosGet('api/courses/courses');
-		    //console.log(this.createdCourses)
-		    this.tableLoaded = true;
-		    /*initialize datatable */
-		    let $this = this;
-		    if (this.courses.length<1) {
-		     	Swal.fire({
-		     		title:'No Course Found',
-		     		text:'You have not created any course',
-		     		icon:'warning',
-		     		showDenyButton: false,
-				    showCancelButton: true,				    
-	      		    confirmButtonColor:'#00b96b',		
-	      		    cancelButtonColor:'#d33',		
-				    confirmButtonText: `Goto Create Course`,						       
-				}).then((result) => {
-				  
-				  if (result.isConfirmed) {
-				    location.href = "/create-course";
-				  }
-				})
-		     }
-
-             setTimeout(function() {
-             	$this.loaderState =false;
-		    	$this.rippleButton();
-             	 $('#coursetable').DataTable({
-			    	pageLength : 5,
-			    });
-             }, 200);
+		    this.axiosGet('api/session/all_session').then(function(res){
+				$this.sessions = res;				
+				if($this.sessions.length >0){
+					let session;
+					session = $this.sessions.filter((a,b)=>a.is_current == 1)
+					if(session.length>0){
+						$this.selectedSession = session[0].id						
+					}
+				}	
+				try{
+					$this.queryData($this.selectedSession)
+				}catch(e){
+					console.log(e)
+				}
+			});		
 		},
 	}
 </script>

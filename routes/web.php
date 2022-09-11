@@ -114,7 +114,7 @@ Route::middleware(['instructorauth'])->group(function(){
 	Route::get('/create-course', 'App\Http\Controllers\ManageCourseController@index')->name('create-courses');
 	Route::get('/add-experiment', 'App\Http\Controllers\AddExperimentController@index')->name('add-experiment');
 	Route::get('/view-created-experiment', 'App\Http\Controllers\AddExperimentController@createdexperiment')->name('view-created-experiment');
-	Route::get('/view-student', 'App\Http\Controllers\InstructorController@viewstudent')->name('view-student');
+	Route::get('/view-student/{session_id?}', 'App\Http\Controllers\InstructorController@viewstudent')->name('view-student');
 
 	Route::get('/course-experiments', 'App\Http\Controllers\ViewCourseController@courseExperiments');
 	Route::get('/course-resources', 'App\Http\Controllers\ViewCourseController@courseResources');

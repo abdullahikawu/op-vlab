@@ -26,6 +26,17 @@ export default {
       	}
       },
       methods:{
+		homePageUrl(){
+			if(this.currentUser.role == 'Admin'){
+				return '/manage-user'
+			}else if(this.currentUser == 'Instructor'){
+				return '/view-student'
+			}else if(this.currentUser == 'Student'){
+				return '/'
+			}else{
+				return '/'
+			}			
+		},
       	validateI: function(id,sel=0){
 				if (sel ===0) {
 
@@ -321,20 +332,20 @@ export default {
 						  icon:'error',
 						  showClass: {
 						    popup: 'animate__animated animate__fadeInDown'
-						  },
-						  hideClass: {
+						   },
+						hideClass: {
 						    popup: 'animate__animated animate__fadeOutUp'
-						  }
+							}
 						}).then((result) => {
-							  /* Read more about isConfirmed, isDenied below */
-							  if (forSession!= '') {
-							    location.reload();							  	
-							  }
-							  if (result.isConfirmed) {
-							    location.reload();
-							  } else if (result.isDenied) {
-							    Swal.fire('please reload the page', '', 'info')
-							  }
+							/* Read more about isConfirmed, isDenied below */
+							if(forSession!= '') {
+								location.reload();							  	
+							}
+							if(result.isConfirmed) {
+								location.reload();
+							}else if (result.isDenied) {
+								Swal.fire('please reload the page', '', 'info')
+							}
 						});
 				}
 				let AxiosFetchData = function(){
@@ -346,10 +357,11 @@ export default {
 		      		}else{
 				        localStorage.removeItem("LoggedUser");
 		      		}
+
 		      		let AuthAxios = 'Bearer '+userLoggedInOld;
 					let axiosHeader ={
-							'Content-Type':'application/json',
-							'Authorization':AuthAxios
+						'Content-Type':'application/json',
+						'Authorization':AuthAxios
 					};
                    return axios.get(url,{headers: axiosHeader}).then(function(response, status, request) {                     			
                             if (response.status === 200) {                                     	
@@ -729,9 +741,11 @@ export default {
 					})			
       	},
 		navbarFunc: function(){
+			
 			$('.listMenuBtn').click(function(){        		
+				alert(2)
 				$('.listMenu').not($(this).next()).slideUp(200);
-				 $(this).parent().find('ul.listMenu').slideToggle(200);
+				$(this).parent().find('ul.listMenu').slideToggle(200);
 			 })
 			 $('.listMenuVBtn').click(function(){   	 				 		
 
@@ -753,21 +767,32 @@ export default {
 	      		if (this.navbarState === false) {	      			
 	      			this.navbarState = true;   				  
 	      			$('.navicon-small-screen').addClass('change');
-	      			$('.mobileMenu').show();
-	      			$('#slideId').show()	      			
-	      			$('#slideId').animate({
+	      			$('.mobileMenu').fadeIn(200);
+	      			$('#slideId').show()	      				      			
+	      			 $('#slideId').animate({
 	      				'top':65,
 	      				'opacity':1,
-	      			}, 300)
+	      			}, 300) 
 
 	      		}else{
-				 	$('.mobileMenu').hide(200);
+					this.navbarState = false;  
+					$('.navicon-small-screen').removeClass('change');
+					//$('#slideId').slideUp()	      			
+					$('.mobileMenu').fadeOut(350);						      				
+	      			 $('#slideId').animate({
+	      				'top':0,
+	      				'opacity':0,
+	      			}, 300,function(){
+						$('#slideId').hide()	      				      								
+					}) 
+				 	//$('.mobileMenu').hide(200);
 	      		}
       		}
       	}
 
       },
       async created(){
+		
 		axios.post('/ajax-checklogin').then(function(response){
 			response.data.status == 400 ? localStorage.removeItem('LoggedUser'):'';			
 		  });
@@ -791,8 +816,7 @@ export default {
       
       },
       mounted: function(){      	
-      	
-
+      			
       	let $vm = this;
       	this.$nextTick(function(){
 			

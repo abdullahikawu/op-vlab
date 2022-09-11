@@ -142,7 +142,7 @@
 		},
 		async created(){
 
-		    this.createdCourses  = await this.axiosGet('api/courses/courses'); //this endpoint is not returning foriegn data
+		    this.createdCourses  = await this.axiosGet('api/courses/courses_with_experiments'); //this endpoint is not returning foriegn data
 		    this.weeklyworks  = await this.axiosGet('api/works/weekly_works_only'); //this endpoint is not returning foriegn data
 		    //console.log(this.createdCourses)
 		    this.tableLoaded = true;

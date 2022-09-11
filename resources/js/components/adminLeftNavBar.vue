@@ -20,7 +20,7 @@
 		
 		<div  class="MenuLContainer scroll-y vh-70"  v-bind:class="{reduceSize:show}">			
 			<div v-bind:class="{slidein:show, slideout:hide}" class="niconsV slider" >
-				<a href="/"  v-bind:class="{btnActive:checkActive('home')}">
+				<a :href="homePageUrl()"  v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconOV  fa fa-home "></span>
 				</a>	
 				<!-- <a href="/dashboard"   v-bind:class="{btnActive:checkActive('dashboard')}">
@@ -57,7 +57,7 @@
 				</a>	
 			</div>
 			<div id="wideMenu" v-bind:class="{slidein:show1, slideout:hide1, scrollableV:hide1, scrollableV:show1}" style="position: relative; margin-left: 5px; margin-right:5px;width: 240px; padding-right: 10px;" >
-				<a href="/" class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
+				<a :href="homePageUrl()" class="nChildV" v-bind:class="{btnActive:checkActive('home')}">
 					<span class="iconV fa fa-home "></span><div class="labelV">Home</div>
 				</a>	
 				<!-- <a href="/dashboard" class="nChildV"  v-bind:class="{btnActive:checkActive('dashboard')}">

@@ -328,15 +328,17 @@ class ExperimentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'weekly_experiment_id' => 'required',
+            'session_id' => 'required',
         ]);
-
+        $session_id = $request->session_id;
+        
         if ($validator->fails()) {
             return response()->json(['error' => "weekly work experiment id field is required"], 400);
         }
 
         $experimentId = $request->get('weekly_experiment_id');        
         $experimentResult = ExperimentResult::with('student')->where([
-            'session_id' => $this->currentSession,
+            'session_id' => $session_id,
             'weekly_work_id' => $experimentId
         ])->get();
 

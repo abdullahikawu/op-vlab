@@ -7,18 +7,18 @@
 		   	 	<circuitconnectiontools has='1'  ></circuitconnectiontools>
 		   	</span>	   
 		   	<span v-if="electricitytools==true">	
-			   	<span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>		   		
+			   	<span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span>		   		
 		   		<electricity :resistorConfig="config"></electricity>	   		
 		   	</span>
 		   	<span v-if="othertools==true">	 
 		   		<span v-if= "type=='measurement' && startExperiment == true">		   		
-				   	<!-- <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span> -->
+				   	<!-- <span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span> -->
 		            <div v-for="i in toolsizes_r[0].length"  :key="i" @click="addactivate($event);changeApparatus(toolsizes_r[0][i-1],toolsizes_r[1][i-1],toolsizes_r[2][i-1])"  v-bind:style="{width:+'150px'}" class="box">
 		            		Object {{i}}
 		        	</div>                  
 		   		</span>
 		   		<span v-if= "type=='micrometer' && startExperiment == true">		   		
-				   	<!-- <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span> -->
+				   	<!-- <span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span> -->
 		            <div v-for="j in toolsizes_r.length"  :key="j" @click="addactivate($event);changeApparatusForMicrometer(toolsizes_r[j-1])"  v-bind:style="{width:+'150px'}" class="box">
 		            		Object {{j}}
 		        	</div>                  
@@ -31,23 +31,23 @@
 		</div>
 		<div class="containerR px-2" style="display: none;" id="resulttable">
 		   	<div class="input-alt"></div>
-		   <span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>		   
+		   <span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span>		   
 		   <div v-html="result" v-if="startExperiment">		   	
 		   </div>				                
 		</div>
 		<div class="containerR" style="display: none;" id="resultgraph">				
 		   	<div class="input-alt"></div>
-		   	<span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>
+		   	<span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span>
 
 		   <h1>Graph</h1>				                
 		</div>
 		<div class="containerR" style="display: none;" id="userhelp">		
 		   	<div class="input-alt"></div>		
-		   	<span class="fa fa-align-justify bg-white rightnavexpander" @click="rightnavexpander"></span>			
+		   	<span class="fa fa-arrows-alt bg-white rightnavexpander" @click="rightnavexpander"></span>			
 		   <h1>Help</h1>				                
 		</div>
 		<!-- <div class="containerR" style="display: none;" id="unkl">			
-		   	<span class="fa fa-align-justify bg-white rightnavexpander"></span>
+		   	<span class="fa fa-arrows-alt bg-white rightnavexpander"></span>
             <div v-if="toolstate==true" v-for="tool in toolsizes"  :key="tool" @click="addactivate;changeApparatus(tool)"  v-bind:style="{width:tool+'px'}" class="box">
             		Size
         	</div> 			                
@@ -289,7 +289,7 @@
 	overflow-x: hidden;
 	color: #fff;
 }
-.fa-align-justify{
+.fa-arrows-alt{
 	padding: 5px;
 	border-radius: 0px 0px 3px 0px;
 	cursor: pointer;
@@ -297,7 +297,7 @@
 	color: #fff;	
 	background:transparent !important;
 }
-.fa-align-justify:hover{
+.fa-arrows-alt:hover{
 	color: var(--sys-primary);
 	background:#fff !important;
 }

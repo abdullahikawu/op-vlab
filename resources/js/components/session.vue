@@ -19,6 +19,7 @@
 			            	<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" :title="'Edit '+session.session" @click="editsession(session)" style="border-left: 1px solid #ccc;"></span>
 			            	<span class="ml-2 fa fa-check pl-3 text-success fs01 cursor-1" :title="'set ' + session.session+ ' as current session'" @click="setsession(session,index)" style="border-left: 1px solid #ccc;"></span>			            	
 			            	<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" :title="'Delete '+session.session" @click="deletesession(session.id)"></span>
+			            	<span class="ml-2 fa  fa-exchange pl-3  fs01 cursor-1" :title="'Pull '+session.session" @click="deletesession(session.id)"></span>							
 			            </td>
 			        </tr>
 			    	</tbody>
