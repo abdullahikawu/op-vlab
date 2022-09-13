@@ -33,6 +33,7 @@ Route::view('/startup',function(){
 Route::post('password/forgot', [ForgotPasswordController::class, 'forgot']);
 //Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
 
+Route::get('school_info', [AuthController::class, 'getSchoolInfo']);    
 Route::get('analytic', 'App\Http\Controllers\Api\StatsController@dataAnalytics');
 Route::group([
     'middleware' => 'api',
@@ -43,7 +44,7 @@ Route::group([
     Route::post('feedback', [FeedbackController::class, 'feedback']);
     Route::get('getfeedbacks', [FeedbackController::class, 'getFeedback']);
     Route::get('check', [FacultyController::class, 'checkFacultyExist']);
-
+    
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);

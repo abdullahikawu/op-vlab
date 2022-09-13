@@ -742,8 +742,7 @@ export default {
       	},
 		navbarFunc: function(){
 			
-			$('.listMenuBtn').click(function(){        		
-				alert(2)
+			$('.listMenuBtn').click(function(){        						
 				$('.listMenu').not($(this).next()).slideUp(200);
 				$(this).parent().find('ul.listMenu').slideToggle(200);
 			 })

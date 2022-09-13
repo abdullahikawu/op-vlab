@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row hero__body d-flex align-items-center justify-content-between mx-auto">
         <div class="col-12 col-lg-7">
-          <h1 class="hero__body__title">Virtual Laboratory (V-Lab)</h1>
+          <h1 class="hero__body__title">{{schoolname}} ({{schoolabbr}})</h1>
           <p class="hero__body__subtitle fs1 font text-secondary">
             For Science and Engineering Experiments and Research.
             Vlab give access to University students to practice and carryout practicals in virtual environment
@@ -28,6 +28,17 @@
 <script>
 export default {
   name: "Section", 
+  data: function(){
+    return {
+      schoolname: "Virtual Laboratory",
+      schoolabbr: "V-Lab"
+    }    
+  },
+  async created(){
+    let school = await this.axiosGet('api/school_info');                  	           
+    this.schoolname = school.name
+    this.schoolabbr = school.code
+  },
   mounted(){
     $(document).ready(function(){
         $('.venobox').venobox({

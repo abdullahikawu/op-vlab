@@ -22,7 +22,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'verifyUser']]);
+        $this->middleware('auth:api', ['except' => ['login', 'verifyUser', 'getSchoolInfo']]);
     }
 
     public function uuid()
@@ -141,5 +141,9 @@ class AuthController extends Controller
             //'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => $this->me()->original
         ]);
+    }
+
+    public function getSchoolInfo(){
+        return DB::table('schools')->where('id', 1)->first();
     }
 }
