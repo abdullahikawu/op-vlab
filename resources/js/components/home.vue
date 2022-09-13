@@ -37,9 +37,8 @@ export default {
     }    
   },
   async created(){
-   this.axiosGet('api/school_info').then(function(res){
-     this.school = school[0];
-   }(this))                  	           
+   this.school = await this.axiosGet('api/schools/school');      
+                     	           
   },
   mounted(){
     $(document).ready(function(){

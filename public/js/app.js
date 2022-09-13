@@ -5114,6 +5114,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Button",
   data: function data() {
@@ -5497,6 +5498,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               fac = _context.sent;
               _this2.schoolname = school.name;
               _this2.schoolabbr = school.code;
+              _this2.schooldescription = school.description;
               _this2.first_name = _this2.currentUser.first_name;
               _this2.other_name = _this2.currentUser.other_names;
               _this2.email = _this2.currentUser.email;
@@ -5505,7 +5507,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               _this2.department = dep.name;
               _this2.faculty = fac.name;
 
-            case 18:
+            case 19:
             case "end":
               return _context.stop();
           }
@@ -8269,11 +8271,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.axiosGet('api/school_info').then(function (res) {
-                this.school = school[0];
-              }(_this));
+              _context.next = 2;
+              return _this.axiosGet('api/schools/school');
 
-            case 1:
+            case 2:
+              _this.school = _context.sent;
+
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -50574,6 +50578,41 @@ var render = function () {
                       return
                     }
                     _vm.schoolabbr = $event.target.value
+                  },
+                },
+              }),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "col-lg-12 col-md-12 col-sm-12 d-flex flex-wrap mt-2",
+            },
+            [
+              _c("div", { staticClass: "white-space mr-3" }, [
+                _vm._v("Description: "),
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.schooldescription,
+                    expression: "schooldescription",
+                  },
+                ],
+                staticClass: "form-control w-100",
+                attrs: { type: "text", name: "school" },
+                domProps: { value: _vm.schooldescription },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.schooldescription = $event.target.value
                   },
                 },
               }),

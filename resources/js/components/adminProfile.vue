@@ -34,10 +34,11 @@
         				<div class="white-space mr-3">School Abbr: </div>
         				<input type="text" name="school" v-model="schoolabbr" class="form-control w-100 vI">        			
         			</div>
-        		<!-- 	<div class="col-lg-12 col-md-12 col-sm-12 d-flex flex-wrap mt-2">
-        				<div class="white-space mr-3">School Description: </div>
+		
+				        <div class="col-lg-12 col-md-12 col-sm-12 d-flex flex-wrap mt-2">
+        				<div class="white-space mr-3">Description: </div>
         				<input type="text" name="school" v-model="schooldescription" class="form-control w-100">        			
-        			</div> -->
+        			</div> 
         			<div class="col-lg-12 col-md-12 col-sm-12 mt-2">
         				<br>
         				<center>
@@ -474,7 +475,7 @@ export default {
 
 		this.schoolname = school.name;
 		this.schoolabbr = school.code;
-
+		this.schooldescription = school.description
 		this.first_name = this.currentUser.first_name;
 		this.other_name = this.currentUser.other_names;
 		this.email = this.currentUser.email;

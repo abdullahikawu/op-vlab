@@ -411,7 +411,7 @@ class UserController extends Controller
     public function getStudentByMatricNumber(Request $request)
     {
         $matric_number = $request->get('matric_number');
-        $student = $this->studentByMatricNumber($matric_number);
+        $student = $this->stuzdentByMatricNumber($matric_number);
         return $student;
     }
 
@@ -435,10 +435,9 @@ class UserController extends Controller
         }
 
         $schoolname = $request->get('schoolname');
-        $schoolabbr = $request->get('schoolabbr');
+        $schoolabbr = $request->get('schoolabbr');        
         $schooldescription = $request->get('schooldescription');
-        $school_id = School::where('id','!=','')->update(['name'=>$schoolname, 'code'=>$schoolabbr]);
-
+        $school_id = School::where('id',1)->update(['name'=>$schoolname, 'code'=>$schoolabbr, 'description'=>$schooldescription]);
         return response()->json(['success' => true], 200);
 
     }
