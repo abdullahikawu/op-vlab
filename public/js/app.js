@@ -8272,7 +8272,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this.axiosGet('api/schools/school');
+              return _this.axiosGet('api/school_info');
 
             case 2:
               _this.school = _context.sent;
@@ -57282,7 +57282,7 @@ var render = function () {
     _c(
       "div",
       {
-        staticClass: "w-100 bg-white px-6 profile-menu",
+        staticClass: "row m-0 w-100 bg-white px-6 profile-menu",
         staticStyle: {
           "box-shadow": "1px 6px 5px rgba(100,100,100,.1)",
           position: "relative",
@@ -57293,7 +57293,7 @@ var render = function () {
         _c(
           "div",
           {
-            staticClass: "font2 fw4  systab systab--active",
+            staticClass: "col-md-2 font2 fw4  systab systab--active",
             attrs: { rel: "uinfo", title: "User Info" },
             on: { click: _vm.systab },
           },
@@ -57307,7 +57307,7 @@ var render = function () {
         _c(
           "div",
           {
-            staticClass: "font2 fw4 systab",
+            staticClass: "col-md-2 font2 fw4 systab",
             attrs: { rel: "email", title: "Change Email" },
             on: { click: _vm.systab },
           },
@@ -57323,7 +57323,7 @@ var render = function () {
         _c(
           "div",
           {
-            staticClass: "font2 fw4 systab",
+            staticClass: "col-md-2 font2 fw4 systab",
             attrs: { rel: "password", title: "Reset Password" },
             on: { click: _vm.systab },
           },

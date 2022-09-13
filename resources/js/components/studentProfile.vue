@@ -1,16 +1,16 @@
 <template>
   <div>
    <!-- <h1 class="my-5 text-center explore__header">Explore Available V-lab Courses</h1> -->
-        <div class="w-100 bg-white px-6 profile-menu" style="box-shadow: 1px 6px 5px rgba(100,100,100,.1);position: relative;z-index: 2;">        
-        <div class="font2 fw4  systab systab--active" rel="uinfo" @click="systab" title="User Info">
+        <div class="row m-0 w-100 bg-white px-6 profile-menu" style="box-shadow: 1px 6px 5px rgba(100,100,100,.1);position: relative;z-index: 2;">        
+        <div class="col-md-2 font2 fw4  systab systab--active" rel="uinfo" @click="systab" title="User Info">
         	<span class="removeClick">User Info</span>
          	<i class="fa fa-user removeClick"></i>
         </div>
-        <div class="font2 fw4 systab" rel="email" @click="systab" title="Change Email">
+        <div class="col-md-2 font2 fw4 systab" rel="email" @click="systab" title="Change Email">
         	<span class="removeClick">Change Email</span>
          	<i class="fa fa-envelope removeClick" ></i>        	
     	</div>
-        <div class="font2 fw4 systab" rel="password" @click="systab" title="Reset Password">
+        <div class="col-md-2 font2 fw4 systab" rel="password" @click="systab" title="Reset Password">
         	<span class="removeClick">Reset Password</span>
          	<i class="fa fa-lock removeClick" ></i>        	
 

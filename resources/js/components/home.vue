@@ -37,7 +37,7 @@ export default {
     }    
   },
   async created(){
-   this.school = await this.axiosGet('api/schools/school');      
+   this.school = await this.axiosGet('api/school_info');      
                      	           
   },
   mounted(){

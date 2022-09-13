@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use App\Models\School;
 use function PHPUnit\Framework\isEmpty;
 
 class AuthController extends Controller
@@ -144,7 +144,12 @@ class AuthController extends Controller
     }
 
     public function getSchoolInfo(){
-        $response = DB::table('schools')->where('id', 1)->get();
-        return (count($response)>0)? $response: [["id"=>"1","name"=>"Virtual Laboratory Institute of Nigeria","code"=>"Vlab","status"=>"Active", "description"=>"For Science and Engineering Experiments and Research.Vlab give access to University students to practice and carryout practicals in virtual environment"]];
+        $school = School::first();
+        
+        if(!empty($school)){
+            return response()->json($school, 200);
+        } else {
+            return response()->json(['error' => 'School not found'], 404);
+        }
     }
 }
