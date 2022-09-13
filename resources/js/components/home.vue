@@ -3,10 +3,9 @@
     <div class="container">
       <div class="row hero__body d-flex align-items-center justify-content-between mx-auto">
         <div class="col-12 col-lg-7">
-          <h1 class="hero__body__title">{{schoolname}} ({{schoolabbr}})</h1>
+          <h1 class="hero__body__title">{{school.name}} ({{school.code}})</h1>
           <p class="hero__body__subtitle fs1 font text-secondary">
-            For Science and Engineering Experiments and Research.
-            Vlab give access to University students to practice and carryout practicals in virtual environment
+           {{school.description}}
           </p>
           <div class="hero__links">
             <a href="/explore" class="btn text-white bg-success hero__body__cta mr-3">Explore V-lab</a>
@@ -30,14 +29,17 @@ export default {
   name: "Section", 
   data: function(){
     return {
-      schoolname: "Virtual Laboratory",
-      schoolabbr: "V-Lab"
+      school:{
+        name: "Virtual Laboratory",
+        code: "V-Lab",
+        description: " For Science and Engineering Experiments and Research. Vlab give access to University students to practice and carryout practicals in virtual environment"
+      }
     }    
   },
   async created(){
-    let school = await this.axiosGet('api/school_info');                  	           
-    this.schoolname = school.name
-    this.schoolabbr = school.code
+   this.axiosGet('api/school_info').then(function(res){
+     this.school = school[0];
+   }(this))                  	           
   },
   mounted(){
     $(document).ready(function(){

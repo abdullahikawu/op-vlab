@@ -8250,33 +8250,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Section",
   data: function data() {
     return {
-      schoolname: "Virtual Laboratory",
-      schoolabbr: "V-Lab"
+      school: {
+        name: "Virtual Laboratory",
+        code: "V-Lab",
+        description: " For Science and Engineering Experiments and Research. Vlab give access to University students to practice and carryout practicals in virtual environment"
+      }
     };
   },
   created: function created() {
     var _this = this;
 
     return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var school;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
-              return _this.axiosGet('api/school_info');
+              _this.axiosGet('api/school_info').then(function (res) {
+                this.school = school[0];
+              }(_this));
 
-            case 2:
-              school = _context.sent;
-              _this.schoolname = school.name;
-              _this.schoolabbr = school.code;
-
-            case 5:
+            case 1:
             case "end":
               return _context.stop();
           }
@@ -53465,7 +53462,7 @@ var render = function () {
           _c("div", { staticClass: "col-12 col-lg-7" }, [
             _c("h1", { staticClass: "hero__body__title" }, [
               _vm._v(
-                _vm._s(_vm.schoolname) + " (" + _vm._s(_vm.schoolabbr) + ")"
+                _vm._s(_vm.school.name) + " (" + _vm._s(_vm.school.code) + ")"
               ),
             ]),
             _vm._v(" "),
@@ -53474,7 +53471,7 @@ var render = function () {
               { staticClass: "hero__body__subtitle fs1 font text-secondary" },
               [
                 _vm._v(
-                  "\n          For Science and Engineering Experiments and Research.\n          Vlab give access to University students to practice and carryout practicals in virtual environment\n        "
+                  "\n         " + _vm._s(_vm.school.description) + "\n        "
                 ),
               ]
             ),

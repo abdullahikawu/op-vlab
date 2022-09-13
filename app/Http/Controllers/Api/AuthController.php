@@ -144,6 +144,7 @@ class AuthController extends Controller
     }
 
     public function getSchoolInfo(){
-        return DB::table('schools')->where('id', 1)->first();
+        $response = DB::table('schools')->where('id', 1)->get();
+        return (count($response)>0)? $response: [["id"=>"1","name"=>"Virtual Laboratory Institute of Nigeria","code"=>"Vlab","status"=>"Active", "description"=>"For Science and Engineering Experiments and Research.Vlab give access to University students to practice and carryout practicals in virtual environment"]];
     }
 }
