@@ -1,6 +1,6 @@
 <template>
   <section class="hero">
-    <div class="container">
+    <div class="container" style="height:56.69vh;">
       <div class="row hero__body d-flex align-items-center justify-content-between mx-auto">
         <div class="col-12 col-lg-7">
           <h1 class="hero__body__title">{{school.name}} ({{school.code}})</h1>

@@ -53451,40 +53451,46 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("section", { staticClass: "hero" }, [
-    _c("div", { staticClass: "container" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "row hero__body d-flex align-items-center justify-content-between mx-auto",
-        },
-        [
-          _c("div", { staticClass: "col-12 col-lg-7" }, [
-            _c("h1", { staticClass: "hero__body__title" }, [
-              _vm._v(
-                _vm._s(_vm.school.name) + " (" + _vm._s(_vm.school.code) + ")"
+    _c(
+      "div",
+      { staticClass: "container", staticStyle: { height: "56.69vh" } },
+      [
+        _c(
+          "div",
+          {
+            staticClass:
+              "row hero__body d-flex align-items-center justify-content-between mx-auto",
+          },
+          [
+            _c("div", { staticClass: "col-12 col-lg-7" }, [
+              _c("h1", { staticClass: "hero__body__title" }, [
+                _vm._v(
+                  _vm._s(_vm.school.name) + " (" + _vm._s(_vm.school.code) + ")"
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "hero__body__subtitle fs1 font text-secondary" },
+                [
+                  _vm._v(
+                    "\n         " +
+                      _vm._s(_vm.school.description) +
+                      "\n        "
+                  ),
+                ]
               ),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _c("br"),
             ]),
             _vm._v(" "),
-            _c(
-              "p",
-              { staticClass: "hero__body__subtitle fs1 font text-secondary" },
-              [
-                _vm._v(
-                  "\n         " + _vm._s(_vm.school.description) + "\n        "
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _c("br"),
-          ]),
-          _vm._v(" "),
-          _vm._m(1),
-        ]
-      ),
-    ]),
+            _vm._m(1),
+          ]
+        ),
+      ]
+    ),
   ])
 }
 var staticRenderFns = [
