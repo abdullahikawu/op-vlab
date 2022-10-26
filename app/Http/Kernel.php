@@ -56,14 +56,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'startup' => \App\Http\Middleware\Startup::class,
-        'is_enrolled' => \App\Http\Middleware\EnrollmentAccess::class,   
-        'is_loggedin' => \App\Http\Middleware\NextIfLoggedIn::class,   
-        'whoareyou' => \App\Http\Middleware\WhoAreYou::class,        
-        'twouserauth' => \App\Http\Middleware\TwoUserAuth::class,        
-        'studentauth' => \App\Http\Middleware\StudentAuth::class,        
-        'instructorauth' => \App\Http\Middleware\InstructorAuth::class,        
-        'adminauth' => \App\Http\Middleware\AdminAuth::class,        
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -73,6 +65,14 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'cors' => \App\Http\Middleware\Cors::class, 
+        'cors' => \App\Http\Middleware\Cors::class,         
+        'startup' => \App\Http\Middleware\Startup::class,
+        'is_enrolled' => \App\Http\Middleware\EnrollmentAccess::class,   
+        'is_loggedin' => \App\Http\Middleware\NextIfLoggedIn::class,   
+        'whoareyou' => \App\Http\Middleware\WhoAreYou::class,        
+        'twouserauth' => \App\Http\Middleware\TwoUserAuth::class,        
+        'studentauth' => \App\Http\Middleware\StudentAuth::class,        
+        'instructorauth' => \App\Http\Middleware\InstructorAuth::class,        
+        'adminauth' => \App\Http\Middleware\AdminAuth::class,        
     ];
 }

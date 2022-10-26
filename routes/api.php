@@ -33,16 +33,16 @@ Route::view('/startup',function(){
 Route::post('password/forgot', [ForgotPasswordController::class, 'forgot']);
 //Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
 
-Route::get('school_info', [AuthController::class, 'getSchoolInfo']);    
 Route::get('analytic', 'App\Http\Controllers\Api\StatsController@dataAnalytics');
 Route::group([
     'middleware' => 'api',
 ], function ($router) {
-
+    
     Route::get('faculty_course_student', [FacultyController::class, 'getFacultyWithCourseAndStudentCount']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('feedback', [FeedbackController::class, 'feedback']);
     Route::get('getfeedbacks', [FeedbackController::class, 'getFeedback']);
+    Route::get('school_info', [AuthController::class, 'getSchoolInfo']);    
     Route::get('check', [FacultyController::class, 'checkFacultyExist']);
     
     Route::post('logout', [AuthController::class, 'logout']);
@@ -64,7 +64,9 @@ Route::group([
             Route::post('students', [UserController::class, 'getStudents']);
             Route::get('users', [UserController::class, 'getAllUsers']);
             Route::get('inactive_users', [UserController::class, 'getAllInActiveUsers']);
+            Route::get('search_inactive_users/{search}', [UserController::class, 'getAllInActiveUsersSearch']);
             
+            Route::get('search_users/{search}', [UserController::class, 'searchUsers']);
             Route::post('by_search', [UserController::class, 'getAllUsersBySearch']);
 
             Route::post('faculty_admins', [UserController::class, 'getFacultyAdmins']);

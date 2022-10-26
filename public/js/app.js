@@ -5662,11 +5662,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       courses: [],
+      loading: true,
       selectExperiment: '',
       courseName: '',
       experiments: [],
@@ -5683,12 +5683,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.toload = true;
       location.hash = this.selectedcourse;
-      this.thiscourse = this.courses.filter(function (item) {
-        return item.id === _this.selectedcourse;
+      var $this = this;
+      this.thiscourse = this.courses.every(function (item) {
+        if (item.id === _this.selectedcourse) {
+          $this.courseName = item.code;
+          $this.courseexperiments = item.course_experiment;
+          $this.toload = false;
+          return false;
+        }
+
+        return true;
       });
-      this.courseName = this.thiscourse[0].code;
-      this.courseexperiments = this.thiscourse[0].course_experiment;
-      this.toload = false;
     },
     deleteResource: function deleteResource(id) {
       var _this2 = this;
@@ -5719,7 +5724,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       for (var i = 0; i < this.courseexperiments.length; i++) {
-        if (this.courseexperiments[i].experiments.id == this.selectExperiment) {
+        if (this.courseexperiments[i].experiment.id == this.selectExperiment) {
           Swal.fire({
             title: 'Already Exist',
             text: "".concat($('#experimentBox option:selected').text(), " exist in  ").concat($vm.courseName),
@@ -5800,7 +5805,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               _this3.FetchCourseResources();
 
-            case 9:
+              _this3.loading = false;
+
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -6793,7 +6800,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }); //console.log($vm.axiosHeader)
         });
       } catch (err) {
-        console.log(err);
         $('#system-loader').css('display', 'none');
         vt.error($vm.errorNetworkMessage, {
           title: 'session expired',
@@ -6830,7 +6836,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.file4 = e.target.files[0];
       }
 
-      $(e.target).prev().html(e.target.files[0].name);
+      try {
+        $(e.target).prev().html(e.target.files[0].name);
+      } catch (e) {}
     }
   },
   props: {
@@ -6891,8 +6899,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
       $(document).on('change', '.draginto', function () {
-        $(this).prev().html($(this).prop('files')[0].name);
-        console.log($('.draginto').prop('files'));
+        try {
+          $(this).prev().html($(this).prop('files')[0].name);
+        } catch (e) {
+          console.log($('.draginto').prop('files'));
+        }
       });
       $(document).on('click', '.rmexp', function () {
         if ($vm.update) {
@@ -11281,15 +11292,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             Swal.showValidationMessage('All fields are required');
           }
 
-          var regExp = /^(20?\d)\d{2}\/(20?\d)\d{2}$/;
+          $pattern = /^(20?\d)\d{2}\/(20?\d)\d{2}$/; //session pattern
 
-          if (!regExp.test(sessionName)) {
+          if (preg_match($)) if (!regExp.test(sessionName)) {
             Swal.showValidationMessage('Invalid session');
           } else {
             var sessionArr = sessionName.split('/');
             if (sessionArr[1] - sessionArr[0] < 0 || sessionArr[1] - sessionArr[0] > 1) Swal.showValidationMessage('InValid session');
           }
-
           return [sessionName, is_current, current];
         }
       }).then(function (result) {
@@ -15829,6 +15839,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -15836,8 +15854,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       vclass1: ' col-md-2 offset-md-4 ',
       vclass2: ' col-md-2',
       btnclasses: "btn mx-auto d-block shadow text-white fs1 font1 btn-lg my-0",
-      createduser: null,
-      inactiveUser: null,
+      users: [],
+      inactiveUser: [],
       tableLoaded: false,
       facultiesHTML: null,
       faculties: null,
@@ -15849,9 +15867,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       listTrHtml: "",
       sessions: [],
       loaderState: true,
-      loaderStatex: true,
+      usersloaderState: true,
+      usersloaderState2: true,
       response: '',
       dTable: '',
+      table: null,
+      table2: null,
       usertype: true,
       setOut: false,
       menuToggle: false
@@ -15951,7 +15972,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         headers: this.axiosHeader
       }).then(function (response, status, request) {
         if (response.status === 200) {
-          $this.createduser = response.data;
+          $this.users = response.data;
           $this.loaderState = false;
           setTimeout(function () {
             $this.dTable = $('#usertable').DataTable({
@@ -16215,118 +16236,281 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    tableInitializer: function tableInitializer(id, url) {
+      var _arguments = arguments,
+          _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var searchUrl, searchData, $this;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                searchUrl = _arguments.length > 2 && _arguments[2] !== undefined ? _arguments[2] : "";
+                searchData = _arguments.length > 3 && _arguments[3] !== undefined ? _arguments[3] : "";
+                $this = _this4;
+                _this4.loaderState = true;
+                _this4.usersloaderState = true;
+
+                if (!(searchData == '')) {
+                  _context2.next = 11;
+                  break;
+                }
+
+                _context2.next = 8;
+                return _this4.axiosGet("".concat(url));
+
+              case 8:
+                _this4.users = _context2.sent;
+                _context2.next = 14;
+                break;
+
+              case 11:
+                _context2.next = 13;
+                return _this4.axiosGet("".concat(searchUrl, "/").concat(searchData));
+
+              case 13:
+                _this4.users = _context2.sent;
+
+              case 14:
+                setTimeout(function () {
+                  $this.table = $("#" + id).DataTable({
+                    destroy: true,
+                    pageLength: 5,
+                    stateSave: true,
+                    dom: "lBfrtip",
+                    drawCallback: function drawCallback(settings) {
+                      var api = this.api();
+                      var info = api.page.info();
+
+                      if (info.page + 1 === info.pages && $this.users.current_page !== $this.users.last_page) {
+                        $(".paginate_button.next").removeClass('disabled');
+                        $('.paginate_button.next', $(".paginate_button.next").parent()).on('click', function () {
+                          $this.tableInitializer(id, $this.users.next_page_url);
+                        });
+                      } else {}
+
+                      if (info.page === 0 && $this.users.current_page !== 1) {
+                        $(".paginate_button.previous").removeClass('disabled');
+                        $('.paginate_button.previous', $(".paginate_button.previous").parent()).on('click', function () {
+                          $this.tableInitializer(id, $this.users.prev_page_url);
+                        });
+                      } else {}
+                    },
+                    infoCallback: function infoCallback() {
+                      return 'Page ' + $this.users.from + ' of ' + $this.users.total;
+                    },
+                    buttons: [{
+                      extend: 'csv',
+                      text: 'Excel',
+                      exportOptions: {
+                        columns: ':visible'
+                      }
+                    }]
+                  });
+                  $this.loaderState = false;
+                  $(".dataTables_filter label input").attr('title', 'press enter to search');
+                  $(".dataTables_filter label").on('keyup', 'input', function (e) {
+                    console.log(e.keyCode, e);
+
+                    if (e.keyCode == 13) {
+                      var val = $(".dataTables_filter label input").val();
+                      if (val !== '') $this.tableInitializer(id, url, searchUrl, val);
+                    }
+                  });
+                }, 1000);
+                $this.usersloaderState = false;
+
+              case 16:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    tableInitializer2: function tableInitializer2(id, url) {
+      var _arguments2 = arguments,
+          _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var searchUrl, searchData, $this;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                searchUrl = _arguments2.length > 2 && _arguments2[2] !== undefined ? _arguments2[2] : "";
+                searchData = _arguments2.length > 3 && _arguments2[3] !== undefined ? _arguments2[3] : "";
+                $this = _this5;
+                _this5.loaderState = true;
+                _this5.usersloaderState2 = true;
+
+                if (!(searchData == '')) {
+                  _context3.next = 11;
+                  break;
+                }
+
+                _context3.next = 8;
+                return _this5.axiosGet("".concat(url));
+
+              case 8:
+                _this5.inactiveUser = _context3.sent;
+                _context3.next = 14;
+                break;
+
+              case 11:
+                _context3.next = 13;
+                return _this5.axiosGet("".concat(searchUrl, "/").concat(searchData));
+
+              case 13:
+                _this5.inactiveUser = _context3.sent;
+
+              case 14:
+                setTimeout(function () {
+                  $this.table2 = $("#" + id).DataTable({
+                    destroy: true,
+                    pageLength: 5,
+                    stateSave: true,
+                    dom: "lBfrtip",
+                    drawCallback: function drawCallback(settings) {
+                      var api = this.api();
+                      var info = api.page.info();
+
+                      if (info.page + 1 === info.pages && $this.inactiveUser.current_page !== $this.inactiveUser.last_page) {
+                        $(".paginate_button.next").removeClass('disabled');
+                        $('.paginate_button.next', $(".paginate_button.next").parent()).on('click', function () {
+                          $this.tableInitializer(id, $this.inactiveUser.next_page_url);
+                        });
+                      } else {}
+
+                      if (info.page === 0 && $this.inactiveUser.current_page !== 1) {
+                        $(".paginate_button.previous").removeClass('disabled');
+                        $('.paginate_button.previous', $(".paginate_button.previous").parent()).on('click', function () {
+                          $this.tableInitializer(id, $this.inactiveUser.prev_page_url);
+                        });
+                      } else {}
+                    },
+                    infoCallback: function infoCallback() {
+                      return 'Page ' + $this.inactiveUser.from + ' of ' + $this.inactiveUser.total;
+                    },
+                    buttons: [{
+                      extend: 'csv',
+                      text: 'Excel',
+                      exportOptions: {
+                        columns: ':visible'
+                      }
+                    }]
+                  });
+                  $this.loaderState = false;
+                  $(".dataTables_filter label input").attr('title', 'press enter to search');
+                  $(".dataTables_filter label").on('keyup', 'input', function (e) {
+                    //console.log(e.keyCode, e)						
+                    if (e.keyCode == 13) {
+                      var val = $(".dataTables_filter label input").val();
+                      if (val !== '') $this.tableInitializer(id, url, searchUrl, val);
+                    }
+                  });
+                }, 1000);
+                $this.usersloaderState2 = false;
+
+              case 16:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this6 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var $this;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              _context2.next = 2;
-              return _this4.axiosGet('api/faculties/faculties');
+              _context4.next = 2;
+              return _this6.axiosGet('api/faculties/faculties');
 
             case 2:
-              _this4.faculties = _context2.sent;
-              _context2.next = 5;
-              return _this4.axiosGet('api/departments/departments');
+              _this6.faculties = _context4.sent;
+              _context4.next = 5;
+              return _this6.axiosGet('api/departments/departments');
 
             case 5:
-              _this4.departments = _context2.sent;
-              _context2.next = 8;
-              return _this4.axiosGet('api/users/inactive_users');
+              _this6.departments = _context4.sent;
+              _context4.next = 8;
+              return _this6.axiosGet('api/session/all_session');
 
             case 8:
-              _this4.inactiveUser = _context2.sent;
-              _context2.next = 11;
-              return _this4.axiosGet('api/session/all_session');
+              _this6.sessions = _context4.sent;
+              _this6.facultiesHTML = _this6.selectHtmlGen(_this6.faculties, 'code', 'faculty_id');
+              _this6.departmentsHTML = _this6.selectHtmlGen(_this6.departments, 'code', 'department_id');
 
-            case 11:
-              _this4.sessions = _context2.sent;
-              _this4.facultiesHTML = _this4.selectHtmlGen(_this4.faculties, 'code', 'faculty_id');
-              _this4.departmentsHTML = _this4.selectHtmlGen(_this4.departments, 'code', 'department_id'); //this.loaderState = false;			
+              _this6.tableInitializer('usertable', 'api/users/users', 'api/users/search_users');
 
+              _this6.tableInitializer2('usertable2', 'api/users/inactive_users', 'api/users/search_inactive_users');
               /*initialize datatable */
+              // var $this = this;
 
-              $this = _this4;
               /* setTimeout(function() { */
 
-              $this.dTable = $('#usertable').DataTable({
-                processing: true,
-                serverSide: true,
-                deferRender: false,
-                responsive: true,
-                pageLength: 6,
-                ajax: {
-                  url: 'api/users/users',
-                  'type': 'GET',
-                  'beforeSend': function beforeSend(request) {
-                    request.setRequestHeader("Authorization", $this.axiosHeader.Authorization);
-                  }
-                },
-                columns: [{
-                  "data": 'fullname'
-                }, {
-                  "data": 'username'
-                }, {
-                  "data": 'title'
-                }, {
-                  "data": 'code'
-                }, {
-                  "data": 'id'
-                }],
-                drawCallback: function drawCallback(settings) {
-                  var json = settings.json.data;
-                  $("#usertable tbody").find('tr td:last-child').each(function (index) {
-                    $(this).prev().prev().prev().css('text-transform', 'lowercase');
-                    $(this).html("\n\t\t\t\t\t\t\t<span class=\"ml-2 fa fa-edit pl-3 fedit  fs01 cursor-1\" style=\"border-left: 1px solid #ccc;\"></span>\n\t\t\t\t\t\t\t<span class=\"ml-2 fa fa-trash pl-3 fdelete fs01 cursor-1\" ></span>");
-                    $(this).on("click", ".fedit", function () {
-                      $this.VueSweetAlert2('v-userform', {
-                        type: '',
-                        update: true,
-                        faculties: $this.faculties,
-                        departments: $this.departments,
-                        roles: $this.roles,
-                        alldata: json[index]
-                      });
-                    });
-                    $(this).on("click", ".fdelete", function () {
-                      Swal.fire({
-                        title: 'confirm delete',
-                        icon: 'warning',
-                        confirmButtonText: 'Continue',
-                        cancelButtonText: 'Cancel',
-                        cancelButtonColor: '#dd000f',
-                        confirmButtonColor: '#00b96b',
-                        showCancelButton: true,
-                        showLoaderOnConfirm: true
-                      }).then(function (result) {
-                        if (result.value) {
-                          $this.axiosDelete('api/users/delete', {
-                            'user_id': json[index].id
-                          });
-                        }
-                      });
-                    });
-                  });
-                  $this.loaderStatex = false;
-                }
-              });
+              /* $this.dTable = $('#usertable').DataTable({										
+              responsive:true,
+              pageLength: 6,			    						
+              drawCallback: function (settings) {
+              let json = settings.json.data
+              		$("#usertable tbody").find('tr td:last-child').each(function(index){
+              $(this).prev().prev().prev().css('text-transform','lowercase')
+              				$(this).html(`
+              <span class="ml-2 fa fa-edit pl-3 fedit  fs01 cursor-1" style="border-left: 1px solid #ccc;"></span>
+              <span class="ml-2 fa fa-trash pl-3 fdelete fs01 cursor-1" ></span>`);
+              $(this).on("click", ".fedit", function(){
+              $this.VueSweetAlert2('v-userform', {
+              type:'',
+              update:true,
+              faculties: $this.faculties,
+              departments: $this.departments,
+              roles:$this.roles,
+              alldata: json[index]
+              }); 	
+              })
+              $(this).on("click", ".fdelete", function(){
+              Swal.fire({
+              title: 'confirm delete',
+              icon:'warning',
+              confirmButtonText:'Continue',					      
+              cancelButtonText:'Cancel',				      				      
+              cancelButtonColor:'#dd000f',					      
+              confirmButtonColor:'#00b96b',					      
+              showCancelButton:true,					      
+              showLoaderOnConfirm: true,
+              }).then((result)=>{
+              if (result.value) {
+              $this.axiosDelete('api/users/delete',{'user_id': json[index].id})					
+              }
+              })		
+              }); 	
+              			})							
+              $this.usersloaderState = false;							
+              }
+              });					
+              */
+
               /* $this.dTable = $('#usertable0').DataTable({
-                 	pageLength : 5,
-                 });	 */
+              	pageLength : 5,
+              });	 
+                  }, 50);  */
 
-              /*   }, 50); */
 
-            case 16:
+            case 13:
             case "end":
-              return _context2.stop();
+              return _context4.stop();
           }
         }
-      }, _callee2);
+      }, _callee4);
     }))();
   },
   props: {
@@ -17612,6 +17796,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -17630,12 +17816,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         for (var i = 0; i < this.weeklyworks.length; i++) {
           if (this.weeklyworks[i].experiment_id == id) {
-            find = 1;
+            find = i;
           }
         }
 
-        if (find == 1) {
-          window.location.replace('/' + pagename);
+        if (find > 0) {
+          // alert(`/${pagename}/${this.weeklyworks[find].id}`);
+          location.href = "/".concat(pagename, "/").concat(this.weeklyworks[find].id);
         } else {
           Swal.fire({
             title: 'No Task Created for this Experiments',
@@ -17724,8 +17911,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 5:
               _this.weeklyworks = _context.sent;
-              //this endpoint is not returning foriegn data
-              //console.log(this.createdCourses)
+              //this endpoint is not returning foriegn data		    
               _this.tableLoaded = true;
               $this = _this;
               /*initialize datatable */
@@ -24878,7 +25064,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n/*@import url(\"https://use.fontawesome.com/releases/v5.13.0/css/all.css\");*/\n.fontType-ico[data-v-50575fba]{\t\t\n\t\tfont-weight: 100;\n}\n.accordBtnV[data-v-50575fba]{\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\twidth: 100%;\n\t\tpadding: 10px 20px 10px 20px;\n\t\tfont-family: 'Roboto';\n\t\tfont-weight: 300;\n\t\tmargin-bottom: 5px;\n\t\tbackground: rgba(40,35,65,.4);\n\t\tfont-size: 0.95em;\n}\n.holder[data-v-50575fba]{\n\t\tcolor: #eee;\n\t\tfont-family: 'Roboto', sans-serif;\n\t\tfont-weight: 300; \n\t\tfont-size: 0.8em;\n\t\theight: 500px;\t\t\n\t\twidth: 100%;\n\t\tmargin: 0px;\n\t\tpadding: 0px !important;\n\t\toverflow-y: scroll;\n}\ndiv[data-v-50575fba]{\n\t\tfont-family: 'Roboto', sans-serif;\n}\n.slidewr[data-v-50575fba] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n}\n.slidein[data-v-50575fba] {\n    animation: slide-in-data-v-50575fba 0.5s forwards;\n    -webkit-animation: slide-in-data-v-50575fba 0.5s forwards;\n}\n.slideout[data-v-50575fba] {\n    animation: slide-out-data-v-50575fba 0.5s forwards;\n    -webkit-animation: slide-out-data-v-50575fba 0.5s forwards;\n}\n@keyframes slide-in-data-v-50575fba {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@-webkit-keyframes slide-in-data-v-50575fba {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@keyframes slide-out-data-v-50575fba {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.1); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:0;\n}\n}\n@-webkit-keyframes slide-out-data-v-50575fba {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.5); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:-10;\n}\n}\n.addSize[data-v-50575fba]{\n    width: 300px !important;\n\t/*width: 35% !important;*/\n\ttransition: width 0.5s;\n}\n.btnV[data-v-50575fba]{\t\t\n\t\tcolor:#eee;\n\t\tfont-family: calibri;\n\t\tfont-size: 1em;\n\t\tcursor: pointer;\n\t\tborder-bottom: 3px solid #2F274E;\n}\n.btnV[data-v-50575fba]:nth-child(odd){\n\t\tpadding: 5px 20px;\n}\n.btnV[data-v-50575fba]:nth-child(even){\n\t\tpadding: 5px 0px;\n}\n.btnVActive[data-v-50575fba]{\n\t   border-bottom: 3px solid #fff;\n\t   transition: border-bottom 0.8s;\n}\n\t/* width */\n[data-v-50575fba]::-webkit-scrollbar {\n  width: 9px; \n  cursor: pointer;\n}\n\n/* Track */\n[data-v-50575fba]::-webkit-scrollbar-track {\n\twidth: 50px;\n  border-radius: 5px;\n}\n \n/* Handle */\n[data-v-50575fba]::-webkit-scrollbar-thumb {\n  background: #eee; \n  border-radius: 10px;\n  cursor: pointer;\n}\n\n/* Handle on hover */\n[data-v-50575fba]::-webkit-scrollbar-thumb:hover {\n  background: #fff; \n  cursor: pointer;\n}\np[data-v-50575fba]{\n\ttext-align: justify;\n}\n.venobox[data-v-50575fba]{\n\tposition: relative;\n}\n.accordion[data-v-50575fba] {\n  outline: none;\n  transition: 0.4s;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n}\n.accordion[data-v-50575fba]:hover {\n  background-color: #ADAABB !important; \n  color:#fff !important;\n  text-shadow: 1px 2px 3px #000;\n  font-weight: 500 !important;\n}\n.accordActiv[data-v-50575fba]{\nbackground-color: #ADAABB !important; \n  color:#fff !important;\n  text-shadow: 1px 2px 3px #000;\n  font-weight: 500 !important;\n}\n.panel[data-v-50575fba] {\n  max-height: 0;\n  overflow: hidden;\n  transition: 0.2s ease-out;\n  padding: 0px 20px;\n  text-align: justify;\n}\n.cardcontainer img[data-v-50575fba] {\n}\n\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/*@import url(\"https://use.fontawesome.com/releases/v5.13.0/css/all.css\");*/\n.fontType-ico[data-v-50575fba]{\t\t\n\t\tfont-weight: 100;\n}\n.accordBtnV[data-v-50575fba]{\n\t\tdisplay: flex;\n\t\tjustify-content: space-between;\n\t\twidth: 100%;\n\t\tpadding: 10px 20px 10px 20px;\n\t\tfont-family: 'Roboto';\n\t\tfont-weight: 300;\n\t\tmargin-bottom: 5px;\n\t\tbackground: rgba(40,35,65,.4);\n\t\tfont-size: 0.95em;\n}\n.holder[data-v-50575fba]{\n\t\tcolor: #eee;\n\t\tfont-family: 'Roboto', sans-serif;\n\t\tfont-weight: 300; \n\t\tfont-size: 0.8em;\n\t\theight: 500px;\t\t\n\t\twidth: 100%;\n\t\tmargin: 0px;\n\t\tpadding: 0px !important;\n\t\toverflow-y: hidden;\n}\ndiv[data-v-50575fba]{\n\t\tfont-family: 'Roboto', sans-serif;\n}\n.slidewr[data-v-50575fba] {\n    position: absolute;\n    width: 100px;\n    height: 100px;    \n    transform: translateX(-100%);\n    -webkit-transform: translateX(-100%);\n}\n.slidein[data-v-50575fba] {\n    animation: slide-in-data-v-50575fba 0.5s forwards;\n    -webkit-animation: slide-in-data-v-50575fba 0.5s forwards;\n}\n.slideout[data-v-50575fba] {\n    animation: slide-out-data-v-50575fba 0.5s forwards;\n    -webkit-animation: slide-out-data-v-50575fba 0.5s forwards;\n}\n@keyframes slide-in-data-v-50575fba {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@-webkit-keyframes slide-in-data-v-50575fba {\n0%   { transform:scale(0.5); opacity:0.0; left:0}\n50%  { transform:scale(1.2); opacity:0.5; left:100px}\n100% { transform:scale(1.0); opacity:1.0; left:200px}\n}\n@keyframes slide-out-data-v-50575fba {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.1); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:0;\n}\n}\n@-webkit-keyframes slide-out-data-v-50575fba {\n0%   { transform:scale(1); opacity:1;\n}\n50%  { transform:scale(0.5); opacity:0.5;}\n100% { transform:translateX(-300%); opacity:-10;\n}\n}\n.addSize[data-v-50575fba]{\n    width: 300px !important;\n\t/*width: 35% !important;*/\n\ttransition: width 0.5s;\n}\n.btnV[data-v-50575fba]{\t\t\n\t\tcolor:#eee;\n\t\tfont-family: calibri;\n\t\tfont-size: 1em;\n\t\tcursor: pointer;\n\t\tborder-bottom: 3px solid #2F274E;\n}\n.btnV[data-v-50575fba]:nth-child(odd){\n\t\tpadding: 5px 20px;\n}\n.btnV[data-v-50575fba]:nth-child(even){\n\t\tpadding: 5px 0px;\n}\n.btnVActive[data-v-50575fba]{\n\t   border-bottom: 3px solid #fff;\n\t   transition: border-bottom 0.8s;\n}\n\t/* width */\n[data-v-50575fba]::-webkit-scrollbar {\n  width: 9px; \n  cursor: pointer;\n}\n\n/* Track */\n[data-v-50575fba]::-webkit-scrollbar-track {\n\twidth: 50px;\n  border-radius: 5px;\n}\n \n/* Handle */\n[data-v-50575fba]::-webkit-scrollbar-thumb {\n  background: #eee; \n  border-radius: 10px;\n  cursor: pointer;\n}\n\n/* Handle on hover */\n[data-v-50575fba]::-webkit-scrollbar-thumb:hover {\n  background: #fff; \n  cursor: pointer;\n}\np[data-v-50575fba]{\n\ttext-align: justify;\n}\n.venobox[data-v-50575fba]{\n\tposition: relative;\n}\n.accordion[data-v-50575fba] {\n  outline: none;\n  transition: 0.4s;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n}\n.accordion[data-v-50575fba]:hover {\n  background-color: #ADAABB !important; \n  color:#fff !important;\n  text-shadow: 1px 2px 3px #000;\n  font-weight: 500 !important;\n}\n.accordActiv[data-v-50575fba]{\nbackground-color: #ADAABB !important; \n  color:#fff !important;\n  text-shadow: 1px 2px 3px #000;\n  font-weight: 500 !important;\n}\n.panel[data-v-50575fba] {\n  max-height: 0;\n  overflow: hidden;\n  transition: 0.2s ease-out;\n  padding: 0px 20px;\n  text-align: justify;\n}\n.cardcontainer img[data-v-50575fba] {\n}\n\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -25707,7 +25893,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.bullets:before{\n\tcontent: '\\f08e';\n\tfont-size: 0.7em;\n\tcolor: blue;\n\tfont-family: FontAwesome;\t\t\n\tdisplay: block;\n\tposition: relative;\n\ttop: 15px;\n\tleft: -15px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.bullets:before{\n\tcontent: '\\f08e';\n\tfont-size: 0.7em;\n\tcolor: blue;\n\tfont-family: FontAwesome;\t\t\n\tdisplay: block;\n\tposition: relative;\n\ttop: 15px;\n\tleft: -15px;\n}\n.experiment{\n\tdisplay:none;\n}\ntd:hover > span> a.experiment{\n\tdisplay: block !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47375,7 +47561,12 @@ var render = function () {
         [
           _c(
             "div",
-            { staticStyle: { display: "flex", background: "#2F274E" } },
+            {
+              staticStyle: {
+                display: "flex",
+                background: "var(--sys-secondary-h)",
+              },
+            },
             [
               _c(
                 "div",
@@ -47426,7 +47617,7 @@ var render = function () {
                 "div",
                 {
                   staticStyle: {
-                    background: "var(--blue)",
+                    background: "var(--sys-secondary)",
                     "padding-right": "9px",
                     height: "96%",
                   },
@@ -51356,186 +51547,199 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "cover-template pl-5 pr-3" }, [
-    _c("br"),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "w-100 row px-2 py-3 border",
-        staticStyle: {
-          "border-left": "3px solid #00b96b !important",
-          "border-right": "3px solid #00b96b!important",
-        },
-      },
-      [
-        _c("div", { staticClass: "col-lg-4 col-md-3 col-sm-6 col-xs-8" }, [
-          _c("div", { staticClass: "w-100" }, [_vm._v("Select Course")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.selectedcourse,
-                  expression: "selectedcourse",
-                },
-              ],
-              staticClass: "form-control w-100",
-              on: {
-                change: [
-                  function ($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function (o) {
-                        return o.selected
-                      })
-                      .map(function (o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.selectedcourse = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  },
-                  _vm.FetchCourseResources,
-                ],
-              },
-            },
-            [
-              _c("option"),
-              _vm._v(" "),
-              _vm._l(_vm.courses, function (course, index) {
-                return _c(
-                  "option",
-                  { key: index + "x", domProps: { value: course.id } },
-                  [_vm._v(_vm._s(course.code))]
-                )
-              }),
-            ],
-            2
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative",
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-4 col-md-3 col-sm-6 col-xs-8" }, [
-          _c("p", { staticClass: "fs001 my-1" }, [_vm._v("Select Experiment")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.selectExperiment,
-                  expression: "selectExperiment",
-                },
-              ],
-              staticClass: "form-control  w-100",
-              attrs: { id: "experimentBox" },
-              on: {
-                change: function ($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function (o) {
-                      return o.selected
-                    })
-                    .map(function (o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.selectExperiment = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                },
-              },
-            },
-            [
-              _c("option"),
-              _vm._v(" "),
-              _vm._l(_vm.experiments, function (experiment, index) {
-                return _c(
-                  "option",
-                  { key: index + "xx", domProps: { value: experiment.id } },
-                  [_vm._v(_vm._s(experiment.name))]
-                )
-              }),
-            ],
-            2
-          ),
-        ]),
+  return !_vm.loading
+    ? _c("div", { staticClass: "cover-template pl-5 pr-3" }, [
+        _c("br"),
+        _c("br"),
         _vm._v(" "),
         _c(
           "div",
           {
-            staticClass:
-              "col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative",
+            staticClass: "w-100 row px-2 py-3 border",
+            staticStyle: {
+              "border-left": "3px solid #00b96b !important",
+              "border-right": "3px solid #00b96b!important",
+            },
           },
           [
+            _c("div", { staticClass: "col-lg-4 col-md-3 col-sm-6 col-xs-8" }, [
+              _c("div", { staticClass: "w-100" }, [_vm._v("Select Course")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selectedcourse,
+                      expression: "selectedcourse",
+                    },
+                  ],
+                  staticClass: "form-control w-100",
+                  on: {
+                    change: [
+                      function ($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function (o) {
+                            return o.selected
+                          })
+                          .map(function (o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.selectedcourse = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      _vm.FetchCourseResources,
+                    ],
+                  },
+                },
+                [
+                  _c("option"),
+                  _vm._v(" "),
+                  _vm._l(_vm.courses, function (course, index) {
+                    return _c(
+                      "option",
+                      { key: index + "x", domProps: { value: course.id } },
+                      [_vm._v(_vm._s(course.code))]
+                    )
+                  }),
+                ],
+                2
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", {
+              staticClass:
+                "col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative",
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-lg-4 col-md-3 col-sm-6 col-xs-8" }, [
+              _c("p", { staticClass: "fs001 my-1" }, [
+                _vm._v("Select Experiment"),
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selectExperiment,
+                      expression: "selectExperiment",
+                    },
+                  ],
+                  staticClass: "form-control  w-100",
+                  attrs: { id: "experimentBox" },
+                  on: {
+                    change: function ($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function (o) {
+                          return o.selected
+                        })
+                        .map(function (o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.selectExperiment = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                  },
+                },
+                [
+                  _c("option"),
+                  _vm._v(" "),
+                  _vm._l(_vm.experiments, function (experiment, index) {
+                    return _c(
+                      "option",
+                      { key: index + "xx", domProps: { value: experiment.id } },
+                      [_vm._v(_vm._s(experiment.name))]
+                    )
+                  }),
+                ],
+                2
+              ),
+            ]),
+            _vm._v(" "),
             _c(
-              "button",
-              {
-                staticClass: "button bg-light text-center text-dark w-75 py-2",
-                staticStyle: { position: "absolute", left: "0", bottom: "0" },
-                on: { click: _vm.AddExperiment },
-              },
-              [_vm._v("Add")]
-            ),
-          ]
-        ),
-      ]
-    ),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("p", { staticClass: "text-white badge badge-success" }, [
-      _vm._v(_vm._s(_vm.courseName) + " Experiments"),
-    ]),
-    _vm._v(" "),
-    !_vm.toload
-      ? _c(
-          "div",
-          { staticClass: "row w-100 py-3" },
-          _vm._l(_vm.courseexperiments, function (experiment, index) {
-            return _c(
               "div",
               {
-                key: index + "xa",
-                staticClass: "col-lg-4 col-md-3 col-sm-6 col-sm-12 resource",
+                staticClass:
+                  "col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative",
               },
               [
                 _c(
-                  "div",
+                  "button",
                   {
                     staticClass:
-                      "w-100 rounded shadow-sm bg-white p-2 d-flex justify-between",
-                    staticStyle: { border: "1px solid #eee" },
+                      "button bg-light text-center text-dark w-75 py-2",
+                    staticStyle: {
+                      position: "absolute",
+                      left: "0",
+                      bottom: "0",
+                    },
+                    on: { click: _vm.AddExperiment },
                   },
-                  [
-                    _c("span", [_vm._v(_vm._s(experiment.experiments.name))]),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "fa fa-trash text-danger cursor-1",
-                      on: {
-                        click: function ($event) {
-                          return _vm.deleteResource(experiment.id)
-                        },
-                      },
-                    }),
-                  ]
+                  [_vm._v("Add")]
                 ),
               ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("p", { staticClass: "text-white badge badge-success" }, [
+          _vm._v(_vm._s(_vm.courseName) + " Experiments"),
+        ]),
+        _vm._v(" "),
+        !_vm.toload
+          ? _c(
+              "div",
+              { staticClass: "row w-100 py-3" },
+              _vm._l(_vm.courseexperiments, function (experiment, index) {
+                return _c(
+                  "div",
+                  {
+                    key: index + "xa",
+                    staticClass:
+                      "col-lg-4 col-md-3 col-sm-6 col-sm-12 resource",
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "w-100 rounded shadow-sm bg-white p-2 d-flex justify-between",
+                        staticStyle: { border: "1px solid #eee" },
+                      },
+                      [
+                        _c("span", [
+                          _vm._v(_vm._s(experiment.experiment.name)),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "fa fa-trash text-danger cursor-1",
+                          on: {
+                            click: function ($event) {
+                              return _vm.deleteResource(experiment.id)
+                            },
+                          },
+                        }),
+                      ]
+                    ),
+                  ]
+                )
+              }),
+              0
             )
-          }),
-          0
-        )
-      : _vm._e(),
-  ])
+          : _vm._e(),
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -58043,11 +58247,18 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "ul",
+                    {
+                      staticStyle: {
+                        "max-height": "44px",
+                        "overflow-y": "scroll",
+                        display: "block",
+                      },
+                    },
                     _vm._l(
                       weeklywork.weekly_work_experiments,
                       function (experiment) {
                         return _c("li", [
-                          _vm._v(_vm._s(experiment.experiments.name)),
+                          _vm._v(_vm._s(experiment.experiment.name)),
                         ])
                       }
                     ),
@@ -58763,7 +58974,7 @@ var render = function () {
     },
     [
       _c("div", { staticClass: "col-md-2 offset-md-10 pt-3" }, [
-        !_vm.loaderStatex
+        !_vm.usersloaderState
           ? _c(
               "button",
               {
@@ -58795,7 +59006,7 @@ var render = function () {
             attrs: { id: "Menu" },
           },
           [
-            !_vm.loaderStatex
+            !_vm.usersloaderState
               ? _c(
                   "button",
                   {
@@ -58812,7 +59023,7 @@ var render = function () {
                 )
               : _vm._e(),
             _vm._v(" "),
-            !_vm.loaderStatex
+            !_vm.usersloaderState
               ? _c(
                   "button",
                   {
@@ -58886,8 +59097,8 @@ var render = function () {
             {
               name: "show",
               rawName: "v-show",
-              value: _vm.loaderStatex,
-              expression: "loaderStatex",
+              value: _vm.loaderState,
+              expression: "loaderState",
             },
           ],
           staticClass: "col-md-12",
@@ -58908,93 +59119,165 @@ var render = function () {
             {
               name: "show",
               rawName: "v-show",
-              value: !_vm.loaderStatex,
-              expression: "!loaderStatex",
+              value: !_vm.loaderState,
+              expression: "!loaderState",
             },
           ],
           staticClass: " position-relative row mx-auto mt-5 w-100",
         },
         [
-          _c(
-            "div",
-            {
-              staticClass:
-                "col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y",
-              staticStyle: { display: "none" },
-              attrs: { id: "forInActive" },
-            },
-            [
-              _c(
-                "table",
+          !_vm.usersloaderState2
+            ? _c(
+                "div",
                 {
-                  staticClass: "table table-hover w-100",
-                  attrs: { id: "usertable0" },
+                  staticClass:
+                    "col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y",
+                  staticStyle: { display: "none" },
+                  attrs: { id: "forInActive" },
                 },
                 [
-                  _vm._m(0),
-                  _vm._v(" "),
                   _c(
-                    "tbody",
-                    _vm._l(_vm.inactiveUser, function (user, index) {
-                      return _c("tr", { key: index }, [
-                        _c("td", { attrs: { width: "30%" } }, [
-                          _vm._v(
-                            _vm._s(user.first_name) +
-                              " " +
-                              _vm._s(user.other_names)
-                          ),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "white-space": "nowrap" },
-                            attrs: { width: "40%" },
-                          },
-                          [
-                            user.email != ""
-                              ? _c("code", [_vm._v(_vm._s(user.email))])
-                              : _vm._e(),
+                    "table",
+                    {
+                      staticClass: "table table-hover w-100",
+                      attrs: { id: "usertable2" },
+                    },
+                    [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.inactiveUser.data, function (user, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { attrs: { width: "30%" } }, [
+                              _vm._v(_vm._s(user.name)),
+                            ]),
                             _vm._v(" "),
-                            user.email != "" && user.matric_number != ""
-                              ? _c("span", [_vm._v("-")])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            user.matric_number != ""
-                              ? _c("span", [_vm._v(_vm._s(user.matric_number))])
-                              : _vm._e(),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("td", { attrs: { width: "20%" } }, [
-                          _vm._v(_vm._s(_vm.getRoleName(user.role_id))),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { width: "20%" } }, [
-                          _vm._v(_vm._s(user.department.code)),
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { attrs: { width: "15%" } }, [
-                          _c("span", {
-                            staticClass: "ml-2 fa fa-eye pl-3  fs01 cursor-1",
-                            attrs: { title: "Activate this user" },
-                            on: {
-                              click: function ($event) {
-                                return _vm.activateUser(user.id)
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { "white-space": "nowrap" },
+                                attrs: { width: "40%" },
                               },
-                            },
-                          }),
-                        ]),
-                      ])
-                    }),
-                    0
+                              [
+                                user.email != ""
+                                  ? _c("code", [_vm._v(_vm._s(user.email))])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                user.email != "" && user.matric_number != ""
+                                  ? _c("span", [_vm._v("-")])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                user.matric_number != ""
+                                  ? _c("span", [
+                                      _vm._v(_vm._s(user.matric_number)),
+                                    ])
+                                  : _vm._e(),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.role)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.faculty)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.department)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.courses)),
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(1, true),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
                   ),
                 ]
-              ),
-            ]
-          ),
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _vm._m(1),
+          !_vm.usersloaderState
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y px-0 ",
+                  attrs: { id: "forActive" },
+                },
+                [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-hover w-100",
+                      attrs: { id: "usertable" },
+                    },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.users.data, function (user, index) {
+                          return _c("tr", { key: index }, [
+                            _c("td", { attrs: { width: "30%" } }, [
+                              _vm._v(_vm._s(user.name)),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { "white-space": "nowrap" },
+                                attrs: { width: "40%" },
+                              },
+                              [
+                                user.email != ""
+                                  ? _c("code", [_vm._v(_vm._s(user.email))])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                user.email != "" && user.matric_number != ""
+                                  ? _c("span", [_vm._v("-")])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                user.matric_number != ""
+                                  ? _c("span", [
+                                      _vm._v(_vm._s(user.matric_number)),
+                                    ])
+                                  : _vm._e(),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.role)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.faculty)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.department)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { width: "20%" } }, [
+                              _vm._v(_vm._s(user.courses)),
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(3, true),
+                          ])
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c("br"),
           _c("br"),
@@ -59010,13 +59293,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { attrs: { id: "cheadV" } }, [
-        _c("th", { attrs: { width: "30%" } }, [_vm._v("user name")]),
+        _c("th", { attrs: { width: "30%" } }, [_vm._v("Full Name")]),
         _vm._v(" "),
         _c("th", { attrs: { width: "40%" } }, [_vm._v("Email/Matric Number")]),
         _vm._v(" "),
-        _c("th", { attrs: { width: "10%" } }, [_vm._v("role")]),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("role ")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Faculty")]),
         _vm._v(" "),
         _c("th", { attrs: { width: "10%" } }, [_vm._v("Department")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Courses")]),
         _vm._v(" "),
         _c("th", { attrs: { width: "10%" } }, [_vm._v("Action")]),
       ]),
@@ -59026,40 +59313,57 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y px-0 ",
-        attrs: { id: "forActive" },
-      },
-      [
-        _c(
-          "table",
-          {
-            staticClass: "table table-hover w-100",
-            attrs: { id: "usertable" },
-          },
-          [
-            _c("thead", [
-              _c("tr", { attrs: { id: "cheadV" } }, [
-                _c("th", { attrs: { width: "30%" } }, [_vm._v("Full Name")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "40%" } }, [
-                  _vm._v("Email/Matric Number"),
-                ]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "10%" } }, [_vm._v("role ")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "10%" } }, [_vm._v("Department")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "10%" } }, [_vm._v("Action")]),
-              ]),
-            ]),
-          ]
-        ),
-      ]
-    )
+    return _c("td", { attrs: { width: "15%" } }, [
+      _c("span", {
+        staticClass: "ml-2 fa fa-edit pl-3  fs01 cursor-1",
+        staticStyle: { "border-left": "1px solid #ccc" },
+        attrs: { onclick: "edituser(user)" },
+      }),
+      _vm._v(" "),
+      _c("span", {
+        staticClass: "ml-2 fa fa-trash pl-3  fs01 cursor-1",
+        attrs: { onclick: "deleteuser(user.id)" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { attrs: { id: "cheadV" } }, [
+        _c("th", { attrs: { width: "30%" } }, [_vm._v("Full Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "40%" } }, [_vm._v("Email/Matric Number")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("role ")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Faculty")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Department")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Courses")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "10%" } }, [_vm._v("Action")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { width: "15%" } }, [
+      _c("span", {
+        staticClass: "ml-2 fa fa-edit pl-3  fs01 cursor-1",
+        staticStyle: { "border-left": "1px solid #ccc" },
+        attrs: { onclick: "edituser(user)" },
+      }),
+      _vm._v(" "),
+      _c("span", {
+        staticClass: "ml-2 fa fa-trash pl-3  fs01 cursor-1",
+        attrs: { onclick: "deleteuser(user.id)" },
+      }),
+    ])
   },
 ]
 render._withStripped = true
@@ -60446,7 +60750,7 @@ var render = function () {
               _vm.tableLoaded
                 ? _c(
                     "tbody",
-                    _vm._l(_vm.createdCourses, function (course, index) {
+                    _vm._l(_vm.createdCourses, function (course) {
                       return _c(
                         "tr",
                         {
@@ -60487,31 +60791,34 @@ var render = function () {
                             _vm._l(
                               course.course_experiment,
                               function (course_experiment, index) {
-                                return _c(
-                                  "a",
-                                  {
-                                    key: index + "_xc",
-                                    staticClass:
-                                      "bullets line-h01 text-primary",
-                                    attrs: { href: "#" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.checktaskcreated(
-                                          course_experiment.experiments.id,
-                                          course_experiment.experiments.page
-                                        )
+                                return _c("span", { key: index + "_xc" }, [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        index > 1
+                                          ? "experiment bullets text-primary line-h1"
+                                          : "bullets line-h01 text-primary",
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.checktaskcreated(
+                                            course_experiment.experiment.id,
+                                            course_experiment.experiment.page
+                                          )
+                                        },
                                       },
                                     },
-                                  },
-                                  [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(
-                                          course_experiment.experiments.name
-                                        )
-                                    ),
-                                  ]
-                                )
+                                    [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(
+                                            course_experiment.experiment.name
+                                          )
+                                      ),
+                                    ]
+                                  ),
+                                ])
                               }
                             ),
                             0
@@ -60526,7 +60833,7 @@ var render = function () {
                               on: {
                                 click: function ($event) {
                                   return _vm.editCourse(
-                                    _vm.createdCourses[index]
+                                    _vm.createdCourses[_vm.index]
                                   )
                                 },
                               },

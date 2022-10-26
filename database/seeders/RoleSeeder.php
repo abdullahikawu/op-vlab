@@ -14,20 +14,20 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $uuids = json_decode(json_encode(config('calculations.default_roles')));                    
-        DB::table('role')->insert([
+        DB::table('roles')->insert([
             'id' => $uuids->admin,           
             'title'=> 'Admin',            
             'description'=>'System Administrator',            
             'status'=>'Active'
         ]);    
-        DB::table('role')->insert([
+        DB::table('roles')->insert([
             'id' => $uuids->instructor,           
             'title'=> 'Instructor',            
             'description'=>'Student Instructor',            
             'status'=>'Active'
         ]);    
 
-        DB::table('role')->insert([
+        DB::table('roles')->insert([
             'id' => $uuids->student,           
             'title'=> 'Student',            
             'description'=>'Student',            

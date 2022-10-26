@@ -74,6 +74,7 @@ class CourseController extends Controller
                 'status'      => $status,
                 'video_url'   => $video_url
             );
+
             /*creating course resources*/
             $resource = array();
 
@@ -95,26 +96,27 @@ class CourseController extends Controller
                     $caption = $request->get('caption4');                    
                 }
 
-                //$file_size = round($file->getSize() / 1024);
-                $file_ex = explode('.', $file->getClientOriginalName());                    
-                $ext = $file_ex[sizeof($file_ex)-1];                                  
-                if (!in_array(strtolower($ext) , array('mp4','3gp','jpg','jpeg', 'gif', 'png','pdf', 'doc', 'docx','xlsx')))
-                {
-                    return response()->json(['error' => 'invalid resources'], 401);
-                }else{
-                    $resource_uuid = Util::uuid();                   
-                    $name = $i.'_'.date('m-d-Y-ha');
-                    $resourceName = $name.'.'.$ext;                    
-                    $resourceUrl= 'images/resources/'.$resourceName;
-                    //$file->move(base_path().$path, $resourceUrl);
-                    $file->move(public_path('images/resources'), $resourceName);
+                //$file_size = round($file->getSize() / 1024);                
+                if(!is_null($file)){                
+                    $file_ex = explode('.', $file->getClientOriginalName());                    
+                    $ext = $file_ex[sizeof($file_ex)-1];                                  
+                    if (!in_array(strtolower($ext) , array('mp4','3gp','jpg','jpeg', 'gif', 'png','pdf', 'doc', 'docx','xlsx')))
+                    {
+                        return response()->json(['error' => 'invalid resources'], 401);
+                    }else{
+                        $resource_uuid = Util::uuid();                   
+                        $name = $i.'_'.date('m-d-Y-ha');
+                        $resourceName = $name.'.'.$ext;                    
+                        $resourceUrl= 'images/resources/'.$resourceName;                    
+                        $file->move(public_path('images/resources'), $resourceName);
 
-                   array_push( $resource , array(
-                        'id'         => $resource_uuid,
-                        'course_id'  => $course_uuid,
-                        'caption'    => $caption,
-                        'resourceUrl' => $resourceUrl,
-                    ));
+                    array_push( $resource , array(
+                            'id'         => $resource_uuid,
+                            'course_id'  => $course_uuid,
+                            'caption'    => $caption,
+                            'resourceUrl' => $resourceUrl,
+                        ));
+                    }
                 }
             }
 
@@ -132,15 +134,14 @@ class CourseController extends Controller
             };
 
             /*add instructors to a course*/
-            $instructorIds = explode(',', $request->get('instructor_id'));
+            //$instructorIds = explode(',', $request->get('instructor_id'));
+            
             $instructors = array();
-            for ($x = 0; $x < sizeof($instructorIds); $x++) {
-                array_push($instructors, array(
-                    'id'            => Util::uuid(),
-                    'course_id'     => $course_uuid,
-                    'instructor_id' => $experimentIds[$x],
-                ));
-            };
+            array_push($instructors, array(
+                'id'            => Util::uuid(),
+                'course_id'     => $course_uuid,
+                'user_id' => auth()->user()->id,
+            ));           
 
             DB::transaction(function () use ($course, $resource, $experiments, $instructors) {
                 Course::insert($course);
@@ -246,16 +247,20 @@ class CourseController extends Controller
     }
 
     public function getCoursesWithExperiment(){
-        $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
-            $query->with('experiments:id,name,page');
+        $courses = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
+            //$query->with('experiments:id,name,page');
          },'course_resources'])->where(['faculty_id'=>$this->facultyId,'status'=>'Active'])->get();
-        return response()->json($course, 200);
+         foreach($courses as $key => &$course ){
+            foreach($course->course_experiment as $key2 => &$course_experiment ){
+                $course_experiment = json_encode($course_experiment);
+            }
+         }
+        return $courses;
     }
 
     public function allCourses()
     {
-        $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){
-                               $query->with('experiments:id,name,page');
+        $course = Course::with(['faculty','weekly_work.weekly_work_experiments.experiments','course_experiment'=>function($query){                               
                   },'course_resources','course_student.students'])->where('status','Active')->get();
         return response()->json($course, 200);
     }
@@ -321,9 +326,9 @@ class CourseController extends Controller
 
         $instructor->id = $id;
         $instructor->course_id = $courseId;
-        $instructor->instructor_id = $instructorId;
+        $instructor->user_id = $instructorId;
 
-        $checkInstructor = CourseInstructor::where(['course_id' => $courseId, 'instructor_id' => $instructorId])->first();
+        $checkInstructor = CourseInstructor::where(['course_id' => $courseId, 'user_id' => $instructorId])->first();
         if (!empty($checkInstructor)) {
             return response()->json(['error' => 'This course has already been assigned to this instructor'], 409);
         }

@@ -13,7 +13,7 @@ class SessionTable extends Migration
      */
     public function up()
     {
-         Schema::create('session', function (Blueprint $table) {
+         Schema::create('sessions', function (Blueprint $table) {
             //$this->down();
             $table->string('id',36)->primary();
             $table->string('session',10);
@@ -30,6 +30,6 @@ class SessionTable extends Migration
      */
     public function down()
     {
-        chema::dropIfExists('session');
+        Schema::dropIfExists('sessions');
     }
 }

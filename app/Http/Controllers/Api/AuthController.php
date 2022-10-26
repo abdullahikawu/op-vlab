@@ -49,7 +49,7 @@ class AuthController extends Controller
       /*   
         return $user =DB::table('users')->whereRaw(" replace(username, '/', '') = $credentials")->first();
          */
-        return User::whereRaw("replace(username, '/', '') = $credentials")->first();
+        return  User::whereRaw("replace(username, '/', '') = $credentials")->first();        
         /* $user =  (object)$user;
         return $user; */
     }
@@ -86,7 +86,8 @@ class AuthController extends Controller
         if(!empty($user)){
             $usingDefaultPassword = $user->using_default_password;
 
-            if ($token = auth()->login($user)) {
+            if ($token = Auth::login($user)) {
+                session(['info'=>$user]);                
                 return $this->respondWithToken($token, $usingDefaultPassword);
             }
         }

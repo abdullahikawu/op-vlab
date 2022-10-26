@@ -17,11 +17,15 @@ class CreateWeeklyWorkExperimentsTable extends Migration
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('experiment_id')->references('id')->on('experiments');            
+            $table->foreign('weekly_work_id')->references('id')->on('weekly_works');                        
         });
     }
 
     public function down()
     {
+        Schema::disableForeignKeyConstraints();     
         Schema::dropIfExists('weekly_work_experiments');
+        Schema::enableForeignKeyConstraints();        
     }
 }

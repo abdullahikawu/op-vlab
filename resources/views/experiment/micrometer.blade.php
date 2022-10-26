@@ -11,6 +11,7 @@ if(Session::has('setdata')){
     $time_default = false;
 }
 
+
 if ($default) {
    $toolSizes = [80,54,69,70,90];   
 }
@@ -59,7 +60,7 @@ $resultTable ='
 
    
    var experimentSheet;
-   var url = "{{route('micrometerEquipment').'?size='.$toolSizes[0][0] }}" //localStorage.getItem('objectSize');
+   var url = "{{route('micrometerEquipment').'?size='.$toolSizes[0] }}" //localStorage.getItem('objectSize');
    
    window.onload = function(){
     experimentSheet = document.getElementById('experimentSheet');

@@ -15,7 +15,7 @@ class CreateExperimentsTable extends Migration
     {
 
         Schema::create('experiments', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id',36)->primary();
             $table->string('name');
 //            $table->integer('experiment_number');
             $table->text('experiment_intro');

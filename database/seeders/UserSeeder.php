@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\Api\Util;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +18,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        
         $email = 'admin@vlab.com';
         $uuids = config('calculations.default_uuids');
         $id = $uuids['user_id'];
         DB::table('users')->insert([
+            [
             'id' => $id,
             'first_name' => 'admin',
             'other_names' => 'admin',
@@ -30,10 +33,26 @@ class UserSeeder extends Seeder
             'faculty_id'=> $uuids['faculty_id'],
             'school_id'=> $uuids['school_id'],
             'department_id'=> $uuids['department_id'],
-            'role_id'=>$uuids['role_id'],                    
+            'role_id'=>1,                    
             'status'=>'Active',
             'user_ip_address'=>'-',
             'password' => md5('12345678'),
+            ],
+            [
+                'id' => Util::uuid(),
+                'first_name' => 'instructor',
+                'other_names' => 'instructor',
+                'email' => 'instructor@vlab.com',
+                'username' => 'instructor@vlab.com',
+                'session_id'=> $uuids['session_id'],
+                'faculty_id'=> $uuids['faculty_id'],
+                'school_id'=> $uuids['school_id'],
+                'department_id'=> $uuids['department_id'],
+                'role_id'=>2,                    
+                'status'=>'Active',
+                'user_ip_address'=>'-',
+                'password' => md5('12345678'),
+            ],
         ]);    
     }
 }

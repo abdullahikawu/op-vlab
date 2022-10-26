@@ -1643,13 +1643,13 @@ thead tr td, thead th{
     table.dataTable.no-footer#coursetable thead th{
         border-bottom:  3px solid #aaa;
     }
-  ul.pagination li.paginate_button.page-item:hover{
+  ul.pagination li.paginate_button.page-item:hover,ul.pagination li.paginate_button.page-item{
     background: transparent;
     border: 1px solid transparent;
   }
-  ul.pagination li.paginate_button.page-item:focus{
+  ul.pagination li.paginate_button.page-item:focus,ul.pagination li.paginate_button.page-item{
     outline: 0;
-    outline-color: transparent;
+    outline-color: none;
     box-shadow: none;
     border: 1px solid transparent;
   }
@@ -2083,10 +2083,7 @@ span.ripple {
         grid-template-columns: repeat(2, 1fr);
       }
     }    
-    @media (max-width: 767px  ) {
-      .w-179{
-        width: 100% !important;
-      } 
+    @media (max-width: 767px  ) {   
       .console-container{
         font-size:1.5em !important;
         margin-top: 5px;

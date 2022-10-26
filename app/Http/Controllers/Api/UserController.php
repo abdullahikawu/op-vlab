@@ -219,7 +219,6 @@ class UserController extends Controller
         return $students;
     }
 
-    
     public function getAllUsersBySearch(Request $request)
     {       
         
@@ -237,51 +236,39 @@ class UserController extends Controller
 
 
     public function getAllUsers(Request $request)
-    {
-        
-        $length = $request->get('length');
-        $start = $request->get('start');
-        $search = $request->get('search')['value'];        
-        $users = DB::table('users', 'u')->selectRaw("u.*, code,departments.id as department_id, role.id as role_id, title,LOWER(CONCAT(u.email,' /' ,u.matric_number)) AS uname, CONCAT(u.first_name,' ', u.other_names) AS fullname ")
-        ->join('departments', 'departments.id', 'u.department_id')
-        ->join('role', 'role.id', 'u.role_id')
-        ->where('u.status','Active')->skip($start)->take($length)->get();            
-        
-        if(empty($search)){
-            $data = [
-              "draw"=> $request->get('draw'),
-              "recordsTotal"=>  sizeof( User::all()),
-              "recordsFiltered"=> sizeof( User::all()),
-              "data"=>$users
-            ];
-          }else{
-            $users = DB::table('users', 'u')->selectRaw("u.*, code,departments.id as department_id, role.id as role_id, title,LOWER(CONCAT(u.email,' /' ,u.matric_number)) AS uname, CONCAT(u.first_name,' ', u.other_names) AS fullname ")->join('departments', 'departments.id', 'u.department_id')->join('role', 'role.id', 'u.role_id')
-            ->whereRaw("u.username like '".$search."' OR title like '".$search."' OR  CONCAT(u.first_name,' ', u.other_names) like '".$search."' OR code like '".$search."' OR email like '".$search."'")
-            ->where('u.status', 'Active')->skip($start)->take($length)->get();            
-
-            $data = [
-              "draw"=> $request->get('draw'),
-              "length"=>sizeof($users),
-              "recordsTotal"=>  sizeof($users),
-              "recordsFiltered"=> sizeof($users),
-              "data"=>$users
-            ];
-          }
-          return $data;
-    }
-    public function getAllInActiveUsers(){    
-        $users = DB::table('users')->where('status', 'Inactive')->get();
-        $departments = DB::table('departments')->get()->toArray();
-
-        foreach($users as &$user)
-        {
-            $user->department = array_filter($departments, function($department) use ($user) {
-                return $department->id === $user->department_id;
-            });
-        }
-
+    {        
+        $users = User::active()->paginate(100);
         return $users;
-        //return collect($users);
+    }
+
+    public function searchUsers(Request $request){
+        $search = '%'.$request->search.'%';
+        $users = User::active()->where('matric_number','Like',$search)
+                    ->orWhere('email','Like',$search)
+                    ->orWhere('username','Like',$search)
+                    ->orWhere('other_names','Like',$search)
+                    ->orWhere('gender','Like',$search)
+                    ->orWhere('phone','Like',$search)
+                    ->orWhere('first_name','Like',$search)->paginate(100);
+        return $users;
+    }
+
+
+    public function getAllInActiveUsers(){
+        $users = User::where('status', 'Inactive')->paginate(100);
+        return $users;         
+    }
+    
+    public function getAllInActiveUsersSearch(Request $request){
+        $search = '%'.$request->search.'%';
+        $users = User::where('status', 'Inactive')->where('matric_number','Like',$search)
+                    ->orWhere('email','Like',$search)
+                    ->orWhere('username','Like',$search)
+                    ->orWhere('other_names','Like',$search)
+                    ->orWhere('gender','Like',$search)
+                    ->orWhere('phone','Like',$search)
+                    ->orWhere('first_name','Like',$search)->paginate(100);
+        return $users;
     }
     
 

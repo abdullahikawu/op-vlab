@@ -46,13 +46,15 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
     ];
 
     protected $appends = [
-        'name',
-        'session_id',
-        'role'
+        'name',        
+        'role',
+        'department',
+        'faculty',
+        'courses'
     ];
-    public function newQuery($excludeDeleted = true) {
-        return parent::newQuery($excludeDeleted)
-            ->where('users.status', 'Active');
+    
+    public function scopeActive($query) {
+        return $query->where('users.status', 'Active');
     }
     
     /**
@@ -69,9 +71,26 @@ class User extends Authenticatable implements JWTSubject, CanResetPasswordContra
         return $this->other_names . ' ' . $this->first_name;
     }
 
-    public function getSessionIdAttribute(): string
+    public function getFacultyAttribute(): string
     {
-        return Session::where(['is_current'=>1, 'status'=>'Active'])->first()->id;
+        $faculty = Faculty::find($this->faculty_id);
+        return $faculty->code;
+    }
+
+    public function getDepartmentAttribute(): string
+    {
+        $department = Department::find($this->department_id);
+        return $department->code;
+    }
+
+    public function getCoursesAttribute(): string
+    {
+        $courses = UserCourse::where('user_id',$this->id)->get()->toArray();
+        if(sizeof($courses)>0){
+            return implode(', ',array_column($courses,'code'));
+
+        }
+        return '';        
     }
 
     public function courses()

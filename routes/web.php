@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ForgotPasswordController;
+use App\Http\Controllers\ExperimentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,7 +147,7 @@ Route::middleware(['twouserauth'])->group(function(){
 
 		Route::get('/circuitconnection/{id?}','App\Http\Controllers\ExperimentController@circuitconnection2')->name('circuitconnection2');
 		Route::get('/vernier-caliper/{id?}','App\Http\Controllers\ExperimentController@vernierCaliper')->name('vernier-caliper');
-		Route::get('/micrometer/{id?}','App\Http\Controllers\ExperimentController@micrometerScrewGuage')->name('micrometer');
+		Route::get('/micrometer/{id?}',[ExperimentController::class,'micrometerScrewGuage'])->name('micrometer');
 		/*Resistors color code this might change late to Electricity circuit construction */
 		Route::get('/resistor-color-code/{id?}','App\Http\Controllers\ExperimentController@resistor')->name('resistors');
 		/*end resistors color code*/

@@ -4,12 +4,12 @@
 		<div id="exphowtogo" style="width: 300px; display:none;" >	
 	<!-- 	<div   v-bind:class="{slidein:show, slideout:hide}" style="width: 300px;" >	 -->
 
-			<div style="display: flex;background: #2F274E;" >
+			<div style="display: flex;background: var(--sys-secondary-h);" >
 				<div v-bind:class="{btnVActive:proced}" class="btnV"  @click="toggller('procedure')">Procedure</div>
 				<div v-bind:class="{btnVActive:exerc}"  class="btnV" @click="toggller('exercise')">Exercise</div>
 				<div v-bind:class="{btnVActive:resour}"  class="btnV"  @click="toggller('resources')">Resources</div>
 			</div>
-			<div style="background:var(--blue); padding-right: 9px; height:96%;" v-if="!guide_loading">
+			<div style="background:var(--sys-secondary); padding-right: 9px; height:96%;" v-if="!guide_loading">
 					<div class="holder" style="height:78.5vh">
 						<div id="procedure" class="m-0 p-0">	
 							<div style="font-family: 'Roboto';">
@@ -214,7 +214,7 @@
 		width: 100%;
 		margin: 0px;
 		padding: 0px !important;
-		overflow-y: scroll;
+		overflow-y: hidden;
 	}
 	div{
 		font-family: 'Roboto', sans-serif;

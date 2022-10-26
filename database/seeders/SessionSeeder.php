@@ -15,7 +15,7 @@ class SessionSeeder extends Seeder
     {
         $uuids = json_decode(json_encode(config('calculations.default_uuids')));
     	 
-    	 DB::table('session')->insert([
+    	 DB::table('sessions')->insert([
     	 	'id'=> $uuids->session_id,
     	 	'session'=>'2020/2021',
     	 	'is_current'=>'1'

@@ -649,7 +649,7 @@
 					   	formData.append('description',this.alldata[0].description);
 					   	if (!this.update) {					   		
 						   	formData.append('experiment_id',this.alldata[1].id);
-						   	//formData.append('instructor_id',this.alldata[2].id);
+						  //formData.append('instructor_id',this.alldata[2].id);
 						   	formData.append('video_url',this.video_url);
 						   	formData.append('resource_id1',this.resource_id1);
 							formData.append('resource_id2',this.resource_id2);
@@ -759,15 +759,14 @@
 			            	//console.log($vm.axiosHeader)
 			            });
 
-			        }catch(err){		
-						console.log(err)	        	
+			        }catch(err){							
 				   		$('#system-loader').css('display','none');				   	    
 			            vt.error($vm.errorNetworkMessage,{
 							  title: 'session expired',
 							  position: "bottom-right",
 							  duration: 10000,
 							  closable: true,
-							  focusable: true,							  
+							  focusable: true,			 				  
 							});
 			          //console.log(err)//show network error notification
 			        }
@@ -795,7 +794,10 @@
 				if (type == 4) {
 					this.file4 = e.target.files[0];
 				}  
-				$(e.target).prev().html(e.target.files[0].name);		
+				try{
+					$(e.target).prev().html(e.target.files[0].name);		
+				}catch(e){					
+				}
 				
 			}
         },	
@@ -857,9 +859,11 @@
          			}
          		})
          		$(document).on('change', '.draginto', function() {		
-
-         			$(this).prev().html($(this).prop('files')[0].name);
-					console.log($('.draginto').prop('files'))
+					try{
+						$(this).prev().html($(this).prop('files')[0].name);
+					}catch(e){
+						console.log($('.draginto').prop('files'))
+					}
          		})
          		$(document).on('click', '.rmexp', function() {					
          			

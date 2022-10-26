@@ -19,28 +19,23 @@ class WhoAreYou
      */
     public function handle(Request $request, Closure $next)
     {
-    
-            if(!empty($_SERVER['HTTP_USER_AGENT'])){
-               $user_ag = $_SERVER['HTTP_USER_AGENT'];
-               if(preg_match('/(Mobile|Android|Tablet|GoBrowser|[0-9]x[0-9]*|uZardWeb\/|Mini|Doris\/|Skyfire\/|iPhone|Fennec\/|Maemo|Iris\/|CLDC\-|Mobi\/)/uis',$user_ag)){
-                    return redirect('/access-denied');
-               };
+        
+        if(!empty($_SERVER['HTTP_USER_AGENT'])){
+            $user_ag = $_SERVER['HTTP_USER_AGENT'];
+            if(preg_match('/(Mobile|Android|Tablet|GoBrowser|[0-9]x[0-9]*|uZardWeb\/|Mini|Doris\/|Skyfire\/|iPhone|Fennec\/|Maemo|Iris\/|CLDC\-|Mobi\/)/uis',$user_ag)){
+                return redirect('/access-denied');
             };
-    
+        };            
 
         try{
             if(Session::has('info')){
-                $userData = session('info')->data->user ?? '';
-
-                
+                $userData = session('info')->data->user ?? '';                
                 $user_id = $userData->id;
                 $role = $userData->role_id ?? '';            
                 $weeklyExperimentWorkId =  $request->route()->parameter('id');
                 $page = explode('/', $request->route()->uri)[0];
-                //if its instructor allow experiment without saving;                            
+                // if its instructor allow experiment without saving;                            
                 if ($role == config('calculations.default_roles.student')) {    
-
-
                     $currentSession = DB::table('session')->where(['is_current'=>1,'status'=>'Active'])->first()->id;
                     $existInDB = WeeklyWork::join('weekly_work_experiments','weekly_work_experiments.weekly_work_id', 'weekly_works.id')
                                     ->join('experiments', 'weekly_work_experiments.experiment_id','experiments.id')
@@ -102,10 +97,9 @@ class WhoAreYou
                         return redirect('/no-access');
                     }
                 }else if($role == config('calculations.default_roles.instructor')){                                
-                    $page = explode('/', $request->route()->uri);                
+                    $page = explode('/', $request->route()->uri);                      
                     $weeklyExperimentWorkId = DB::table('experiments', 'e')->join('weekly_work_experiments', 'weekly_work_experiments.experiment_id', 'e.id')->select('weekly_work_experiments.id as weeklyExperimentWorkId')->where('e.page',$page[0])->first()->weeklyExperimentWorkId;                
-                    $currentSession = DB::table('session')->where(['is_current'=>1,'status'=>'Active'])->first()->id;
-                    
+                    $currentSession = DB::table('sessions')->where(['is_current'=>1,'status'=>'Active'])->first()->id;                    
                     $existInDB = WeeklyWork::join('weekly_work_experiments','weekly_work_experiments.weekly_work_id', 'weekly_works.id')->join('experiments', 'weekly_work_experiments.experiment_id','experiments.id')->where([
                             'weekly_work_experiments.id'=>$weeklyExperimentWorkId,
                             'experiments.page'=>$page[0],                                                
@@ -134,7 +128,7 @@ class WhoAreYou
                     }
             }
             else {
-                return redirect('/login');
+               return redirect('/login');
             }        
         }catch(\Exception $e){
             throw new \Exception($e);

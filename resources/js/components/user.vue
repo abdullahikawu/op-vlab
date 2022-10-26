@@ -1,10 +1,10 @@
 <template>	
 		<div class="w-100 mt-2 py-3 mx-auto position-relative row" data-title="Welcome!" :data-intro="'Hello '+ currentUser.salute +' '+currentUser.first_name +'👋'" data-step="1">						
 			<div class="col-md-2 offset-md-10 pt-3">
-				<button v-if="!loaderStatex"   href="#" @click="viewMenu" style="z-index:5;border:0px;" :class="'Menux d-flex justify-content-between p-success text-left position-relative'+ btnclasses+' btn-width-179'">Action <span class="text-white fa fa-chevron-up"></span></button>
+				<button v-if="!usersloaderState"   href="#" @click="viewMenu" style="z-index:5;border:0px;" :class="'Menux d-flex justify-content-between p-success text-left position-relative'+ btnclasses+' btn-width-179'">Action <span class="text-white fa fa-chevron-up"></span></button>
 				<div class="w-179 " id="Menu" style="position: absolute;z-index:-1;opacity:0; top:40px;">
-					<button v-if="!loaderStatex"  href="#" @click="createuser" :class="'p-success  w-100 r-0 '+ btnclasses">Create user <span class="text-white fa fa-chevron-down"></span></button>			
-					<button v-if="!loaderStatex" href="#" @click="uploadstudent" :class="'p-success  w-100 r-0 '+ btnclasses">Upload Student <span class="text-white fa fa-cloud-upload"></span></button>			
+					<button v-if="!usersloaderState"  href="#" @click="createuser" :class="'p-success  w-100 r-0 '+ btnclasses">Create user <span class="text-white fa fa-chevron-down"></span></button>			
+					<button v-if="!usersloaderState" href="#" @click="uploadstudent" :class="'p-success  w-100 r-0 '+ btnclasses">Upload Student <span class="text-white fa fa-cloud-upload"></span></button>			
 					<a href="templateFiles/userupload_template.csv" target="_self" :class="'bg-dark  w-100 r-0 '+ btnclasses">Download Template<span class="text-white fa fa-cloud-download"></span></a>			
 					<button v-if="usertype" :class="'btn-danger  w-100 r-t-0 '+ btnclasses " @click="swichUser(true)" >See Inactive Users <span class="fa fa-user-times text-white"></span></button>
 					<button v-else :class="'bg-success w-100 r-t-0 ' + btnclasses " @click="swichUser(false)" >See Active Users <span class="fa fa-user  text-white"></span></button>			
@@ -40,68 +40,76 @@
 				<hr style="border-top:0.5px solid #ccc;">
 		    </div>
 
-		</div> -->
-		
-		<div v-show="loaderStatex" class="col-md-12">
+		</div> -->		
+		<div v-show="loaderState" class="col-md-12">
 			<br><br>
           	<v-loader count="2"></v-loader>
          </div>
-		 <div v-show="!loaderStatex"  class=" position-relative row mx-auto mt-5 w-100">				 
-			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y" style="display:none" id="forInActive" >			     			     
-				<table id="usertable0" class="table table-hover w-100">
-						<thead>
+		 <div v-show="!loaderState"   class=" position-relative row mx-auto mt-5 w-100">				 
+			<div v-if="!usersloaderState2" class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y" style="display:none" id="forInActive" >			     			     
+				<table id="usertable2" class="table table-hover w-100">
+					<thead>
 							<tr id="cheadV">							
-								<th width="30%">user name</th>
+								<th width="30%">Full Name</th>							
 								<th width="40%">Email/Matric Number</th>	            
-								<th width="10%">role</th>	            
+								<th width="10%">role </th>	            
+								<th width="10%">Faculty</th>				            			           
 								<th width="10%">Department</th>				            			           
+								<th width="10%">Courses</th>				            			           
 								<th width="10%">Action</th>
 							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="(user, index) in inactiveUser" :key="index">	         
-								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
-								<td width="40%" style="white-space: nowrap;">
-									<code v-if="user.email !=''">{{user.email}}</code>
-									<span v-if="user.email != '' && user.matric_number !=''">-</span>
-									<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
-								</td>	           
-								<td width="20%">{{ getRoleName(user.role_id) }}</td>	           
-								<td width="20%">{{user.department.code}}</td>	           			                  
-								<td width="15%" >									
-									<span title="Activate this user" class="ml-2 fa fa-eye pl-3  fs01 cursor-1" @click="activateUser(user.id)"></span>
-								</td>
-							</tr>
-						</tbody>
-					</table>            
+					</thead>
+					<tbody>
+						<tr v-for="(user, index) in inactiveUser.data" :key="index">	         
+							<td width="30%">{{user.name}}</td>
+							<td width="40%" style="white-space: nowrap;">
+								<code v-if="user.email !=''">{{user.email}}</code>
+								<span v-if="user.email != '' && user.matric_number !=''">-</span>
+								<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
+							</td>	           
+							<td width="20%">{{ user.role }}</td>	           
+							<td width="20%">{{user.faculty}}</td>	           			                  
+							<td width="20%">{{user.department}}</td>	           			                  
+							<td width="20%">{{user.courses}}</td>	           			                  
+							<td width="15%" >
+								<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" onclick="edituser(user)" style="border-left: 1px solid #ccc;"></span>
+								<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" onclick="deleteuser(user.id)"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>            
 			</div>
-			<div class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y px-0 " id="forActive" >			     			     
-					<table id="usertable" class="table table-hover w-100">
+			<div v-if="!usersloaderState" class="col-md-12 notification-table-main forUser v-scroll-x scroll-hidden-y px-0 " id="forActive" >			     			     
+					<table  id="usertable" class="table table-hover w-100">
 						<thead>
 							<tr id="cheadV">							
 								<th width="30%">Full Name</th>							
 								<th width="40%">Email/Matric Number</th>	            
 								<th width="10%">role </th>	            
+								<th width="10%">Faculty</th>				            			           
 								<th width="10%">Department</th>				            			           
+								<th width="10%">Courses</th>				            			           
 								<th width="10%">Action</th>
 							</tr>
 						</thead>
-						<!-- <tbody v-if="!loaderState">
-							<tr v-for="(user, index) in createduser" :key="index">	         
-								<td width="30%">{{user.first_name}} {{user.other_names}}</td>
+						<tbody>
+							<tr v-for="(user, index) in users.data" :key="index">	         
+								<td width="30%">{{user.name}}</td>
 								<td width="40%" style="white-space: nowrap;">
 									<code v-if="user.email !=''">{{user.email}}</code>
 									<span v-if="user.email != '' && user.matric_number !=''">-</span>
 									<span v-if="user.matric_number !=''">{{user.matric_number}}</span>
 								</td>	           
-								<td width="20%">{{ getRoleName(user.role_id) }}</td>	           
-								<td width="20%">{{user.department.code}}</td>	           			                  
+								<td width="20%">{{ user.role }}</td>	           
+								<td width="20%">{{user.faculty}}</td>	           			                  
+								<td width="20%">{{user.department}}</td>	           			                  
+								<td width="20%">{{user.courses}}</td>	           			                  
 								<td width="15%" >
 									<span class="ml-2 fa fa-edit pl-3  fs01 cursor-1" onclick="edituser(user)" style="border-left: 1px solid #ccc;"></span>
 									<span class="ml-2 fa fa-trash pl-3  fs01 cursor-1" onclick="deleteuser(user.id)"></span>
 								</td>
 							</tr>
-						</tbody> -->
+						</tbody>
 					</table>            
 			</div>
 			<br><br>
@@ -117,8 +125,8 @@
 				vclass1: ' col-md-2 offset-md-4 ',
 				vclass2: ' col-md-2',
 				btnclasses: "btn mx-auto d-block shadow text-white fs1 font1 btn-lg my-0",				
-				createduser:null,
-				inactiveUser:null,
+				users:[],
+				inactiveUser:[],
 				tableLoaded:false,
 				facultiesHTML: null,
 				faculties: null,
@@ -128,9 +136,12 @@
 				listTrHtml:"",
 				sessions:[],
 				loaderState:true,
-				loaderStatex:true,
+				usersloaderState:true,
+				usersloaderState2:true,
 				response:'',
 				dTable:'',
+				table:null,
+				table2:null,
 				usertype:true,
 				setOut:false,
 				menuToggle: false
@@ -200,17 +211,19 @@
 				var department_id = $('#departmentid').val();
 				var role_id = $('#roleid').val();
 				$('#sessionid').css({'border':'1px solid #ccc'});
+				
 				if (session_id==''){
 					$('#sessionid').attr('style','border:1px solid red !important;');									
 					$('.requiredv').remove();
 					$('#sessionid').before('<span class="text-danger requiredv">Required !</span>');
 					return false;					
 				}
+
 				var $this = this;
 				this.loaderState = true;
 				this.axios.post(this.baseApiUrl+'users/by_search',this.createFormData({session_id:session_id,department_id:department_id, role_id:role_id}), {headers:this.axiosHeader}).then(function(response, status, request) {        
                             if (response.status === 200) {                                     	
-                               $this.createduser = response.data;
+                               $this.users = response.data;
 							   $this.loaderState = false;
 							     setTimeout(function() {
 						         	$this.dTable = $('#usertable').DataTable({
@@ -473,41 +486,155 @@
 				this.watchfacultyHtml.value = Math.random(1,1000);
 				
 			 	
+			},
+			async tableInitializer(id, url, searchUrl="", searchData=""){		
+				let $this = this;	
+				this.loaderState = true;	
+				this.usersloaderState = true;	
+				
+				if(searchData == ''){
+					this.users = await this.axiosGet(`${url}`);					
+				}else{
+					this.users = await this.axiosGet(`${searchUrl}/${searchData}`);					
+				}		
+				setTimeout(function() { 			
+					$this.table = $("#"+id).DataTable({    
+					destroy:true,        
+					pageLength: 5,       
+					stateSave: true,      
+					dom: "lBfrtip",   
+					drawCallback: function (settings) {		
+						var api = this.api();					
+						var info = api.page.info();   
+						if(info.page + 1 === info.pages && $this.users.current_page !== $this.users.last_page) {              
+							$(".paginate_button.next").removeClass('disabled');
+							$('.paginate_button.next', $(".paginate_button.next").parent())          
+							.on('click', function(){                                          
+							$this.tableInitializer(id,$this.users.next_page_url);      
+							
+							});                 
+						} else {
+
+						}
+						if(info.page === 0 && $this.users.current_page !== 1) {                                            
+							$(".paginate_button.previous").removeClass('disabled');
+							$('.paginate_button.previous',$(".paginate_button.previous").parent())          
+							.on('click', function(){
+								$this.tableInitializer(id,$this.users.prev_page_url);                  
+							});       
+						} else {
+						}
+					},
+					infoCallback:function(){                    
+					return 'Page '+ ($this.users.from) +' of '+ $this.users.total;                  
+					},         
+					buttons:[
+					{
+						extend: 'csv',
+						text:'Excel',
+						exportOptions: {
+						columns: ':visible'
+						},
+					}
+					]
+					})
+					$this.loaderState = false;
+					$(".dataTables_filter label input").attr('title','press enter to search')
+					$(".dataTables_filter label").on('keyup','input', function(e){
+						console.log(e.keyCode, e)						
+						if(e.keyCode == 13) {							
+							let val= $(".dataTables_filter label input").val();				
+							if(val !=='')
+							$this.tableInitializer(id,url,searchUrl, val)
+						}
+					})
+				},1000)
+				$this.usersloaderState = false;	
+
+			
+			},
+			async tableInitializer2(id, url, searchUrl="", searchData=""){		
+				let $this = this;	
+				this.loaderState = true;	
+				this.usersloaderState2 = true;	
+				
+				if(searchData == ''){
+					this.inactiveUser = await this.axiosGet(`${url}`);					
+				}else{
+					this.inactiveUser = await this.axiosGet(`${searchUrl}/${searchData}`);					
+				}		
+				setTimeout(function() { 			
+					$this.table2 = $("#"+id).DataTable({    
+					destroy:true,        
+					pageLength: 5,       
+					stateSave: true,      
+					dom: "lBfrtip",   
+					drawCallback: function (settings) {		
+						var api = this.api();					
+						var info = api.page.info();   
+						if(info.page + 1 === info.pages && $this.inactiveUser.current_page !== $this.inactiveUser.last_page) {              
+							$(".paginate_button.next").removeClass('disabled');
+							$('.paginate_button.next', $(".paginate_button.next").parent())          
+							.on('click', function(){                                          
+							$this.tableInitializer(id,$this.inactiveUser.next_page_url);      
+							
+							});                 
+						} else {
+
+						}
+						if(info.page === 0 && $this.inactiveUser.current_page !== 1) {                                            
+							$(".paginate_button.previous").removeClass('disabled');
+							$('.paginate_button.previous',$(".paginate_button.previous").parent())          
+							.on('click', function(){
+								$this.tableInitializer(id,$this.inactiveUser.prev_page_url);                  
+							});       
+						} else {
+						}
+					},
+					infoCallback:function(){                    
+					return 'Page '+ ($this.inactiveUser.from) +' of '+ $this.inactiveUser.total;                  
+					},         
+					buttons:[
+					{
+						extend: 'csv',
+						text:'Excel',
+						exportOptions: {
+						columns: ':visible'
+						},
+					}
+					]
+					})
+					$this.loaderState = false;
+					$(".dataTables_filter label input").attr('title','press enter to search')
+					$(".dataTables_filter label").on('keyup','input', function(e){
+						//console.log(e.keyCode, e)						
+						if(e.keyCode == 13) {							
+							let val= $(".dataTables_filter label input").val();				
+							if(val !=='')
+							$this.tableInitializer(id,url,searchUrl, val)
+						}
+					})
+				},1000)
+				$this.usersloaderState2 = false;				
 			}
+
 		},
 		async created(){			
 			this.faculties       =  await this.axiosGet('api/faculties/faculties');						
 			this.departments	 = await  this.axiosGet('api/departments/departments');					
-		//	this.createduser     = await this.axiosGet('api/users/users');	
-			this.inactiveUser     = await this.axiosGet('api/users/inactive_users');						
+					
 			this.sessions        = await this.axiosGet('api/session/all_session');			
 			this.facultiesHTML   = this.selectHtmlGen(this.faculties,'code','faculty_id' )							
 			this.departmentsHTML = this.selectHtmlGen(this.departments,'code','department_id' )							
-			
-			//this.loaderState = false;			
+			this.tableInitializer('usertable','api/users/users','api/users/search_users');
+			this.tableInitializer2('usertable2','api/users/inactive_users','api/users/search_inactive_users');
+						
 			    /*initialize datatable */
-			    var $this = this;
+			   // var $this = this;
 	        /* setTimeout(function() { */
-	         	$this.dTable = $('#usertable').DataTable({
-					processing: true,
-					serverSide: true,
-					deferRender: false,
+	         	/* $this.dTable = $('#usertable').DataTable({										
 					responsive:true,
-					pageLength: 6,			    	
-					ajax:{
-						url: 'api/users/users',
-						'type': 'GET',
-						'beforeSend': function (request) {
-							request.setRequestHeader("Authorization",$this.axiosHeader.Authorization);
-						}
-					}, 
-					columns:[
-						{"data":'fullname'},
-						{"data":'username'}, 						
-						{"data":'title'},
-						{"data":'code'},
-						{"data":'id'},
-					],
+					pageLength: 6,			    						
 					drawCallback: function (settings) {
 						let json = settings.json.data
 						
@@ -545,13 +672,13 @@
 							}); 	
 							
 						})							
-						$this.loaderStatex = false;							
+						$this.usersloaderState = false;							
 					}
 			    });					
-				/* $this.dTable = $('#usertable0').DataTable({
+				 *//* $this.dTable = $('#usertable0').DataTable({
 			    	pageLength : 5,
-			    });	 */							
-	       /*   }, 50); */
+			    });	 
+	          }, 50);  */
 			
 		},
 		 props:{

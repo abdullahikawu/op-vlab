@@ -15,8 +15,18 @@ class CourseExperiment extends Model
     {
         return $this->belongsTo(Experiment::class, 'experiment_id');
     }
+
+    public function getExperimentAttribute() {
+        $experiments = Experiment::find($this->experiment_id);
+        if(!is_null($experiments)){
+            return $experiments;
+        }else{
+            return '';
+        }
+    }
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
+    protected $appends = ['experiment'];
 }

@@ -1,5 +1,5 @@
 <template>
-	<div class="cover-template pl-5 pr-3">
+	<div v-if="!loading" class="cover-template pl-5 pr-3">
 		<br><br>		
 		<div class="w-100 row px-2 py-3 border" style="border-left: 3px solid #00b96b !important; border-right:3px solid #00b96b!important; ">
 			<div class="col-lg-4 col-md-3 col-sm-6 col-xs-8">
@@ -10,7 +10,7 @@
 				</select>								
 			</div>
 			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 position-relative">					
-			</div>
+			</div>			
 			<div class="col-lg-4 col-md-3 col-sm-6 col-xs-8">				
 				<p class="fs001 my-1">Select Experiment</p>
 				<select class="form-control  w-100" v-model="selectExperiment" id="experimentBox">
@@ -25,10 +25,9 @@
 			<br>
 			<p class="text-white badge badge-success">{{courseName}} Experiments</p>
 			<div class="row w-100 py-3" v-if="!toload">				
-				<div v-for="(experiment,index) in courseexperiments" :key="index+'xa'" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">
-					
+				<div v-for="(experiment,index) in courseexperiments" :key="index+'xa'" class="col-lg-4 col-md-3 col-sm-6 col-sm-12 resource">					
 					<div class="w-100 rounded shadow-sm bg-white p-2 d-flex justify-between" style="border: 1px solid #eee;" >
-						<span>{{experiment.experiments.name}}</span>
+						<span>{{experiment.experiment.name}}</span>
 						<span class="fa fa-trash text-danger cursor-1" @click="deleteResource(experiment.id)"></span>						
 					</div>
 
@@ -46,6 +45,7 @@
 		data(){
 			return{
 				courses:[],
+				loading: true,
 				selectExperiment:'',
 				courseName:'',
 				experiments:[],
@@ -60,10 +60,16 @@
 			FetchCourseResources: function(){				
 				this.toload = true;
 				location.hash = this.selectedcourse;
-				this.thiscourse = this.courses.filter((item)=>{ return item.id===this.selectedcourse})
-				this.courseName = this.thiscourse[0].code;
-				this.courseexperiments = this.thiscourse[0].course_experiment;
-				this.toload = false;
+				let $this = this;
+				this.thiscourse = this.courses.every((item) => {
+					if( item.id===this.selectedcourse){
+						$this.courseName = item.code;
+						$this.courseexperiments = item.course_experiment;
+						$this.toload = false;
+						return false;
+					}
+					return true;	
+				})
 				
 			},
 		
@@ -91,7 +97,7 @@
 					return false;
 				}
 				for (var i = 0; i < this.courseexperiments.length; i++) {
-					if (this.courseexperiments[i].experiments.id == this.selectExperiment){
+					if (this.courseexperiments[i].experiment.id == this.selectExperiment){
 						Swal.fire({
 						  title: 'Already Exist',
 						  text: `${$('#experimentBox option:selected').text()} exist in  ${$vm.courseName}`,	
@@ -160,6 +166,7 @@
 			this.courses  = await this.axiosGet('api/courses/courses'); //this endpoint is not returning foriegn data		
 			this.selectedcourse = location.hash.substring(1);;			
 			this.FetchCourseResources();
+			this.loading = false;
 				
 		},
 		mounted(){

@@ -4,8 +4,10 @@
 @charset "UTF-8";
 
 :root {
-  --blue: #312952;
-  --sys-primary:#312952;
+  --blue: #007bff;
+  --sys-secondary-h: #2F274E;
+  --sys-secondary: #19142c;
+  --sys-primary:#2d205f;
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;

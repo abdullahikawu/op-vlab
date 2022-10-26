@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session as FacadesSession;
 use Session;
 class TwoUserAuth
 {
@@ -16,10 +17,11 @@ class TwoUserAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Session::has('info')){
+        
+        if(FacadesSession::has('info')){
             $userData = session('info')->data->user ?? '';
             $role = $userData->role_id ?? '';            
-            if ($role == '3e836670-a9d5-4c78-bfb8-0bdcda27263c' || $role == '9260655c-6933-45a0-8d01-6de3d6a52657') {
+            if ($role == '1' || $role == '2') {
                 return $next($request);                
             }else{
                 return redirect('/login');

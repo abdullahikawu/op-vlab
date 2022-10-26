@@ -30,6 +30,11 @@ class CreateExperimentResultTable extends Migration
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('experiment_id')->references('id')->on('experiments');
+            $table->foreign('weekly_work_id')->references('id')->on('weekly_works');
+            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('session_id')->references('id')->on('sessions');
         });
     }
 
@@ -40,6 +45,8 @@ class CreateExperimentResultTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();     
         Schema::dropIfExists('experiment_results');
+        Schema::enableForeignKeyConstraints();        
     }
 }

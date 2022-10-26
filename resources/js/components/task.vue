@@ -15,8 +15,8 @@
 				<div class="task-overlay" >				
 					<div class="task-text">
 						<h5 >Experiments</h5>
-						<ul>
-							<li v-for="experiment in weeklywork.weekly_work_experiments">{{experiment.experiments.name}}</li>							
+						<ul style="max-height: 44px;overflow-y: scroll;display: block;">
+							<li v-for="experiment in weeklywork.weekly_work_experiments">{{experiment.experiment.name}}</li>							
 						</ul>
 					</div>
 					<div class="task-btns">					
