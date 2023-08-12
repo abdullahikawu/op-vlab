@@ -125,6 +125,8 @@ Route::group([
             Route::get('experiments', [ExperimentController::class, 'getAllExperiment']);
             Route::post('experiment_by_weekly_experiment_id', [ExperimentController::class, 'getExperimentByWeeklyExperimentId']);
             Route::post('allow_reattempt_by_result_id', [ExperimentController::class, 'reattemptExperimentbyrid']);
+            
+            Route::post('student_experiment_result', [ExperimentController::class, 'getExperimentResult']);
 
         });
 
@@ -149,6 +151,7 @@ Route::group([
             Route::post('weekly_work', [WeeklyWorkController::class, 'getWeeklyWork']);
             Route::get('weekly_works/{session_id}', [WeeklyWorkController::class, 'getWeeklyWorks']);
             Route::get('weekly_works_only', [WeeklyWorkController::class, 'getOnlyWeeklyWorks']);
+            
             Route::post('student_task', [WeeklyWorkController::class, 'getStudentWeeklyWork']);
             Route::post('student_task2', [WeeklyWorkController::class, 'getStudentWeeklyWork2']);
             
